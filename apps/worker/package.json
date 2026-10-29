@@ -1,0 +1,19 @@
+{
+  "name": "@welspun/worker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsup",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@welspun/api": "*",
+    "pino": "^10.4.0"
+  },
+  "devDependencies": {
+    "@welspun/config": "*"
+  }
+}
