@@ -1,30 +1,25 @@
 import { spawn } from 'node:child_process';
-import { createRequire } from 'node:module';
 import { createServer } from 'node:net';
 import { once } from 'node:events';
 import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
 const web = fileURLToPath(new URL('../apps/web/', import.meta.url));
-const require = createRequire(
-  new URL('../apps/web/package.json', import.meta.url),
-);
 const reservation = createServer().listen(0, '127.0.0.1');
 await once(reservation, 'listening');
 const port = reservation.address().port;
 await new Promise((resolve) => reservation.close(resolve));
+const guardEnv = { ...process.env, NODE_ENV: 'production' };
+guardEnv.LMS_UI_PREVIEW = 'false';
 const child = spawn(
   process.execPath,
   [
-    require.resolve('next/dist/bin/next'),
-    'start',
-    '--hostname',
-    '127.0.0.1',
-    '--port',
+    fileURLToPath(new URL('./preview-guard-server.mjs', import.meta.url)),
     String(port),
+    ...(process.argv.includes('--unset') ? ['--unset'] : []),
   ],
   {
     cwd: web,
-    env: { ...process.env, NODE_ENV: 'production', LMS_UI_PREVIEW: 'false' },
+    env: guardEnv,
     windowsHide: true,
     stdio: 'ignore',
   },
@@ -55,12 +50,22 @@ try {
     await fetch(`http://127.0.0.1:${port}/development/reviews`)
   ).text();
   assert.ok(html.includes('Review preview disabled'));
+  for (const path of [
+    '/development/catalog',
+    '/development/catalog/synthetic-course-1',
+  ]) {
+    const page = await (await fetch(`http://127.0.0.1:${port}${path}`)).text();
+    assert.ok(page.includes('Catalog preview disabled'));
+    assert.ok(
+      !page.includes('Simulated catalog · shared tab-memory fixtures only'),
+    );
+  }
   assert.equal(
     (await fetch(`http://127.0.0.1:${port}/api/preview`)).status,
     404,
   );
   console.log(
-    'Preview opt-out guard passed: both workspaces disabled; no preview API route.',
+    'Preview opt-out guard passed: all development workspaces disabled; no preview API route.',
   );
 } finally {
   child.kill();

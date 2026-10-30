@@ -46,3 +46,22 @@ No MongoDB integration mode was added, so there are no Phase 2B.1 browser persis
 ## Stop boundary
 
 Phase 2B.1 ends with this local fixture preview and documentation. Catalog, enrollment, learner progress, assessments, certificates, simulations, media uploads, production SSO, production APIs, deployment, and Phase 2C were not started.
+
+## Existing-work verification and remaining corrections
+
+Rechecked on 29 October 2026 in response to the instruction to inspect existing work before continuing. All three deliverables, both guarded preview routes, shared content validation, interactive editor/workflow, readiness checklist, release evidence, accessibility controls and regression tests were already present. No duplicate implementation, package installation or application-code changes were needed.
+
+Corrected only the testing guide: reviewer assignment must happen in the author perspective before switching to an assigned reviewer; existing browser storage should remain unchanged rather than necessarily empty. Neither correction changes permissions or fixture behavior.
+
+Fresh executed verification:
+
+| Check                                        | Result                                                                                                                          |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run check`                              | PASS: typecheck, lint, formatting, 122 ordinary tests, all application builds and worker smoke                                  |
+| Explicit disposable local MongoDB suite      | PASS: 111 tests, 1 optional performance benchmark skipped; 44.21 seconds                                                        |
+| Playwright desktop/mobile                    | PASS: 22 tests; 24.1 seconds                                                                                                    |
+| Preview opt-out script after completed build | PASS: both workspaces disabled, `/api/preview` absent                                                                           |
+| Built API and worker with outbound guard     | PASS: API foundation responses/default identity denial, no outbound connection or URI logging; worker queues disabled and exits |
+| Dependency audit                             | PASS: zero vulnerabilities                                                                                                      |
+
+The ordinary run intentionally skipped 112 opt-in tests; 111 were separately executed against local MongoDB, with only the optional benchmark remaining skipped. An initial opt-out-script attempt exited early before the concurrent build had completed; the post-build rerun passed. Playwright emitted cosmetic FORCE_COLOR/NO_COLOR warnings. Screenshots were generated for the workspace and release display; the desktop release screenshot was inspected. No remote CI, clean reinstall, production integration, persistence from the browser or deployment was claimed or performed. Isolated integration remains unavailable for the documented trust-boundary reasons. Phase 2B.1 is ready for review; stop before Phase 2C.

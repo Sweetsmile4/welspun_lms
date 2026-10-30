@@ -61,7 +61,7 @@ function immutableModel(contract: z.ZodType) {
   });
   return schema;
 }
-const reviewModelSchema = new Schema(
+export const reviewModelSchema = new Schema(
   {
     _id: id,
     organizationId: id,
@@ -84,7 +84,7 @@ reviewModelSchema.index(
   { organizationId: 1, courseId: 1, _id: 1 },
   { name: 'review_scoped_history' },
 );
-const evidenceModelSchema = immutableModel(evidenceSchema);
+export const evidenceModelSchema = immutableModel(evidenceSchema);
 evidenceModelSchema.index(
   { organizationId: 1, reviewId: 1, actorId: 1 },
   {
@@ -99,7 +99,7 @@ evidenceModelSchema.index(
   { organizationId: 1, reviewId: 1, _id: 1 },
   { name: 'review_evidence_history' },
 );
-const releaseModelSchema = immutableModel(releaseSchema);
+export const releaseModelSchema = immutableModel(releaseSchema);
 releaseModelSchema.index(
   { organizationId: 1, courseId: 1, number: 1 },
   { unique: true, name: 'release_monotonic_identity' },

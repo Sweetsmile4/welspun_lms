@@ -150,6 +150,7 @@ export function enforceGlobalPolicy(
   facts: ResourceFacts,
 ) {
   const kinds: Record<Action, readonly ResourceFacts['kind'][]> = {
+    'course.catalog.read': ['course'],
     'course.review.submit': ['course'],
     'course.review.read': ['course'],
     'course.review.assign': ['course'],
@@ -207,6 +208,7 @@ export function enforceGlobalPolicy(
     !(
       facts.state === 'archived' &&
       [
+        'course.catalog.read',
         'course.draft.read',
         'course.draft.archive',
         'course.review.read',

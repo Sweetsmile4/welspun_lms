@@ -1,4 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
+test.beforeEach(async ({ page }) => {
+  page.on('dialog', (dialog) => dialog.accept());
+});
 const status = (page: Page) => page.getByRole('status');
 async function open(page: Page) {
   await page.goto('/development/courses');
@@ -165,6 +168,17 @@ test('walks through exact fixture approval, readiness and immutable release disp
   await expect(
     page.getByRole('list', { name: 'Publishing readiness checks' }),
   ).toContainText('Independent approvals');
+  page.removeAllListeners('dialog');
+  page.once('dialog', async (dialog) => {
+    expect(dialog.message()).toContain('immutable simulated snapshot');
+    await dialog.dismiss();
+  });
+  await page.getByRole('button', { name: 'Publish simulated release' }).click();
+  await expect(page.getByTestId('release-card')).toHaveCount(0);
+  await expect(
+    page.getByRole('button', { name: 'Publish simulated release' }),
+  ).toBeEnabled();
+  page.on('dialog', (dialog) => dialog.accept());
   await page.getByRole('button', { name: 'Publish simulated release' }).click();
   await expect(page.getByTestId('release-card')).toContainText(
     'Release 1 · Structured learning essentials',

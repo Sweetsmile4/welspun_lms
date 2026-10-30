@@ -11,7 +11,7 @@ import { decode } from '../organization/mongo-repository.js';
 import type { AuthorizationTransaction } from '../authorization/types.js';
 import type { ManagementStore } from './store.js';
 import { receiptSchema as validatedReceipt } from './receipts.js';
-const receiptSchema = new Schema(
+export const managementReceiptSchema = new Schema(
   {
     schemaVersion: { type: Number, required: true, immutable: true, enum: [1] },
     commandVersion: {
@@ -67,7 +67,7 @@ const receiptSchema = new Schema(
     bufferCommands: false,
   },
 );
-receiptSchema.index(
+managementReceiptSchema.index(
   { organizationId: 1, actorId: 1, operation: 1, keyHash: 1 },
   { unique: true, name: 'management_command_identity' },
 );
@@ -77,7 +77,7 @@ export function createMongoManagementStore(
 ) {
   const receipts = connection.model(
     'ManagementCommandReceipt',
-    receiptSchema,
+    managementReceiptSchema,
     'managementCommandReceipts',
   );
   const org = createOrganizationModels(connection),

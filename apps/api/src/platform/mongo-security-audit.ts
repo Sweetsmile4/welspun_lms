@@ -16,7 +16,7 @@ const immutableId = {
   required: true,
   immutable: true,
 } as const;
-const auditSchema = new Schema(
+export const securityAuditSchema = new Schema(
   {
     eventId: { type: String, required: true, immutable: true },
     requestId: { type: String, required: true, immutable: true },
@@ -40,11 +40,11 @@ const auditSchema = new Schema(
     bufferCommands: false,
   },
 );
-auditSchema.index(
+securityAuditSchema.index(
   { eventId: 1 },
   { unique: true, name: 'security_event_identity' },
 );
-auditSchema.index(
+securityAuditSchema.index(
   { organizationId: 1, occurredAt: 1, eventId: 1 },
   { name: 'security_event_scope_page' },
 );
@@ -93,7 +93,7 @@ export function createMongoSecurityAudit(
   guard();
   const model = connection.model(
     'SecurityAuditEvent',
-    auditSchema,
+    securityAuditSchema,
     'securityAuditEvents',
   );
   function session(tx: AuthorizationTransaction) {

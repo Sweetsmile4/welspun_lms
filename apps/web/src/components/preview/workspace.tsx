@@ -1,6 +1,10 @@
 'use client';
+import Link from 'next/link';
+import { ContentView } from './content-view';
+import { usePreviewState } from './provider';
 import {
   useState,
+  useId,
   type FormEvent,
   type KeyboardEvent,
   type ReactNode,
@@ -20,13 +24,13 @@ import {
 import {
   courseContentSchema,
   courseDescriptionSchema,
+  courseTitleSchema,
 } from '@welspun/contracts';
 import {
   describeError,
   digest,
   feedbackCategories,
   fields,
-  fixture,
   metadata,
   move,
   readinessChecks,
@@ -36,8 +40,6 @@ import {
   type FeedbackCategory,
   type Review,
   type Release,
-  type Perspective,
-  type Content,
   type ReadinessCheck,
 } from './model';
 
@@ -65,12 +67,21 @@ function Field({
   required?: boolean;
   max?: number;
 }) {
+  const errorId = useId();
+  const [error, setError] = useState('');
   return (
     <label className="preview-field">
       {label}
       {multiline ? (
         <textarea
           name={name}
+          aria-label={label}
+          aria-invalid={!!error}
+          aria-describedby={error ? errorId : undefined}
+          onBlur={(e) => {
+            const result = courseDescriptionSchema.safeParse(e.target.value);
+            setError(result.success ? '' : describeError(result.error));
+          }}
           defaultValue={value}
           rows={3}
           maxLength={max}
@@ -79,10 +90,23 @@ function Field({
       ) : (
         <input
           name={name}
+          aria-label={label}
+          aria-invalid={!!error}
+          aria-describedby={error ? errorId : undefined}
+          onBlur={(e) => {
+            if (name !== 'title') return;
+            const result = courseTitleSchema.safeParse(e.target.value);
+            setError(result.success ? '' : describeError(result.error));
+          }}
           defaultValue={value}
           maxLength={max}
           required={required}
         />
+      )}
+      {error && (
+        <span id={errorId} className="preview-field-error">
+          {error}
+        </span>
       )}
     </label>
   );
@@ -100,20 +124,29 @@ export function PreviewWorkspace({
 }: {
   initialTab?: string;
 }) {
-  const [courses, setCourses] = useState(fixture),
-    [selected, setSelected] = useState('synthetic-course-1'),
-    [tab, setTab] = useState(initialTab),
-    [perspective, setPerspective] = useState<Perspective>('author'),
+  const {
+    courses,
+    setCourses,
+    selected,
+    setSelected,
+    perspective,
+    setPerspective,
+    reviews,
+    setReviews,
+    releases,
+    setReleases,
+    reset: resetShared,
+    busy,
+    setBusy,
+    notice,
+    setNotice,
+  } = usePreviewState();
+  const [search, setSearch] = useState(''),
+    [statusFilter, setStatusFilter] = useState('all');
+  const [tab, setTab] = useState(initialTab),
     [reviewer, setReviewer] = useState('Synthetic reviewer A'),
     [required, setRequired] = useState(1),
-    [reviews, setReviews] = useState<Review[]>([]),
-    [releases, setReleases] = useState<Release[]>([]),
     [creating, setCreating] = useState(false),
-    [busy, setBusy] = useState(false),
-    [notice, setNotice] = useState({
-      error: false,
-      text: 'Fixture ready. All actions are simulated in this tab.',
-    }),
     [ready, setReady] = useState('Not checked'),
     [checks, setChecks] = useState<ReadinessCheck[]>([]),
     [editingLesson, setEditingLesson] = useState<string | null>(null),
@@ -200,12 +233,8 @@ export function PreviewWorkspace({
     return review!;
   }
   function reset() {
-    setCourses(fixture());
-    setSelected('synthetic-course-1');
-    setReviews([]);
-    setReleases([]);
+    resetShared();
     setTab('draft');
-    setPerspective('author');
     setCreating(false);
     setReady('Not checked');
     setChecks([]);
@@ -221,9 +250,10 @@ export function PreviewWorkspace({
         Visual perspective
         <select
           aria-label="Visual perspective"
+          disabled={busy}
           value={perspective}
           onChange={(e) => {
-            setPerspective(e.target.value as Perspective);
+            setPerspective(e.target.value as typeof perspective);
             setReady('Not checked');
             setChecks([]);
           }}
@@ -324,8 +354,14 @@ export function PreviewWorkspace({
         <>
           <div className="grid gap-3 sm:grid-cols-3">
             {[
-              ['Drafts in this tab', courses.length],
-              ['Review submissions', reviews.length],
+              [
+                'Active drafts',
+                courses.filter((c) => c.status === 'draft').length,
+              ],
+              [
+                'Published courses',
+                new Set(releases.map((r) => r.snapshot.id)).size,
+              ],
               ['Simulated releases', releases.length],
             ].map(([label, count]) => (
               <div className="preview-stat" key={label}>
@@ -425,31 +461,82 @@ export function PreviewWorkspace({
                 </button>
               </form>
             )}
-            <div className="grid gap-3 md:grid-cols-2">
-              {courses.map((c) => (
-                <button
-                  key={c.id}
-                  aria-label={`Open draft ${c.title}`}
-                  aria-pressed={c.id === selected}
-                  onClick={() => {
-                    setSelected(c.id);
-                    setReady('Not checked');
-                    setChecks([]);
-                    setEditingLesson(null);
-                  }}
-                  className={`preview-course ${c.id === selected ? 'preview-selected' : ''}`}
+            <div className="preview-form-grid mb-4">
+              <label className="preview-field">
+                Search course drafts
+                <input
+                  type="search"
+                  value={search}
+                  maxLength={100}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Course title or code"
+                />
+              </label>
+              <label className="preview-field">
+                Draft lifecycle
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
                 >
-                  <BookOpen size={19} aria-hidden="true" />
-                  <span className="min-w-0">
-                    <strong>{c.title}</strong>
-                    <small>
-                      {c.code} · Revision {c.revision}
-                    </small>
-                    <small>{c.scope}</small>
-                  </span>
-                  <span className="preview-badge">{c.status}</span>
-                </button>
-              ))}
+                  <option value="all">All drafts</option>
+                  <option value="draft">Active drafts</option>
+                  <option value="archived">Archived drafts</option>
+                </select>
+              </label>
+            </div>
+            {!courses.some(
+              (c) =>
+                (statusFilter === 'all' || c.status === statusFilter) &&
+                `${c.title} ${c.code}`
+                  .toLowerCase()
+                  .includes(search.toLowerCase()),
+            ) && (
+              <p className="preview-inset">
+                No matching course drafts. Adjust your search or lifecycle
+                filter.
+              </p>
+            )}
+            <div className="grid gap-3 md:grid-cols-2">
+              {courses
+                .filter(
+                  (c) =>
+                    (statusFilter === 'all' || c.status === statusFilter) &&
+                    `${c.title} ${c.code}`
+                      .toLowerCase()
+                      .includes(search.toLowerCase()),
+                )
+                .map((c) => (
+                  <button
+                    key={c.id}
+                    aria-label={`Open draft ${c.title}`}
+                    aria-pressed={c.id === selected}
+                    disabled={busy}
+                    onClick={() => {
+                      setSelected(c.id);
+                      setReady('Not checked');
+                      setChecks([]);
+                      setEditingLesson(null);
+                    }}
+                    className={`preview-course ${c.id === selected ? 'preview-selected' : ''}`}
+                  >
+                    <BookOpen size={19} aria-hidden="true" />
+                    <span className="min-w-0">
+                      <strong>{c.title}</strong>
+                      <small>
+                        {c.code} · Revision {c.revision}
+                      </small>
+                      <small>{c.scope}</small>
+                    </span>
+                    <span className="flex flex-wrap gap-2">
+                      <span className="preview-badge">{c.status}</span>
+                      {releases.some((r) => r.snapshot.id === c.id) && (
+                        <span className="preview-badge preview-status-success">
+                          Published snapshot available
+                        </span>
+                      )}
+                    </span>
+                  </button>
+                ))}
             </div>
           </Panel>
           <div className="flex flex-wrap items-center justify-between gap-3">
@@ -492,6 +579,11 @@ export function PreviewWorkspace({
               className="space-y-5"
             >
               <Panel title="Course details">
+                <p className="mb-3 text-sm text-muted-foreground">
+                  {canEdit
+                    ? 'Edit metadata below, then save to advance the draft revision. Unsaved field changes are discarded when switching course or view.'
+                    : 'Read-only in this perspective or lifecycle. Switch to the author perspective to edit an active draft.'}
+                </p>
                 <form
                   key={`${selected}-${draft.revision}`}
                   aria-label="Edit course details"
@@ -568,11 +660,17 @@ export function PreviewWorkspace({
                     className={`${button} preview-danger`}
                     disabled={!canEdit || busy}
                     onClick={() =>
-                      void simulate(() =>
+                      void simulate(() => {
+                        if (
+                          !window.confirm(
+                            `Archive draft "${draft.title}"? Editing and new submissions will be disabled. Published snapshots remain available.`,
+                          )
+                        )
+                          return;
                         update((next) => {
                           next.status = 'archived';
-                        }),
-                      )
+                        });
+                      })
                     }
                   >
                     Archive draft
@@ -586,6 +684,15 @@ export function PreviewWorkspace({
                 )}
               </Panel>
               <Panel title="Modules and lessons">
+                <p className="mb-3 text-sm">
+                  {draft.modules.length} modules -{' '}
+                  {draft.modules.reduce(
+                    (count, module) => count + module.lessons.length,
+                    0,
+                  )}{' '}
+                  lessons - Use the arrow buttons to change sibling order.
+                  Boundary controls are disabled.
+                </p>
                 <p className="mb-4 text-sm text-muted-foreground">
                   Safe text only. Maximum 20 modules, 20 lessons per module, 100
                   lessons overall and 256 KiB. Order is the displayed sibling
@@ -925,7 +1032,27 @@ export function PreviewWorkspace({
                 {review ? (
                   <div className="mt-5 space-y-4">
                     <div>
-                      <span className="preview-badge">{review.state}</span>
+                      <span
+                        className={`preview-badge ${review.state === 'approved' || review.state === 'published' ? 'preview-status-success' : ''}`}
+                      >
+                        {review.state}
+                      </span>
+                      <p className="mt-3 text-sm font-semibold">
+                        {
+                          review.decisions.filter(
+                            (d) => d.decision === 'approve',
+                          ).length
+                        }{' '}
+                        / {review.required} synthetic approvals -{' '}
+                        {review.reviewers.length} assigned
+                      </p>
+                      {review.revision !== draft.revision && (
+                        <p className="preview-message preview-error mt-3">
+                          Stale submission: the current draft has changed.
+                          Previous evidence is preserved; submit the new
+                          revision before publishing.
+                        </p>
+                      )}
                       <p className="mt-2 text-sm">
                         Submitted revision {review.revision} · Current revision{' '}
                         {draft.revision}
@@ -972,7 +1099,17 @@ export function PreviewWorkspace({
                           key={name}
                           className="flex flex-wrap items-center justify-between gap-2 border-b border-border py-2"
                         >
-                          <span className="text-sm">{name}</span>
+                          <span className="text-sm">
+                            {name}
+                            <small className="block mt-1 text-muted-foreground">
+                              {review.decisions.find(
+                                (decision) => decision.reviewer === name,
+                              )?.decision ??
+                                (review.reviewers.includes(name)
+                                  ? 'Awaiting decision'
+                                  : 'Not assigned')}
+                            </small>
+                          </span>
                           <button
                             className={button}
                             disabled={
@@ -1240,6 +1377,12 @@ export function PreviewWorkspace({
                       onClick={() =>
                         void simulate(async () => {
                           const r = await readiness();
+                          if (
+                            !window.confirm(
+                              `Publish release ${history.length + 1} of "${draft.title}" at revision ${draft.revision}? This creates an immutable simulated snapshot.`,
+                            )
+                          )
+                            return;
                           const next: Release = {
                             id: uid(),
                             number: history.length + 1,
@@ -1332,6 +1475,12 @@ export function PreviewWorkspace({
                         <h3 className="font-bold">
                           Release {r.number} · {r.snapshot.title}
                         </h3>
+                        <Link
+                          className={button}
+                          href={`/development/catalog/${encodeURIComponent(r.snapshot.id)}`}
+                        >
+                          View in Development Catalog
+                        </Link>
                         <span className="preview-badge">
                           Simulated published
                         </span>
@@ -1341,8 +1490,12 @@ export function PreviewWorkspace({
                         revision {r.reviewRevision} · {r.snapshot.scope}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Release ID {r.id.slice(0, 8)} · Created {r.createdAt} ·
-                        Immutable fixture snapshot
+                        {r.number ===
+                        Math.max(...history.map((release) => release.number))
+                          ? 'Latest release'
+                          : 'Previous release'}{' '}
+                        - Release ID {r.id.slice(0, 8)} · Created {r.createdAt}{' '}
+                        · Immutable fixture snapshot
                       </p>
                       <code className="preview-digest">
                         Fixture SHA-256: {r.digest}
@@ -1504,29 +1657,4 @@ export function PreviewWorkspace({
       </form>
     );
   }
-}
-function ContentView({ content }: { content: Content }) {
-  if (content.type === 'text')
-    return <p className="mt-2 whitespace-pre-wrap text-sm">{content.text}</p>;
-  return (
-    <div className="mt-2 space-y-2 text-sm">
-      {content.blocks.map((b, i) =>
-        b.type === 'list' ? (
-          <ul key={i} className="list-disc pl-5">
-            {b.items.map((item, j) => (
-              <li key={j}>{item}</li>
-            ))}
-          </ul>
-        ) : b.type === 'heading' ? (
-          <p key={i} className="font-bold">
-            {b.text}
-          </p>
-        ) : (
-          <p key={i} className="whitespace-pre-wrap">
-            {b.text}
-          </p>
-        ),
-      )}
-    </div>
-  );
 }

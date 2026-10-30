@@ -3,6 +3,7 @@ import type { Metadata, NewRecord } from '../organization/types.js';
 import type { OrganizationTransaction } from '../organization/repository.js';
 
 export const actions = [
+  'course.catalog.read',
   'course.review.submit',
   'course.review.read',
   'course.review.assign',

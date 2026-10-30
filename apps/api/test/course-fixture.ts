@@ -17,6 +17,7 @@ import type {
 import { memoryAuthorizationRepository } from './authorization-memory.js';
 import { authorizationFixture, now } from './authorization-scenarios.js';
 import type { PublishingStore } from '../src/modules/catalog/publishing/repository.js';
+import type { CatalogStore } from '../src/modules/catalog/discovery/service.js';
 import type {
   Review,
   Evidence,
@@ -24,6 +25,7 @@ import type {
 } from '../src/modules/catalog/publishing/contracts.js';
 
 export interface CourseHarness {
+  catalog?: CatalogStore;
   publishing?: PublishingStore;
   repository: AuthorizationRepository;
   store: DraftStore;
@@ -76,6 +78,86 @@ export function memoryCourseHarness(): CourseHarness {
     Object.entries(key).every(([k, v]) => row[k as keyof Receipt] === v);
   return {
     repository,
+    catalog: {
+      async query(tx, org, scope, query, details) {
+        const s = context(tx),
+          latest = new Map<string, Release>();
+        for (const row of s.releases) {
+          const course = s.courses.find(
+            (c) => c.organizationId === org && c.id === row.courseId,
+          );
+          if (
+            row.organizationId !== org ||
+            row.lifecycle !== 'published' ||
+            !course ||
+            row.snapshot.course.scopeUnitId !== course.scopeUnitId ||
+            (course.scopeUnitId !== null &&
+              !scope.activeUnitIds.includes(course.scopeUnitId)) ||
+            (!scope.organizationWide &&
+              !scope.courseIds.includes(course.id) &&
+              !scope.unitIds.includes(course.scopeUnitId ?? '')) ||
+            (scope.filterUnitIds &&
+              !scope.filterUnitIds.includes(course.scopeUnitId ?? ''))
+          )
+            continue;
+          if (
+            !latest.has(row.courseId) ||
+            latest.get(row.courseId)!.number < row.number
+          )
+            latest.set(row.courseId, row);
+        }
+        const rows = [...latest.values()]
+          .filter(
+            (r) =>
+              (!query.courseId || r.courseId === query.courseId) &&
+              (!query.search ||
+                `${r.snapshot.draft.title} ${r.snapshot.course.code}`
+                  .toLowerCase()
+                  .includes(query.search.toLowerCase())),
+          )
+          .sort((a, b) => a.courseId.localeCompare(b.courseId));
+        const page = rows
+          .filter((r) => !query.cursor || r.courseId > query.cursor)
+          .slice(0, query.limit + 1);
+        return {
+          total: rows.length,
+          nextCursor:
+            page.length > query.limit ? page[query.limit - 1]!.courseId : null,
+          items: page.slice(0, query.limit).map((r) => ({
+            courseId: r.courseId,
+            releaseId: r.id,
+            releaseNumber: r.number,
+            title: r.snapshot.draft.title,
+            description: r.snapshot.draft.description,
+            code: r.snapshot.course.code,
+            scopeUnitId: r.scopeUnitId,
+            publishedAt: r.publishedAt.toISOString(),
+            moduleCount: r.snapshot.draft.modules.length,
+            lessonCount: r.snapshot.draft.modules.reduce(
+              (n, m) => n + m.lessons.length,
+              0,
+            ),
+            ...(details
+              ? {
+                  modules: r.snapshot.draft.modules.map((m) => ({
+                    id: m.id,
+                    title: m.title,
+                    description: m.description,
+                    position: m.position,
+                    lessons: m.lessons.map((l) => ({
+                      id: l.id,
+                      title: l.title,
+                      description: l.description,
+                      position: l.position,
+                      content: structuredClone(l.content),
+                    })),
+                  })),
+                }
+              : {}),
+          })),
+        };
+      },
+    },
     publishing: {
       review: async (tx, org, id) =>
         context(tx).reviews.find(

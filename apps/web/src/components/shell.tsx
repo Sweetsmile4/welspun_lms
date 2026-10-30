@@ -29,7 +29,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
       >
         Skip to content
       </a>
-      <aside className="border-b border-white/10 bg-[#152d50] text-white lg:sticky lg:top-0 lg:h-screen">
+      <aside className="border-b border-white/10 bg-[#152d50] text-white lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto">
         <div className="flex items-center gap-3 px-6 py-7">
           <div className="grid size-10 place-items-center rounded-xl border border-white/25 text-2xl font-black text-[#f4c568]">
             W
@@ -75,6 +75,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
           {[
             ['/development/courses', 'Course workspace'],
             ['/development/reviews', 'Review workflows'],
+            ['/development/catalog', 'Development Course Catalog'],
           ].map(([href, title]) => (
             <Link
               key={href}

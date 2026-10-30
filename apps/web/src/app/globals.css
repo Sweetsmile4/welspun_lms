@@ -267,3 +267,49 @@ a {
     flex-wrap: wrap;
   }
 }
+
+/* Course operations: compact enterprise surfaces using existing brand tokens. */
+.preview-panel {
+  box-shadow: 0 2px 5px rgb(23 38 56 / 3%);
+}
+.preview-panel > h2 {
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+.preview-course {
+  transition: border-color 120ms ease;
+}
+.preview-course:hover {
+  border-color: var(--primary);
+}
+.preview-status-success {
+  background: #e6f3ec;
+  color: #20563b;
+}
+.preview-field-error {
+  color: #8c2525;
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+.preview-field [aria-invalid='true'] {
+  border-color: #b33f3f;
+}
+.preview-workspace a:focus-visible {
+  outline: 3px solid #518bd0;
+  outline-offset: 3px;
+}
+.preview-workspace {
+  overflow-wrap: anywhere;
+}
+.preview-workspace textarea {
+  line-height: 1.65;
+}
+.preview-workspace button:has(> svg:only-child) {
+  min-width: 40px;
+  min-height: 40px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .preview-course {
+    transition: none;
+  }
+}

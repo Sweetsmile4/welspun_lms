@@ -38,7 +38,7 @@ The validation walkthrough can use a script tag in a title, a duplicate course c
 1. Open the `Review workflow` tab or `/development/reviews`.
 2. In the author perspective, choose one or two synthetic required approvals. This is an explicit scenario setting, not a Welspun policy or employee count.
 3. Submit the complete draft. The review records the fixture revision and a synthetic SHA-256 digest in tab memory.
-4. Select `Assigned reviewer`, choose a reviewer scenario, assign reviewer A, then record `approve`, `changesRequested`, or `reject` with a feedback category and structured message. The unassigned scenario must be denied visibly.
+4. Stay in the author perspective and assign reviewer A (and reviewer B if the submission requires two approvals). Then select `Assigned reviewer`, choose the assigned reviewer scenario, and record `approve`, `changesRequested`, or `reject` with a feedback category and structured message. For two approvals, repeat the decision as the other assigned reviewer. The unassigned scenario must be denied visibly.
 5. Select `Publisher`, run `Check readiness`, and inspect the checklist: active draft, lesson-bearing modules, exact revision, exact digest, assigned approval slots, independent approvals and next release number. Publish only after the configured synthetic approvals are complete. All results say `Simulated`.
 6. Open `Release history` and inspect the release number, release ID, source/submitted revision, digest, timestamp, approval evidence with structured feedback, and snapshot details.
 7. Edit the draft after publishing and return to release history. The release card remains unchanged, demonstrating fixture snapshot immutability.
@@ -114,6 +114,6 @@ The existing backend service tests remain separate. Use `npm test` for ordinary 
 
 ## Reset and security verification
 
-Fixture state resets by reloading the page or selecting `Reset fixtures`; there is no localStorage, sessionStorage or server-side fixture store. Verify with DevTools that both browser storage areas remain empty after authoring, reviewing and publishing. To verify the guard, stop the development server, build the web app, and run `node scripts/check-preview-disabled.mjs`. It starts a loopback production server with `LMS_UI_PREVIEW=false` and verifies both development routes are disabled and `/api/preview` returns 404.
+Fixture state resets by reloading the page or selecting `Reset fixtures`; the preview writes neither localStorage nor sessionStorage and has no server-side fixture store. Verify with DevTools that these browser storage areas remain unchanged after authoring, reviewing and publishing; unrelated existing entries need not be empty or deleted. To verify the guard, build the web app, and run `node scripts/check-preview-disabled.mjs`. It starts its own loopback production server with `LMS_UI_PREVIEW=false` and verifies both development routes are disabled and `/api/preview` returns 404.
 
 Do not set a corporate Mongo URI, add real identities, expose the preview on a public interface, or treat a simulated approval/release as technical or corporate approval. Isolated browser integration remains blocked pending a separately reviewed authenticated test-session boundary, server-side scope enforcement, CSRF/origin controls, disposable database lifecycle, and dedicated persistence/audit/retry tests.
