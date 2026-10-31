@@ -5,8 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { CourseData, CourseScene } from '@/lib/client-demo/types';
 import { useDemo } from './demo-context';
-import { SceneDiagram } from './scene-diagrams';
-import { HelicalFormingVisualizer } from './helical-visualizer';
+import { ThreeSimulation } from './three-simulation';
 import { ScenarioQuizComponent } from './scenario-quiz';
 import { Button } from '@/components/ui/button';
 import {
@@ -198,24 +197,7 @@ export function SceneViewer({
         </p>
       </div>
 
-      {/* Technical Schematic Diagram */}
-      <section
-        aria-label="Technical manufacturing schematic"
-        className="rounded-2xl border border-slate-300 bg-slate-900 p-4 shadow-xs"
-      >
-        <div className="mb-2 flex items-center justify-between text-xs text-slate-400 px-1">
-          <span className="font-semibold text-slate-300">
-            Technical Process Schematic
-          </span>
-          <span className="text-[11px] text-amber-300">
-            Illustrative Manufacturing Model
-          </span>
-        </div>
-        <SceneDiagram type={scene.diagramType} title={scene.title} />
-      </section>
-
-      {/* Interactive Educational Visualizer (for Scene 3) */}
-      {scene.hasInteractiveVisualizer && <HelicalFormingVisualizer />}
+      <ThreeSimulation scene={scene} />
 
       {/* Multi-Tier Explanation Switcher (ELI5, Operator, Engineer) */}
       <section
