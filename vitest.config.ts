@@ -4,6 +4,7 @@ export default defineConfig({
     include: [
       'apps/api/test/**/*.test.ts',
       'packages/contracts/test/**/*.test.ts',
+      'tests/**/*.test.ts',
     ],
     environment: 'node',
     testTimeout: 30_000,

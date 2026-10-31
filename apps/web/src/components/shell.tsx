@@ -21,6 +21,9 @@ export const navigation = [
 ];
 export function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  if (pathname?.startsWith('/client-demo')) {
+    return <>{children}</>;
+  }
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[260px_1fr]">
       <a
