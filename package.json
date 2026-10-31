@@ -1,5 +1,5 @@
 {
-  "name": "welspun-lms",
+  "name": "welspun-lms-web",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -8,46 +8,39 @@
     "node": ">=24 <25",
     "npm": ">=11 <13"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
-    "dev:web": "npm run dev -w @welspun/web",
-    "dev:api": "npm run dev -w @welspun/api",
-    "dev:worker": "npm run dev -w @welspun/worker",
-    "typecheck": "npm run typecheck --workspaces --if-present && tsc --noEmit -p tsconfig.tools.json",
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1",
+    "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:mongo": "vitest run apps/api/test/organization.mongo.test.ts apps/api/test/authorization.mongo.test.ts apps/api/test/http-security.mongo.test.ts apps/api/test/management.mongo.test.ts apps/api/test/security-hardening.mongo.test.ts apps/api/test/security-performance.mongo.test.ts apps/api/test/course.mongo.test.ts apps/api/test/publishing.mongo.test.ts apps/api/test/catalog.mongo.test.ts apps/api/test/integration-storage.mongo.test.ts apps/api/test/session-transport-foundation.mongo.test.ts",
-    "test:mongo:local": "node scripts/test-mongo-local.mjs",
-    "setup:integration:local": "tsx scripts/setup-integration-local.ts",
-    "test:e2e": "playwright test",
-    "build": "npm run build --workspaces --if-present",
-    "check": "npm run typecheck && npm run lint && npm run format:check && npm test && npm run build && npm run smoke:worker",
-    "smoke:worker": "npm run start -w @welspun/worker"
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.577.0",
+    "next": "^16.4.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
-    "@playwright/test": "^1.58.0",
+    "@tailwindcss/postcss": "^4.1.0",
     "@types/node": "^24.0.0",
-    "@types/supertest": "^6.0.3",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
     "eslint": "^9.39.1",
     "eslint-config-next": "^16.4.3",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^16.5.0",
     "prettier": "^3.7.0",
-    "supertest": "^7.2.2",
-    "tsup": "^8.5.0",
-    "tsx": "^4.21.0",
+    "tailwindcss": "^4.1.0",
     "typescript": "~5.9.3",
-    "typescript-eslint": "^8.48.0",
-    "vitest": "^5.0.5"
-  },
-  "overrides": {
-    "esbuild": "^0.28.2"
+    "typescript-eslint": "^8.48.0"
   }
 }

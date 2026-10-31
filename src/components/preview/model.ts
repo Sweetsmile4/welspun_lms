@@ -3,7 +3,7 @@ import {
   courseMetadataSchema,
   courseTitleSchema,
   courseDescriptionSchema,
-} from '@welspun/contracts';
+} from '@/contracts';
 export type Perspective = 'author' | 'reviewer' | 'publisher' | 'unauthorized';
 export type Content = ReturnType<typeof courseContentSchema.parse>;
 export type Lesson = {

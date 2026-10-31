@@ -25,7 +25,7 @@ import {
   courseContentSchema,
   courseDescriptionSchema,
   courseTitleSchema,
-} from '@welspun/contracts';
+} from '@/contracts';
 import {
   describeError,
   digest,

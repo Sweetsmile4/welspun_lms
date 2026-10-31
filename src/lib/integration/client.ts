@@ -1,7 +1,7 @@
 import type {
   Unavailable,
   CommandMetadata,
-} from '@welspun/contracts/integration/v1';
+} from '@/contracts/integration-v1';
 
 export interface IntegrationReadRequests {
   'session.read': Record<string, never>;

@@ -11,9 +11,6 @@ const config = [
       '**/dist/**',
       '**/next-env.d.ts',
       '**/coverage/**',
-      'playwright-report/**',
-      'test-results/**',
-      'work/**',
     ],
   },
   js.configs.recommended,
@@ -29,39 +26,16 @@ const config = [
   },
   ...next,
   {
-    files: ['apps/web/**/*.{ts,tsx}'],
+    files: ['src/contracts/**/*.ts'],
     rules: {
       'no-restricted-imports': [
         'error',
         {
-          patterns: [
-            '@welspun/api',
-            '@welspun/api/*',
-            '**/apps/api/**',
-            '**/apps/worker/**',
-          ],
+          patterns: ['mongoose', 'pino', 'node:*'],
         },
       ],
     },
   },
-  {
-    files: ['packages/contracts/**/*.ts'],
-    rules: {
-      'no-restricted-imports': [
-        'error',
-        {
-          patterns: [
-            '@welspun/api',
-            '@welspun/api/*',
-            'mongoose',
-            'pino',
-            'node:*',
-          ],
-        },
-      ],
-    },
-  },
-  { settings: { next: { rootDir: 'apps/web/' } } },
   prettier,
 ];
 
