@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { CourseData, CourseScene } from '@/lib/client-demo/types';
@@ -51,8 +51,19 @@ export function SceneViewer({
   const isFirstScene = currentSceneIndex === 0;
   const isLastScene = currentSceneIndex === totalScenes - 1;
   const savedAnswer = progress.answeredQuestions[scene.id];
+  const isPilotScene = scene.diagramType === 'defect_types';
+  const [completedSimulationScenes, setCompletedSimulationScenes] = useState<
+    Record<string, boolean>
+  >({});
+  const simulationComplete = Boolean(completedSimulationScenes[scene.id]);
+  const selectedOption = scene.quiz.options.find(
+    (option) => option.id === savedAnswer,
+  );
+  const canCompleteScene =
+    !isPilotScene || (simulationComplete && selectedOption?.isCorrect === true);
 
   const handleNext = () => {
+    if (!canCompleteScene) return;
     markSceneCompleted(course.id, scene.id);
     if (!isLastScene) {
       setCurrentSceneIndex(course.id, currentSceneIndex + 1);
@@ -77,7 +88,20 @@ export function SceneViewer({
 
   const handleAnswer = (optionId: string) => {
     recordQuestionAnswer(course.id, scene.id, optionId);
-    markSceneCompleted(course.id, scene.id);
+    const option = scene.quiz.options.find((item) => item.id === optionId);
+    if (!isPilotScene || (simulationComplete && option?.isCorrect)) {
+      markSceneCompleted(course.id, scene.id);
+    }
+  };
+
+  const handleSimulationComplete = () => {
+    setCompletedSimulationScenes((previous) => ({
+      ...previous,
+      [scene.id]: true,
+    }));
+    if (selectedOption?.isCorrect) {
+      markSceneCompleted(course.id, scene.id);
+    }
   };
 
   return (
@@ -197,7 +221,16 @@ export function SceneViewer({
         </p>
       </div>
 
-      <ThreeSimulation scene={scene} />
+      <ThreeSimulation
+        scene={scene}
+        onTaskComplete={isPilotScene ? handleSimulationComplete : undefined}
+      />
+      {isPilotScene && !canCompleteScene && (
+        <p className="rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-950">
+          Complete the simulated inspection finding and select the correct
+          scenario decision before continuing.
+        </p>
+      )}
 
       {/* Multi-Tier Explanation Switcher (ELI5, Operator, Engineer) */}
       <section
@@ -479,8 +512,9 @@ export function SceneViewer({
         <div className="flex items-center gap-3">
           <Button
             onClick={handleNext}
+            disabled={!canCompleteScene}
             className={cn(
-              'h-10 text-xs font-bold px-5 transition-all shadow-sm',
+              'h-10 px-5 text-xs font-bold shadow-sm transition-all disabled:cursor-not-allowed disabled:opacity-45',
               isLastScene
                 ? 'bg-emerald-600 text-white hover:bg-emerald-700'
                 : 'bg-[#152d50] text-white hover:bg-[#203d68]',

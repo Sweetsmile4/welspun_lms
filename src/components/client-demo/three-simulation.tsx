@@ -509,14 +509,18 @@ function QualityScene({
   paused,
   selected,
   onSelect,
+  inspectionView,
+  selectedDefect,
 }: {
   paused: boolean;
   selected: string;
   onSelect: (id: string) => void;
+  inspectionView: 'surface' | 'cross_section';
+  selectedDefect: 'undercut' | 'porosity' | 'lack_of_fusion';
 }) {
   const scanner = useRef<THREE.Group>(null);
   useFrame(() => {
-    if (!paused && scanner.current)
+    if (!paused && inspectionView === 'surface' && scanner.current)
       scanner.current.position.x = Math.sin(Date.now() * 0.001) * 1.5;
   });
   return (
@@ -531,9 +535,34 @@ function QualityScene({
           color="#64748b"
           metalness={0.8}
           roughness={0.28}
+          opacity={inspectionView === 'cross_section' ? 0.42 : 1}
+          transparent={inspectionView === 'cross_section'}
           side={THREE.DoubleSide}
         />
       </mesh>
+      {inspectionView === 'cross_section' && (
+        <group position={[0, 1, 0]}>
+          <mesh rotation={[0, 0, Math.PI / 2]}>
+            <cylinderGeometry args={[0.78, 0.78, 7, 32, 1, true]} />
+            <meshStandardMaterial
+              color="#1e293b"
+              metalness={0.35}
+              roughness={0.55}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
+          <mesh position={[0, 1.06, 1.03]}>
+            <boxGeometry
+              args={[1.8, selectedDefect === 'undercut' ? 0.08 : 0.18, 0.06]}
+            />
+            <meshStandardMaterial
+              color={selectedDefect === 'undercut' ? '#f97316' : '#ef4444'}
+              emissive={selectedDefect === 'undercut' ? '#9a3412' : '#991b1b'}
+              emissiveIntensity={1.4}
+            />
+          </mesh>
+        </group>
+      )}
       <mesh position={[0, 1, 1.04]} rotation={[0, Math.PI / 2, 0]}>
         <torusGeometry args={[1.05, 0.04, 8, 64]} />
         <meshStandardMaterial
@@ -599,6 +628,8 @@ function SceneContents({
   paused,
   selected,
   onSelect,
+  inspectionView,
+  selectedDefect,
 }: {
   kind: SimulationKind;
   sceneType: CourseScene['diagramType'];
@@ -606,6 +637,8 @@ function SceneContents({
   paused: boolean;
   selected: string;
   onSelect: (id: string) => void;
+  inspectionView: 'surface' | 'cross_section';
+  selectedDefect: 'undercut' | 'porosity' | 'lack_of_fusion';
 }) {
   return kind === 'pipe' ? (
     <PipeScene
@@ -617,7 +650,13 @@ function SceneContents({
   ) : kind === 'safety' ? (
     <SafetyScene paused={paused} selected={selected} onSelect={onSelect} />
   ) : kind === 'quality' ? (
-    <QualityScene paused={paused} selected={selected} onSelect={onSelect} />
+    <QualityScene
+      paused={paused}
+      selected={selected}
+      onSelect={onSelect}
+      inspectionView={inspectionView}
+      selectedDefect={selectedDefect}
+    />
   ) : (
     <GenericScene
       sceneType={sceneType}
@@ -635,13 +674,29 @@ function kindForScene(scene: CourseScene): SimulationKind | null {
   return 'generic';
 }
 
-export function ThreeSimulation({ scene }: { scene: CourseScene }) {
+export function ThreeSimulation({
+  scene,
+  onTaskComplete,
+}: {
+  scene: CourseScene;
+  onTaskComplete?: () => void;
+}) {
   const kind = kindForScene(scene);
   const [paused, setPaused] = useState(false);
   const [angle, setAngle] = useState(24);
   const [selected, setSelected] = useState(
     HOTSPOTS[kind ?? 'pipe'][0]?.id ?? 'coil',
   );
+  const [inspectionView, setInspectionView] = useState<
+    'surface' | 'cross_section'
+  >('surface');
+  const [selectedDefect, setSelectedDefect] = useState<
+    'undercut' | 'porosity' | 'lack_of_fusion'
+  >('undercut');
+  const [inspectionFeedback, setInspectionFeedback] = useState<string | null>(
+    null,
+  );
+  const [inspectionComplete, setInspectionComplete] = useState(false);
   const [resetSignal, setResetSignal] = useState(0);
   const hotspots =
     kind === 'generic'
@@ -655,6 +710,10 @@ export function ThreeSimulation({ scene }: { scene: CourseScene }) {
     setPaused(false);
     setAngle(24);
     setSelected(HOTSPOTS[kind][0]?.id ?? 'input');
+    setInspectionView('surface');
+    setSelectedDefect('undercut');
+    setInspectionFeedback(null);
+    setInspectionComplete(false);
     setResetSignal((value) => value + 1);
   };
   return (
@@ -726,6 +785,8 @@ export function ThreeSimulation({ scene }: { scene: CourseScene }) {
             paused={paused}
             selected={selected}
             onSelect={setSelected}
+            inspectionView={inspectionView}
+            selectedDefect={selectedDefect}
           />
           <OrbitControls
             enablePan={false}
@@ -762,6 +823,102 @@ export function ThreeSimulation({ scene }: { scene: CourseScene }) {
                 className="mt-3 w-full accent-amber-400"
               />
             </label>
+          )}
+          {kind === 'quality' && (
+            <div className="space-y-3 text-xs text-slate-200">
+              <div>
+                <p className="font-semibold text-slate-100">Inspection view</p>
+                <div
+                  className="mt-2 flex flex-wrap gap-2"
+                  role="group"
+                  aria-label="Inspection view"
+                >
+                  {(
+                    [
+                      ['surface', 'Surface scan'],
+                      ['cross_section', 'Cross-section'],
+                    ] as const
+                  ).map(([id, label]) => (
+                    <button
+                      key={id}
+                      type="button"
+                      aria-pressed={inspectionView === id}
+                      onClick={() => {
+                        setInspectionView(id);
+                        setInspectionFeedback(null);
+                      }}
+                      className={`rounded border px-2.5 py-1.5 font-semibold ${inspectionView === id ? 'border-amber-300 bg-amber-100 text-amber-950' : 'border-slate-600 text-slate-200 hover:bg-slate-800'}`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="font-semibold text-slate-100">
+                  Identify the indication
+                </p>
+                <div
+                  className="mt-2 grid gap-2"
+                  role="group"
+                  aria-label="Defect classification"
+                >
+                  {(
+                    [
+                      ['undercut', 'Undercut at the weld toe'],
+                      ['porosity', 'Porosity cluster'],
+                      ['lack_of_fusion', 'Lack of fusion'],
+                    ] as const
+                  ).map(([id, label]) => (
+                    <button
+                      key={id}
+                      type="button"
+                      aria-pressed={selectedDefect === id}
+                      onClick={() => {
+                        setSelectedDefect(id);
+                        setInspectionFeedback(null);
+                      }}
+                      className={`rounded border px-2.5 py-1.5 text-left font-semibold ${selectedDefect === id ? 'border-sky-300 bg-sky-950 text-sky-100' : 'border-slate-600 text-slate-200 hover:bg-slate-800'}`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  const correct =
+                    inspectionView === 'cross_section' &&
+                    selectedDefect === 'undercut';
+                  setInspectionComplete(correct);
+                  if (correct) onTaskComplete?.();
+                  setInspectionFeedback(
+                    correct
+                      ? 'Correct classification. The cross-section exposes the sharp groove at the weld toe; apply the controlled acceptance criteria before any release decision.'
+                      : 'Re-check the view and indication. Use the cross-section to distinguish a weld-toe groove from volumetric or fusion-related indications.',
+                  );
+                }}
+                className="w-full rounded bg-amber-400 px-3 py-2 font-bold text-slate-950 hover:bg-amber-300"
+              >
+                Submit inspection finding
+              </button>
+              {inspectionFeedback && (
+                <p
+                  role="status"
+                  className={
+                    inspectionComplete ? 'text-emerald-300' : 'text-amber-200'
+                  }
+                >
+                  {inspectionFeedback}
+                </p>
+              )}
+              <p className="text-[10px] leading-relaxed text-amber-200">
+                Simulated indication only. Acceptance limits are not supplied by
+                this model; use the approved ITP, QAP, and customer
+                specification.
+              </p>
+            </div>
           )}
           <div
             className="mt-3 flex flex-wrap gap-2"
