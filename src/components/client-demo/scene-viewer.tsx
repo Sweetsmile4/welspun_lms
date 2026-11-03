@@ -223,6 +223,7 @@ export function SceneViewer({
 
       <ThreeSimulation
         scene={scene}
+        whiteBackground={course.id === 'pipe-process-101'}
         onTaskComplete={isPilotScene ? handleSimulationComplete : undefined}
       />
       {isPilotScene && !canCompleteScene && (

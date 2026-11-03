@@ -142,6 +142,8 @@ function HotspotMarker({
   active: boolean;
   onSelect: () => void;
 }) {
+  if (!active) return null;
+
   return (
     <group position={hotspot.position}>
       <mesh
@@ -259,11 +261,13 @@ function GenericScene({
   paused,
   selected,
   onSelect,
+  highlightSelected,
 }: {
   sceneType: CourseScene['diagramType'];
   paused: boolean;
   selected: string;
   onSelect: (id: string) => void;
+  highlightSelected: boolean;
 }) {
   const station = useRef<THREE.Group>(null);
   useFrame((_, delta) => {
@@ -292,33 +296,67 @@ function GenericScene({
         <mesh position={[-3, 1, 0]} rotation={[0, 0, Math.PI / 2]}>
           <cylinderGeometry args={[0.85, 0.85, 1.2, 24]} />
           <meshStandardMaterial
-            color="#64748b"
+            color={
+              highlightSelected && selected === 'input' ? '#fbbf24' : '#64748b'
+            }
             metalness={0.75}
             roughness={0.3}
+            emissive={
+              highlightSelected && selected === 'input' ? '#d97706' : '#000000'
+            }
+            emissiveIntensity={
+              highlightSelected && selected === 'input' ? 1 : 0
+            }
           />
         </mesh>
         <mesh position={[-0.8, 1, 0]}>
           <boxGeometry args={[2, 1.8, 1.6]} />
           <meshStandardMaterial
-            color="#475569"
+            color={
+              highlightSelected && selected === 'process'
+                ? '#fbbf24'
+                : '#475569'
+            }
             metalness={0.55}
             roughness={0.35}
+            emissive={
+              highlightSelected && selected === 'process'
+                ? '#d97706'
+                : '#000000'
+            }
+            emissiveIntensity={
+              highlightSelected && selected === 'process' ? 1 : 0
+            }
           />
         </mesh>
         <mesh position={[1.5, 1.7, 0]}>
           <boxGeometry args={[0.25, 2.4, 0.25]} />
           <meshStandardMaterial
-            color={accent}
-            emissive={accent}
-            emissiveIntensity={0.65}
+            color={
+              highlightSelected && selected === 'control' ? '#fbbf24' : accent
+            }
+            emissive={
+              highlightSelected && selected === 'control' ? '#d97706' : accent
+            }
+            emissiveIntensity={
+              highlightSelected && selected === 'control' ? 1.5 : 0.65
+            }
           />
         </mesh>
         <mesh position={[3.5, 0.9, 0]}>
           <boxGeometry args={[1.3, 1.1, 1.3]} />
           <meshStandardMaterial
-            color="#0f766e"
+            color={
+              highlightSelected && selected === 'output' ? '#fbbf24' : '#0f766e'
+            }
             metalness={0.45}
             roughness={0.35}
+            emissive={
+              highlightSelected && selected === 'output' ? '#d97706' : '#000000'
+            }
+            emissiveIntensity={
+              highlightSelected && selected === 'output' ? 1 : 0
+            }
           />
         </mesh>
         <mesh position={[0.7, 2.2, 0]}>
@@ -347,11 +385,13 @@ function PipeScene({
   paused,
   selected,
   onSelect,
+  highlightSelected,
 }: {
   angle: number;
   paused: boolean;
   selected: string;
   onSelect: (id: string) => void;
+  highlightSelected: boolean;
 }) {
   const pipe = useRef<THREE.Group>(null);
   useFrame((_, frameDelta) => {
@@ -372,66 +412,124 @@ function PipeScene({
         <mesh position={[-4, 1.1, 0]} rotation={[0, Math.PI / 2, 0]}>
           <torusGeometry args={[1.05, 0.28, 12, 32]} />
           <meshStandardMaterial
-            color="#64748b"
+            color={
+              highlightSelected && selected === 'coil' ? '#fbbf24' : '#64748b'
+            }
             metalness={0.75}
             roughness={0.3}
+            emissive={
+              highlightSelected && selected === 'coil' ? '#d97706' : '#000000'
+            }
+            emissiveIntensity={highlightSelected && selected === 'coil' ? 1 : 0}
           />
         </mesh>
         <mesh position={[-2, 1, 0]} rotation={[0, 0, Math.PI / 2]}>
           <cylinderGeometry args={[0.45, 0.45, 1.8, 16]} />
           <meshStandardMaterial
-            color="#334155"
+            color={
+              highlightSelected && selected === 'rolls' ? '#fbbf24' : '#334155'
+            }
             metalness={0.8}
             roughness={0.25}
+            emissive={
+              highlightSelected && selected === 'rolls' ? '#d97706' : '#000000'
+            }
+            emissiveIntensity={
+              highlightSelected && selected === 'rolls' ? 1 : 0
+            }
           />
         </mesh>
         <mesh position={[-1.2, 1, 0]} rotation={[0, 0, Math.PI / 2]}>
           <cylinderGeometry args={[0.35, 0.35, 1.8, 16]} />
           <meshStandardMaterial
-            color="#475569"
+            color={
+              highlightSelected && selected === 'rolls' ? '#fbbf24' : '#475569'
+            }
             metalness={0.8}
             roughness={0.25}
+            emissive={
+              highlightSelected && selected === 'rolls' ? '#d97706' : '#000000'
+            }
+            emissiveIntensity={
+              highlightSelected && selected === 'rolls' ? 1 : 0
+            }
           />
         </mesh>
         <mesh position={[1.5, 1, 0]} rotation={[0, Math.PI / 2, 0]}>
           <cylinderGeometry args={[1.25, 1.25, 3.2, 32, 1, true]} />
           <meshStandardMaterial
-            color="#64748b"
+            color={
+              highlightSelected && selected === 'weld' ? '#fbbf24' : '#64748b'
+            }
             metalness={0.75}
             roughness={0.3}
             side={THREE.DoubleSide}
+            emissive={
+              highlightSelected && selected === 'weld' ? '#d97706' : '#000000'
+            }
+            emissiveIntensity={highlightSelected && selected === 'weld' ? 1 : 0}
           />
         </mesh>
         <mesh position={[1.5, 1, 0]} rotation={[0, Math.PI / 2, 0]}>
           <torusGeometry args={[1.25, 0.035, 8, 64]} />
           <meshStandardMaterial
-            color="#f97316"
-            emissive="#7c2d12"
-            emissiveIntensity={1.2}
+            color={
+              highlightSelected && selected === 'weld' ? '#fde047' : '#f97316'
+            }
+            emissive={
+              highlightSelected && selected === 'weld' ? '#f59e0b' : '#7c2d12'
+            }
+            emissiveIntensity={
+              highlightSelected && selected === 'weld' ? 2 : 1.2
+            }
           />
         </mesh>
         <mesh position={[2.8, 2.15, 0]}>
           <boxGeometry args={[0.35, 0.7, 0.35]} />
           <meshStandardMaterial
-            color="#ef4444"
-            emissive="#991b1b"
-            emissiveIntensity={1.3}
+            color={
+              highlightSelected && selected === 'weld' ? '#fde047' : '#ef4444'
+            }
+            emissive={
+              highlightSelected && selected === 'weld' ? '#f59e0b' : '#991b1b'
+            }
+            emissiveIntensity={
+              highlightSelected && selected === 'weld' ? 2 : 1.3
+            }
           />
         </mesh>
         <mesh position={[4.2, 0.8, 0]}>
           <boxGeometry args={[1.4, 1.2, 1.4]} />
           <meshStandardMaterial
-            color="#0f766e"
+            color={
+              highlightSelected && selected === 'inspection'
+                ? '#fbbf24'
+                : '#0f766e'
+            }
             metalness={0.5}
             roughness={0.35}
+            emissive={
+              highlightSelected && selected === 'inspection'
+                ? '#d97706'
+                : '#000000'
+            }
+            emissiveIntensity={
+              highlightSelected && selected === 'inspection' ? 1 : 0
+            }
           />
         </mesh>
         <mesh>
           <tubeGeometry args={[seam, 96, 0.045, 8, false]} />
           <meshStandardMaterial
-            color="#fb923c"
-            emissive="#9a3412"
-            emissiveIntensity={1.4}
+            color={
+              highlightSelected && selected === 'weld' ? '#fde047' : '#fb923c'
+            }
+            emissive={
+              highlightSelected && selected === 'weld' ? '#f59e0b' : '#9a3412'
+            }
+            emissiveIntensity={
+              highlightSelected && selected === 'weld' ? 2 : 1.4
+            }
           />
         </mesh>
       </group>
@@ -630,6 +728,7 @@ function SceneContents({
   onSelect,
   inspectionView,
   selectedDefect,
+  highlightSelected,
 }: {
   kind: SimulationKind;
   sceneType: CourseScene['diagramType'];
@@ -639,6 +738,7 @@ function SceneContents({
   onSelect: (id: string) => void;
   inspectionView: 'surface' | 'cross_section';
   selectedDefect: 'undercut' | 'porosity' | 'lack_of_fusion';
+  highlightSelected: boolean;
 }) {
   return kind === 'pipe' ? (
     <PipeScene
@@ -646,6 +746,7 @@ function SceneContents({
       paused={paused}
       selected={selected}
       onSelect={onSelect}
+      highlightSelected={highlightSelected}
     />
   ) : kind === 'safety' ? (
     <SafetyScene paused={paused} selected={selected} onSelect={onSelect} />
@@ -663,6 +764,7 @@ function SceneContents({
       paused={paused}
       selected={selected}
       onSelect={onSelect}
+      highlightSelected={highlightSelected}
     />
   );
 }
@@ -677,9 +779,11 @@ function kindForScene(scene: CourseScene): SimulationKind | null {
 export function ThreeSimulation({
   scene,
   onTaskComplete,
+  whiteBackground = false,
 }: {
   scene: CourseScene;
   onTaskComplete?: () => void;
+  whiteBackground?: boolean;
 }) {
   const kind = kindForScene(scene);
   const [paused, setPaused] = useState(false);
@@ -758,12 +862,16 @@ export function ThreeSimulation({
           camera={{ position: [8, 5, 9], fov: 42 }}
           dpr={[1, 1.5]}
           fallback={
-            <div className="grid h-full place-items-center bg-slate-900 p-6 text-center text-sm text-slate-200">
+            <div
+              className={`grid h-full place-items-center p-6 text-center text-sm ${whiteBackground ? 'bg-white text-slate-700' : 'bg-slate-900 text-slate-200'}`}
+            >
               WebGL is unavailable in this browser. Use the accessible station
               details below.
             </div>
           }
-          onCreated={({ gl }) => gl.setClearColor('#07111f')}
+          onCreated={({ gl }) =>
+            gl.setClearColor(whiteBackground ? '#ffffff' : '#07111f')
+          }
         >
           <ambientLight intensity={1.2} />
           <directionalLight
@@ -787,6 +895,7 @@ export function ThreeSimulation({
             onSelect={setSelected}
             inspectionView={inspectionView}
             selectedDefect={selectedDefect}
+            highlightSelected={whiteBackground}
           />
           <OrbitControls
             enablePan={false}
