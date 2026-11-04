@@ -222,6 +222,7 @@ export function SceneViewer({
       </div>
 
       <ThreeSimulation
+        key={scene.id}
         scene={scene}
         whiteBackground={course.id === 'pipe-process-101'}
         onTaskComplete={isPilotScene ? handleSimulationComplete : undefined}

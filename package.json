@@ -15,7 +15,8 @@
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test:models": "node --test scripts/check-chapter-models.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",

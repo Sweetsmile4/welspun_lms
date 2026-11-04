@@ -2,778 +2,300 @@
 
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import type { ThreeEvent } from '@react-three/fiber';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  Component,
+  type ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import * as THREE from 'three';
 import { AlertTriangle, Info, Pause, Play, RotateCcw } from 'lucide-react';
 import type { CourseScene } from '@/lib/client-demo/types';
+import {
+  SoftwareStation,
+  INITIAL_STATION_VIEW,
+  type StationView,
+} from './software-station';
 
-type SimulationKind = 'pipe' | 'safety' | 'quality' | 'generic';
-type Hotspot = {
-  id: string;
-  label: string;
-  detail: string;
-  position: [number, number, number];
-};
+import {
+  getStationModel,
+  createStationGeometry,
+  partOffset,
+  type StationModel,
+  type StationPart,
+  type StationMesh,
+} from './station-models';
+type Hotspot = StationPart;
 
-const HOTSPOTS: Record<SimulationKind, Hotspot[]> = {
-  pipe: [
-    {
-      id: 'coil',
-      label: 'Steel coil',
-      detail:
-        'The incoming strip is shown as illustrative geometry. It feeds the forming head at the selected angle.',
-      position: [-4, 1.1, 0],
-    },
-    {
-      id: 'rolls',
-      label: 'Three-roll forming head',
-      detail:
-        'The rollers bend the strip continuously. Their spacing is intentionally simplified for learning.',
-      position: [-1.6, 1.1, 0],
-    },
-    {
-      id: 'weld',
-      label: 'SAW welding area',
-      detail:
-        'The glowing torch marks the seam joining area. It is not a production parameter display.',
-      position: [1.1, 1.2, 0],
-    },
-    {
-      id: 'inspection',
-      label: 'Inspection stage',
-      detail:
-        'The final station represents visual and non-destructive inspection before release.',
-      position: [3.7, 0.9, 0],
-    },
-  ],
-  safety: [
-    {
-      id: 'load',
-      label: 'Suspended coil',
-      detail:
-        'Fictional hazard: clear the travel path and never stand beneath a suspended load.',
-      position: [0, 3.1, 0],
-    },
-    {
-      id: 'pinch',
-      label: 'Pinch point',
-      detail:
-        'Fictional hazard: stay outside the moving coil car and machine frame interface.',
-      position: [2.4, 0.5, 0],
-    },
-    {
-      id: 'walkway',
-      label: 'Safe walkway',
-      detail:
-        'Use the marked walkway and remain outside the yellow exclusion zone.',
-      position: [-2.7, 0.05, 2],
-    },
-  ],
-  quality: [
-    {
-      id: 'seam',
-      label: 'Weld seam',
-      detail:
-        'Select an indication to investigate. The markers are fictional examples, not defect diagnoses.',
-      position: [0, 0.8, 1.7],
-    },
-    {
-      id: 'ut',
-      label: 'UT scanner',
-      detail:
-        'The scanner represents a qualified inspection method that must follow controlled procedures.',
-      position: [0, 2.2, 0],
-    },
-    {
-      id: 'gauge',
-      label: 'Pressure gauge',
-      detail:
-        'The gauge is illustrative. Any real acceptance decision requires qualified personnel and records.',
-      position: [-3.1, 1.2, 0],
-    },
-  ],
-  generic: [
-    {
-      id: 'input',
-      label: 'Input material',
-      detail: 'Illustrative input material for this learning station.',
-      position: [-3, 1, 0],
-    },
-    {
-      id: 'process',
-      label: 'Process station',
-      detail:
-        'Illustrative process equipment showing the main learning action.',
-      position: [-0.8, 1.2, 0],
-    },
-    {
-      id: 'control',
-      label: 'Control check',
-      detail:
-        'Illustrative control or inspection point. Use current controlled procedures for real decisions.',
-      position: [1.5, 1.4, 0],
-    },
-    {
-      id: 'output',
-      label: 'Output / status',
-      detail:
-        'Illustrative output state for this station, not a production record.',
-      position: [3.5, 0.9, 0],
-    },
-  ],
-};
-
-function CameraReset({ resetSignal }: { resetSignal: number }) {
-  const { camera } = useThree();
+class WebGLStageBoundary extends Component<
+  { children: ReactNode; fallback: ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
+function WebGLStage({
+  children,
+  fallback,
+}: {
+  children: ReactNode;
+  fallback: ReactNode;
+}) {
+  const [available, setAvailable] = useState(false);
   useEffect(() => {
-    camera.position.set(8, 5, 9);
-    camera.lookAt(0, 1, 0);
-  }, [camera, resetSignal]);
-  return null;
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('webgl2');
+    // Synchronize with the browser's graphics capability after hydration.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setAvailable(Boolean(context));
+    context?.getExtension('WEBGL_lose_context')?.loseContext();
+  }, []);
+  return available ? (
+    <WebGLStageBoundary fallback={fallback}>{children}</WebGLStageBoundary>
+  ) : (
+    fallback
+  );
 }
 
-function HotspotMarker({
+function StationCamera({
+  view,
+  onViewChange,
+}: {
+  view: StationView;
+  onViewChange: (view: StationView) => void;
+}) {
+  const { camera } = useThree();
+  useEffect(() => {
+    camera.position.set(
+      Math.sin(view.yaw) * Math.cos(view.pitch) * view.distance,
+      1 + Math.sin(view.pitch) * view.distance,
+      Math.cos(view.yaw) * Math.cos(view.pitch) * view.distance,
+    );
+    camera.lookAt(0, 1, 0);
+  }, [camera, view]);
+  return (
+    <OrbitControls
+      enablePan={false}
+      enableDamping={false}
+      onEnd={() => {
+        const offset = camera.position.clone().sub(new THREE.Vector3(0, 1, 0));
+        const distance = offset.length();
+        onViewChange({
+          yaw: Math.atan2(offset.x, offset.z),
+          pitch: Math.asin(offset.y / distance),
+          distance,
+        });
+      }}
+      minDistance={5}
+      maxDistance={20}
+      target={[0, 1, 0]}
+    />
+  );
+}
+
+function PartLabel({
   hotspot,
-  active,
+  selected,
   onSelect,
 }: {
   hotspot: Hotspot;
-  active: boolean;
+  selected: boolean;
   onSelect: () => void;
 }) {
-  if (!active) return null;
-
+  const texture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 80;
+    const context = canvas.getContext('2d')!;
+    context.fillStyle = selected ? '#fef3c7' : '#ffffff';
+    context.strokeStyle = selected ? '#f59e0b' : '#94a3b8';
+    context.lineWidth = 3;
+    context.beginPath();
+    context.roundRect(2, 2, 252, 76, 12);
+    context.fill();
+    context.stroke();
+    context.fillStyle = '#0f172a';
+    context.font = '600 25px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(hotspot.label, 128, 40, 236);
+    const map = new THREE.CanvasTexture(canvas);
+    map.colorSpace = THREE.SRGBColorSpace;
+    return map;
+  }, [hotspot.label, selected]);
+  useEffect(() => () => texture.dispose(), [texture]);
   return (
-    <group position={hotspot.position}>
-      <mesh
-        onClick={(event: ThreeEvent<MouseEvent>) => {
-          event.stopPropagation();
-          onSelect();
-        }}
-      >
-        <sphereGeometry args={[0.18, 16, 16]} />
-        <meshStandardMaterial
-          color={active ? '#fbbf24' : '#38bdf8'}
-          emissive={active ? '#f59e0b' : '#0369a1'}
-          emissiveIntensity={1.4}
+    <sprite
+      name={hotspot.label + ' label'}
+      position={[hotspot.position[0], hotspot.position[1], hotspot.position[2]]}
+      scale={[1.8, 0.56, 1]}
+      onClick={(event) => {
+        event.stopPropagation();
+        onSelect();
+      }}
+    >
+      <spriteMaterial
+        map={texture}
+        transparent
+        depthTest={false}
+        toneMapped={false}
+      />
+    </sprite>
+  );
+}
+function EquipmentMesh({
+  definition,
+  selected,
+  onSelect,
+  rolling,
+  paused,
+}: {
+  definition: StationMesh;
+  selected: boolean;
+  onSelect: () => void;
+  rolling: boolean;
+  paused: boolean;
+}) {
+  const ref = useRef<THREE.Mesh>(null);
+  const geometry = useMemo(
+    () => createStationGeometry(definition),
+    [definition],
+  );
+  const map = useMemo(() => {
+    if (!definition.text) return undefined;
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 128;
+    const context = canvas.getContext('2d')!;
+    context.fillStyle = definition.color;
+    context.fillRect(0, 0, 512, 128);
+    context.fillStyle = ['#ffffff', '#f8fafc', '#dbe4ed'].includes(
+      definition.color,
+    )
+      ? '#0f172a'
+      : '#ffffff';
+    context.font = 'bold 54px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(definition.text, 256, 64, 480);
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    return texture;
+  }, [definition]);
+  useEffect(
+    () => () => {
+      geometry.dispose();
+      map?.dispose();
+    },
+    [geometry, map],
+  );
+  useFrame((_, delta) => {
+    if (!paused && rolling && definition.shape === 'cylinder')
+      ref.current?.rotateY(delta * 0.7);
+  });
+  return (
+    <mesh
+      ref={ref}
+      geometry={geometry}
+      position={definition.position}
+      rotation={definition.rotation}
+      onClick={(event) => {
+        event.stopPropagation();
+        onSelect();
+      }}
+      onPointerOver={(event) => {
+        event.stopPropagation();
+        document.body.style.cursor = 'pointer';
+      }}
+      onPointerOut={() => {
+        document.body.style.cursor = 'auto';
+      }}
+    >
+      <meshStandardMaterial
+        color={map ? '#ffffff' : definition.color}
+        map={map}
+        metalness={map ? 0 : 0.35}
+        roughness={0.6}
+        side={THREE.DoubleSide}
+        emissive={selected ? '#8a6100' : '#000000'}
+        emissiveIntensity={selected ? 0.28 : 0}
+      />
+    </mesh>
+  );
+}
+function EquipmentPart({
+  part,
+  paused,
+  selected,
+  onSelect,
+}: {
+  part: StationPart;
+  paused: boolean;
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  const group = useRef<THREE.Group>(null);
+  const phase = useRef(0);
+  useFrame((_, delta) => {
+    if (!paused) phase.current += delta * 0.6;
+    const offset = partOffset(part, phase.current);
+    group.current?.position.set(...offset);
+  });
+  return (
+    <group ref={group} name={part.id}>
+      {part.meshes.map((mesh, index) => (
+        <EquipmentMesh
+          key={index}
+          definition={mesh}
+          selected={selected}
+          onSelect={onSelect}
+          rolling={part.motion === 'roll'}
+          paused={paused}
         />
-      </mesh>
+      ))}
+      <PartLabel hotspot={part} selected={selected} onSelect={onSelect} />
     </group>
   );
 }
-
-function HotspotLegend({
-  hotspots,
-  selected,
-  onSelect,
-}: {
-  hotspots: Hotspot[];
-  selected: string;
-  onSelect: (id: string) => void;
-}) {
-  return (
-    <div className="absolute left-3 top-3 z-10 max-w-[calc(100%-1.5rem)] rounded-lg border border-slate-600/90 bg-slate-950/90 p-2 shadow-lg backdrop-blur-sm">
-      <p className="px-1 pb-1 text-[9px] font-bold uppercase tracking-[0.16em] text-sky-300">
-        Station components
-      </p>
-      <div className="flex flex-wrap gap-1.5">
-        {hotspots.map((hotspot) => (
-          <button
-            key={hotspot.id}
-            type="button"
-            onClick={() => onSelect(hotspot.id)}
-            className={`rounded border px-2 py-1 text-[10px] font-bold transition-colors ${selected === hotspot.id ? 'border-amber-300 bg-amber-100 text-amber-950' : 'border-sky-300/80 bg-slate-900 text-sky-100 hover:bg-slate-800'}`}
-          >
-            {hotspot.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function genericHotspots(sceneType: CourseScene['diagramType']): Hotspot[] {
-  const labels: Partial<
-    Record<CourseScene['diagramType'], [string, string, string, string]>
-  > = {
-    coil_receiving: [
-      'Incoming coil',
-      'Heat stamp',
-      'Thickness check',
-      'Hold status',
-    ],
-    strip_prep: ['Steel strip', 'Leveler rolls', 'Edge mill', 'Bevel check'],
-    submerged_arc_welding: [
-      'Formed pipe',
-      'Flux hopper',
-      'Welding torch',
-      'Weld bead',
-    ],
-    quality_testing: [
-      'Pipe joint',
-      'UT gantry',
-      'Pressure gauge',
-      'Test status',
-    ],
-    release_dispatch: [
-      'Coated pipe',
-      'Bevel station',
-      'Stencil head',
-      'QA release',
-    ],
-    ppe_safety: ['PPE station', 'Hard hat', 'High-vis walkway', 'Entry status'],
-    loto_isolation: [
-      'Machine',
-      'Energy isolator',
-      'Safety lock',
-      'Zero-energy check',
-    ],
-    near_miss: ['Work area', 'Leak hazard', 'Containment', 'Report status'],
-    inspection_gates: [
-      'Pipe flow',
-      'Inspection gate',
-      'Calibrated gauge',
-      'Gate status',
-    ],
-    traceability_lineage: [
-      'Steel heat',
-      'Coil record',
-      'Pipe serial',
-      'Digital lineage',
-    ],
-    quarantine_ncr: ['Flagged pipe', 'NCR station', 'Hold tag', 'Disposition'],
-  };
-  const selectedLabels = labels[sceneType] ?? [
-    'Input material',
-    'Process station',
-    'Control check',
-    'Output / status',
-  ];
-  return HOTSPOTS.generic.map((hotspot, index) => ({
-    ...hotspot,
-    label: selectedLabels[index] ?? hotspot.label,
-  }));
-}
-
-function GenericScene({
-  sceneType,
-  paused,
-  selected,
-  onSelect,
-  highlightSelected,
-}: {
-  sceneType: CourseScene['diagramType'];
-  paused: boolean;
-  selected: string;
-  onSelect: (id: string) => void;
-  highlightSelected: boolean;
-}) {
-  const station = useRef<THREE.Group>(null);
-  useFrame((_, delta) => {
-    if (!paused && station.current) station.current.rotation.y += delta * 0.12;
-  });
-  const accent =
-    sceneType.includes('safety') ||
-    sceneType.includes('loto') ||
-    sceneType.includes('hazard') ||
-    sceneType.includes('near_miss')
-      ? '#eab308'
-      : sceneType.includes('quality') ||
-          sceneType.includes('inspection') ||
-          sceneType.includes('defect') ||
-          sceneType.includes('traceability') ||
-          sceneType.includes('quarantine')
-        ? '#22c55e'
-        : '#38bdf8';
-  return (
-    <>
-      <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[12, 8]} />
-        <meshStandardMaterial color="#1e293b" />
-      </mesh>
-      <group ref={station}>
-        <mesh position={[-3, 1, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[0.85, 0.85, 1.2, 24]} />
-          <meshStandardMaterial
-            color={
-              highlightSelected && selected === 'input' ? '#fbbf24' : '#64748b'
-            }
-            metalness={0.75}
-            roughness={0.3}
-            emissive={
-              highlightSelected && selected === 'input' ? '#d97706' : '#000000'
-            }
-            emissiveIntensity={
-              highlightSelected && selected === 'input' ? 1 : 0
-            }
-          />
-        </mesh>
-        <mesh position={[-0.8, 1, 0]}>
-          <boxGeometry args={[2, 1.8, 1.6]} />
-          <meshStandardMaterial
-            color={
-              highlightSelected && selected === 'process'
-                ? '#fbbf24'
-                : '#475569'
-            }
-            metalness={0.55}
-            roughness={0.35}
-            emissive={
-              highlightSelected && selected === 'process'
-                ? '#d97706'
-                : '#000000'
-            }
-            emissiveIntensity={
-              highlightSelected && selected === 'process' ? 1 : 0
-            }
-          />
-        </mesh>
-        <mesh position={[1.5, 1.7, 0]}>
-          <boxGeometry args={[0.25, 2.4, 0.25]} />
-          <meshStandardMaterial
-            color={
-              highlightSelected && selected === 'control' ? '#fbbf24' : accent
-            }
-            emissive={
-              highlightSelected && selected === 'control' ? '#d97706' : accent
-            }
-            emissiveIntensity={
-              highlightSelected && selected === 'control' ? 1.5 : 0.65
-            }
-          />
-        </mesh>
-        <mesh position={[3.5, 0.9, 0]}>
-          <boxGeometry args={[1.3, 1.1, 1.3]} />
-          <meshStandardMaterial
-            color={
-              highlightSelected && selected === 'output' ? '#fbbf24' : '#0f766e'
-            }
-            metalness={0.45}
-            roughness={0.35}
-            emissive={
-              highlightSelected && selected === 'output' ? '#d97706' : '#000000'
-            }
-            emissiveIntensity={
-              highlightSelected && selected === 'output' ? 1 : 0
-            }
-          />
-        </mesh>
-        <mesh position={[0.7, 2.2, 0]}>
-          <sphereGeometry args={[0.22, 16, 16]} />
-          <meshStandardMaterial
-            color={accent}
-            emissive={accent}
-            emissiveIntensity={1.2}
-          />
-        </mesh>
-      </group>
-      {genericHotspots(sceneType).map((item) => (
-        <HotspotMarker
-          key={item.id}
-          hotspot={item}
-          active={selected === item.id}
-          onSelect={() => onSelect(item.id)}
-        />
-      ))}
-    </>
-  );
-}
-
-function PipeScene({
-  angle,
-  paused,
-  selected,
-  onSelect,
-  highlightSelected,
-}: {
-  angle: number;
-  paused: boolean;
-  selected: string;
-  onSelect: (id: string) => void;
-  highlightSelected: boolean;
-}) {
-  const pipe = useRef<THREE.Group>(null);
-  useFrame((_, frameDelta) => {
-    if (!paused && pipe.current) pipe.current.rotation.x += frameDelta * 0.18;
-  });
-  const seam = useMemo(() => {
-    const points = Array.from({ length: 96 }, (_, index) => {
-      const t = index / 95;
-      const x = -1.2 + t * 5.3;
-      const y = 1.05 + Math.sin(t * Math.PI * 2.3 + angle * 0.06) * 0.62;
-      return new THREE.Vector3(x, y, 0.8);
-    });
-    return new THREE.CatmullRomCurve3(points);
-  }, [angle]);
-  return (
-    <>
-      <group ref={pipe}>
-        <mesh position={[-4, 1.1, 0]} rotation={[0, Math.PI / 2, 0]}>
-          <torusGeometry args={[1.05, 0.28, 12, 32]} />
-          <meshStandardMaterial
-            color={
-              highlightSelected && selected === 'coil' ? '#fbbf24' : '#64748b'
-            }
-            metalness={0.75}
-            roughness={0.3}
-            emissive={
-              highlightSelected && selected === 'coil' ? '#d97706' : '#000000'
-            }
-            emissiveIntensity={highlightSelected && selected === 'coil' ? 1 : 0}
-          />
-        </mesh>
-        <mesh position={[-2, 1, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[0.45, 0.45, 1.8, 16]} />
-          <meshStandardMaterial
-            color={
-              highlightSelected && selected === 'rolls' ? '#fbbf24' : '#334155'
-            }
-            metalness={0.8}
-            roughness={0.25}
-            emissive={
-              highlightSelected && selected === 'rolls' ? '#d97706' : '#000000'
-            }
-            emissiveIntensity={
-              highlightSelected && selected === 'rolls' ? 1 : 0
-            }
-          />
-        </mesh>
-        <mesh position={[-1.2, 1, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[0.35, 0.35, 1.8, 16]} />
-          <meshStandardMaterial
-            color={
-              highlightSelected && selected === 'rolls' ? '#fbbf24' : '#475569'
-            }
-            metalness={0.8}
-            roughness={0.25}
-            emissive={
-              highlightSelected && selected === 'rolls' ? '#d97706' : '#000000'
-            }
-            emissiveIntensity={
-              highlightSelected && selected === 'rolls' ? 1 : 0
-            }
-          />
-        </mesh>
-        <mesh position={[1.5, 1, 0]} rotation={[0, Math.PI / 2, 0]}>
-          <cylinderGeometry args={[1.25, 1.25, 3.2, 32, 1, true]} />
-          <meshStandardMaterial
-            color={
-              highlightSelected && selected === 'weld' ? '#fbbf24' : '#64748b'
-            }
-            metalness={0.75}
-            roughness={0.3}
-            side={THREE.DoubleSide}
-            emissive={
-              highlightSelected && selected === 'weld' ? '#d97706' : '#000000'
-            }
-            emissiveIntensity={highlightSelected && selected === 'weld' ? 1 : 0}
-          />
-        </mesh>
-        <mesh position={[1.5, 1, 0]} rotation={[0, Math.PI / 2, 0]}>
-          <torusGeometry args={[1.25, 0.035, 8, 64]} />
-          <meshStandardMaterial
-            color={
-              highlightSelected && selected === 'weld' ? '#fde047' : '#f97316'
-            }
-            emissive={
-              highlightSelected && selected === 'weld' ? '#f59e0b' : '#7c2d12'
-            }
-            emissiveIntensity={
-              highlightSelected && selected === 'weld' ? 2 : 1.2
-            }
-          />
-        </mesh>
-        <mesh position={[2.8, 2.15, 0]}>
-          <boxGeometry args={[0.35, 0.7, 0.35]} />
-          <meshStandardMaterial
-            color={
-              highlightSelected && selected === 'weld' ? '#fde047' : '#ef4444'
-            }
-            emissive={
-              highlightSelected && selected === 'weld' ? '#f59e0b' : '#991b1b'
-            }
-            emissiveIntensity={
-              highlightSelected && selected === 'weld' ? 2 : 1.3
-            }
-          />
-        </mesh>
-        <mesh position={[4.2, 0.8, 0]}>
-          <boxGeometry args={[1.4, 1.2, 1.4]} />
-          <meshStandardMaterial
-            color={
-              highlightSelected && selected === 'inspection'
-                ? '#fbbf24'
-                : '#0f766e'
-            }
-            metalness={0.5}
-            roughness={0.35}
-            emissive={
-              highlightSelected && selected === 'inspection'
-                ? '#d97706'
-                : '#000000'
-            }
-            emissiveIntensity={
-              highlightSelected && selected === 'inspection' ? 1 : 0
-            }
-          />
-        </mesh>
-        <mesh>
-          <tubeGeometry args={[seam, 96, 0.045, 8, false]} />
-          <meshStandardMaterial
-            color={
-              highlightSelected && selected === 'weld' ? '#fde047' : '#fb923c'
-            }
-            emissive={
-              highlightSelected && selected === 'weld' ? '#f59e0b' : '#9a3412'
-            }
-            emissiveIntensity={
-              highlightSelected && selected === 'weld' ? 2 : 1.4
-            }
-          />
-        </mesh>
-      </group>
-      {HOTSPOTS.pipe.map((item) => (
-        <HotspotMarker
-          key={item.id}
-          hotspot={item}
-          active={selected === item.id}
-          onSelect={() => onSelect(item.id)}
-        />
-      ))}
-    </>
-  );
-}
-
-function SafetyScene({
+function ChapterStation({
+  model,
   paused,
   selected,
   onSelect,
 }: {
+  model: StationModel;
   paused: boolean;
   selected: string;
   onSelect: (id: string) => void;
 }) {
-  const load = useRef<THREE.Group>(null);
-  useFrame(() => {
-    if (!paused && load.current)
-      load.current.position.y = Math.sin(Date.now() * 0.001) * 0.08;
-  });
   return (
-    <>
-      <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[12, 8]} />
-        <meshStandardMaterial color="#334155" />
+    <group name={model.type}>
+      <mesh position={[0, -0.09, 0]}>
+        <boxGeometry args={[11, 0.12, 7]} />
+        <meshStandardMaterial color="#dce4ec" roughness={0.9} />
       </mesh>
-      <mesh position={[0, 0.04, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[2.3, 3.3, 32, 1, 0, Math.PI * 1.6]} />
-        <meshStandardMaterial color="#eab308" side={THREE.DoubleSide} />
-      </mesh>
-      <group ref={load}>
-        <mesh position={[0, 3, 0]}>
-          <torusGeometry args={[1.15, 0.35, 12, 32]} />
-          <meshStandardMaterial color="#64748b" metalness={0.8} />
-        </mesh>
-        <mesh position={[0, 4.2, 0]}>
-          <boxGeometry args={[0.08, 2.4, 0.08]} />
-          <meshStandardMaterial color="#fbbf24" />
-        </mesh>
-      </group>
-      <mesh position={[2.5, 0.8, 0]}>
-        <boxGeometry args={[2.2, 1.6, 1.8]} />
-        <meshStandardMaterial color="#475569" metalness={0.6} />
-      </mesh>
-      <mesh position={[-2.5, 0.8, 0]}>
-        <boxGeometry args={[1.5, 1.6, 1.5]} />
-        <meshStandardMaterial color="#64748b" metalness={0.6} />
-      </mesh>
-      <mesh position={[-2.5, 0.1, 2]}>
-        <boxGeometry args={[3.5, 0.08, 0.9]} />
-        <meshStandardMaterial color="#22c55e" />
-      </mesh>
-      {HOTSPOTS.safety.map((item) => (
-        <HotspotMarker
-          key={item.id}
-          hotspot={item}
-          active={selected === item.id}
-          onSelect={() => onSelect(item.id)}
+      <gridHelper
+        args={[10, 10, '#a3b3c5', '#ccd5df']}
+        position={[0, -0.02, 0]}
+      />
+      {model.parts.map((part) => (
+        <EquipmentPart
+          key={part.id}
+          part={part}
+          paused={paused}
+          selected={selected === part.id}
+          onSelect={() => onSelect(part.id)}
         />
       ))}
-    </>
+    </group>
   );
-}
-
-function QualityScene({
-  paused,
-  selected,
-  onSelect,
-  inspectionView,
-  selectedDefect,
-}: {
-  paused: boolean;
-  selected: string;
-  onSelect: (id: string) => void;
-  inspectionView: 'surface' | 'cross_section';
-  selectedDefect: 'undercut' | 'porosity' | 'lack_of_fusion';
-}) {
-  const scanner = useRef<THREE.Group>(null);
-  useFrame(() => {
-    if (!paused && inspectionView === 'surface' && scanner.current)
-      scanner.current.position.x = Math.sin(Date.now() * 0.001) * 1.5;
-  });
-  return (
-    <>
-      <mesh rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[12, 8]} />
-        <meshStandardMaterial color="#1e293b" />
-      </mesh>
-      <mesh position={[0, 1, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[1.05, 1.05, 7, 32, 1, true]} />
-        <meshStandardMaterial
-          color="#64748b"
-          metalness={0.8}
-          roughness={0.28}
-          opacity={inspectionView === 'cross_section' ? 0.42 : 1}
-          transparent={inspectionView === 'cross_section'}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
-      {inspectionView === 'cross_section' && (
-        <group position={[0, 1, 0]}>
-          <mesh rotation={[0, 0, Math.PI / 2]}>
-            <cylinderGeometry args={[0.78, 0.78, 7, 32, 1, true]} />
-            <meshStandardMaterial
-              color="#1e293b"
-              metalness={0.35}
-              roughness={0.55}
-              side={THREE.DoubleSide}
-            />
-          </mesh>
-          <mesh position={[0, 1.06, 1.03]}>
-            <boxGeometry
-              args={[1.8, selectedDefect === 'undercut' ? 0.08 : 0.18, 0.06]}
-            />
-            <meshStandardMaterial
-              color={selectedDefect === 'undercut' ? '#f97316' : '#ef4444'}
-              emissive={selectedDefect === 'undercut' ? '#9a3412' : '#991b1b'}
-              emissiveIntensity={1.4}
-            />
-          </mesh>
-        </group>
-      )}
-      <mesh position={[0, 1, 1.04]} rotation={[0, Math.PI / 2, 0]}>
-        <torusGeometry args={[1.05, 0.04, 8, 64]} />
-        <meshStandardMaterial
-          color="#f97316"
-          emissive="#9a3412"
-          emissiveIntensity={1.4}
-        />
-      </mesh>
-      <group ref={scanner}>
-        <mesh position={[0, 2.35, 0]}>
-          <boxGeometry args={[1.5, 0.25, 1.3]} />
-          <meshStandardMaterial color="#0284c7" metalness={0.4} />
-        </mesh>
-        <mesh position={[0, 1.9, 0]}>
-          <boxGeometry args={[0.14, 0.8, 0.14]} />
-          <meshStandardMaterial
-            color="#38bdf8"
-            emissive="#0369a1"
-            emissiveIntensity={1.3}
-          />
-        </mesh>
-      </group>
-      <mesh position={[-3.1, 1.2, 0]}>
-        <cylinderGeometry args={[0.7, 0.7, 0.15, 24]} />
-        <meshStandardMaterial
-          color="#22c55e"
-          emissive="#166534"
-          emissiveIntensity={0.8}
-        />
-      </mesh>
-      {(
-        [
-          [-0.2, 1.2, 1.09],
-          [1.1, 1.2, 1.09],
-          [2.25, 0.6, 1.09],
-        ] as [number, number, number][]
-      ).map(([x, y, z], index) => (
-        <mesh key={index} position={[x, y, z]}>
-          <sphereGeometry args={[0.12, 12, 12]} />
-          <meshStandardMaterial
-            color="#ef4444"
-            emissive="#991b1b"
-            emissiveIntensity={1.5}
-          />
-        </mesh>
-      ))}
-      {HOTSPOTS.quality.map((item) => (
-        <HotspotMarker
-          key={item.id}
-          hotspot={item}
-          active={selected === item.id}
-          onSelect={() => onSelect(item.id)}
-        />
-      ))}
-    </>
-  );
-}
-
-function SceneContents({
-  kind,
-  sceneType,
-  angle,
-  paused,
-  selected,
-  onSelect,
-  inspectionView,
-  selectedDefect,
-  highlightSelected,
-}: {
-  kind: SimulationKind;
-  sceneType: CourseScene['diagramType'];
-  angle: number;
-  paused: boolean;
-  selected: string;
-  onSelect: (id: string) => void;
-  inspectionView: 'surface' | 'cross_section';
-  selectedDefect: 'undercut' | 'porosity' | 'lack_of_fusion';
-  highlightSelected: boolean;
-}) {
-  return kind === 'pipe' ? (
-    <PipeScene
-      angle={angle}
-      paused={paused}
-      selected={selected}
-      onSelect={onSelect}
-      highlightSelected={highlightSelected}
-    />
-  ) : kind === 'safety' ? (
-    <SafetyScene paused={paused} selected={selected} onSelect={onSelect} />
-  ) : kind === 'quality' ? (
-    <QualityScene
-      paused={paused}
-      selected={selected}
-      onSelect={onSelect}
-      inspectionView={inspectionView}
-      selectedDefect={selectedDefect}
-    />
-  ) : (
-    <GenericScene
-      sceneType={sceneType}
-      paused={paused}
-      selected={selected}
-      onSelect={onSelect}
-      highlightSelected={highlightSelected}
-    />
-  );
-}
-
-function kindForScene(scene: CourseScene): SimulationKind | null {
-  if (scene.diagramType === 'helical_forming') return 'pipe';
-  if (scene.diagramType === 'hazard_loads') return 'safety';
-  if (scene.diagramType === 'defect_types') return 'quality';
-  return 'generic';
 }
 
 export function ThreeSimulation({
@@ -785,43 +307,83 @@ export function ThreeSimulation({
   onTaskComplete?: () => void;
   whiteBackground?: boolean;
 }) {
-  const kind = kindForScene(scene);
+  const kind =
+    scene.diagramType === 'helical_forming'
+      ? 'pipe'
+      : scene.diagramType === 'defect_types'
+        ? 'quality'
+        : 'chapter';
   const [paused, setPaused] = useState(false);
   const [angle, setAngle] = useState(24);
   const [selected, setSelected] = useState(
-    HOTSPOTS[kind ?? 'pipe'][0]?.id ?? 'coil',
+    () =>
+      getStationModel(scene.diagramType, {
+        angle: 24,
+        inspectionView: 'surface',
+        selectedDefect: 'undercut',
+      }).parts[0]!.id,
   );
   const [inspectionView, setInspectionView] = useState<
     'surface' | 'cross_section'
   >('surface');
   const [selectedDefect, setSelectedDefect] = useState<
-    'undercut' | 'porosity' | 'lack_of_fusion'
+    'undercut' | 'porosity' | 'lack_of_fusion' | 'lack_of_penetration'
   >('undercut');
   const [inspectionFeedback, setInspectionFeedback] = useState<string | null>(
     null,
   );
   const [inspectionComplete, setInspectionComplete] = useState(false);
+  const [view, setView] = useState<StationView>(INITIAL_STATION_VIEW);
   const [resetSignal, setResetSignal] = useState(0);
-  const hotspots =
-    kind === 'generic'
-      ? genericHotspots(scene.diagramType)
-      : HOTSPOTS[kind ?? 'generic'];
+  const model = useMemo(
+    () =>
+      getStationModel(scene.diagramType, {
+        angle,
+        inspectionView,
+        selectedDefect,
+      }),
+    [scene.diagramType, angle, inspectionView, selectedDefect],
+  );
+  const hotspots = model.parts;
   const activeHotspot =
     hotspots.find((item) => item.id === selected) ?? hotspots[0]!;
 
-  if (!kind) return null;
   const reset = () => {
     setPaused(false);
     setAngle(24);
-    setSelected(HOTSPOTS[kind][0]?.id ?? 'input');
+    setSelected(hotspots[0]?.id ?? 'input');
     setInspectionView('surface');
     setSelectedDefect('undercut');
     setInspectionFeedback(null);
     setInspectionComplete(false);
+    setView({ ...INITIAL_STATION_VIEW });
     setResetSignal((value) => value + 1);
   };
+  const changeView = (action: string) =>
+    setView((current) => ({
+      yaw:
+        current.yaw +
+        (action === 'left' ? -0.25 : action === 'right' ? 0.25 : 0),
+      pitch: Math.max(
+        -0.2,
+        Math.min(
+          1.3,
+          current.pitch +
+            (action === 'up' ? 0.15 : action === 'down' ? -0.15 : 0),
+        ),
+      ),
+      distance: Math.max(
+        5,
+        Math.min(
+          20,
+          current.distance *
+            (action === 'in' ? 0.85 : action === 'out' ? 1.18 : 1),
+        ),
+      ),
+    }));
   return (
     <section
+      data-model-type={model.type}
       aria-label={`${scene.title} interactive 3D simulation`}
       className="overflow-hidden rounded-2xl border border-slate-700 bg-slate-950 shadow-lg"
     >
@@ -857,58 +419,76 @@ export function ThreeSimulation({
           </button>
         </div>
       </div>
-      <div className="relative h-[360px] min-h-[300px] w-full sm:h-[430px]">
-        <Canvas
-          camera={{ position: [8, 5, 9], fov: 42 }}
-          dpr={[1, 1.5]}
-          fallback={
-            <div
-              className={`grid h-full place-items-center p-6 text-center text-sm ${whiteBackground ? 'bg-white text-slate-700' : 'bg-slate-900 text-slate-200'}`}
-            >
-              WebGL is unavailable in this browser. Use the accessible station
-              details below.
-            </div>
+      <div
+        className="relative h-[360px] min-h-[300px] w-full sm:h-[430px]"
+        tabIndex={0}
+        role="group"
+        aria-label="Station view. Arrow keys rotate, plus and minus zoom, Home resets."
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget) return;
+          const action = (
+            {
+              ArrowLeft: 'left',
+              ArrowRight: 'right',
+              ArrowUp: 'up',
+              ArrowDown: 'down',
+              '+': 'in',
+              '=': 'in',
+              '-': 'out',
+            } as Record<string, string>
+          )[event.key];
+          if (action) {
+            event.preventDefault();
+            changeView(action);
           }
-          onCreated={({ gl }) =>
-            gl.setClearColor(whiteBackground ? '#ffffff' : '#07111f')
+          if (event.key === 'Home') {
+            event.preventDefault();
+            setView({ ...INITIAL_STATION_VIEW });
+          }
+        }}
+      >
+        <WebGLStage
+          fallback={
+            <SoftwareStation
+              key={resetSignal}
+              model={model}
+              selected={selected}
+              onSelect={setSelected}
+              view={view}
+              onViewChange={setView}
+              paused={paused}
+              whiteBackground={whiteBackground}
+            />
           }
         >
-          <ambientLight intensity={1.2} />
-          <directionalLight
-            position={[5, 8, 5]}
-            intensity={3}
-            color="#fff7ed"
-          />
-          <pointLight
-            position={[-4, 4, 3]}
-            intensity={20}
-            distance={14}
-            color="#38bdf8"
-          />
-          <CameraReset resetSignal={resetSignal} />
-          <SceneContents
-            kind={kind}
-            sceneType={scene.diagramType}
-            angle={angle}
-            paused={paused}
-            selected={selected}
-            onSelect={setSelected}
-            inspectionView={inspectionView}
-            selectedDefect={selectedDefect}
-            highlightSelected={whiteBackground}
-          />
-          <OrbitControls
-            enablePan={false}
-            minDistance={5}
-            maxDistance={16}
-            target={[0, 1, 0]}
-          />
-        </Canvas>
-        <HotspotLegend
-          hotspots={hotspots}
-          selected={selected}
-          onSelect={setSelected}
-        />
+          <Canvas
+            camera={{ position: [8, 5, 9], fov: 42 }}
+            dpr={[1, 1.5]}
+            onCreated={({ gl }) =>
+              gl.setClearColor(whiteBackground ? '#ffffff' : '#07111f')
+            }
+          >
+            <ambientLight intensity={1.2} />
+            <directionalLight
+              position={[5, 8, 5]}
+              intensity={3}
+              color="#fff7ed"
+            />
+            <pointLight
+              position={[-4, 4, 3]}
+              intensity={20}
+              distance={14}
+              color="#38bdf8"
+            />
+            <StationCamera view={view} onViewChange={setView} />
+            <ChapterStation
+              model={model}
+              paused={paused}
+              selected={activeHotspot.id}
+              onSelect={setSelected}
+            />
+          </Canvas>
+        </WebGLStage>
         <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between rounded-lg border border-slate-700 bg-slate-950/85 px-3 py-2 text-[10px] text-slate-300">
           <span>Drag to orbit · scroll or pinch to zoom</span>
           <span className="font-semibold text-amber-300">
@@ -916,6 +496,41 @@ export function ThreeSimulation({
           </span>
         </div>
       </div>
+      <div
+        className="flex flex-wrap items-center gap-2 border-t border-slate-700 bg-slate-950 px-4 py-3"
+        role="group"
+        aria-label="Model camera controls"
+      >
+        {(
+          [
+            ['left', 'Rotate left', '↶'],
+            ['right', 'Rotate right', '↷'],
+            ['up', 'Tilt up', '↑'],
+            ['down', 'Tilt down', '↓'],
+            ['in', 'Zoom in', '+'],
+            ['out', 'Zoom out', '−'],
+          ] as const
+        ).map(([action, label, symbol]) => (
+          <button
+            key={action}
+            type="button"
+            aria-label={label}
+            title={label}
+            onClick={() => changeView(action)}
+            className="min-h-10 min-w-10 rounded-lg border border-slate-500 px-3 text-lg font-bold text-white hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-amber-300"
+          >
+            {symbol}
+          </button>
+        ))}
+        <span className="text-xs text-slate-300">
+          Select a component to inspect it
+        </span>
+      </div>
+      {model.note && (
+        <p className="border-t border-slate-700 bg-slate-900 px-4 py-3 text-xs leading-relaxed text-slate-200">
+          {model.note}
+        </p>
+      )}
       <div className="grid gap-4 border-t border-slate-800 bg-slate-900 p-4 lg:grid-cols-[1fr_1.2fr]">
         <div>
           {kind === 'pipe' && (
@@ -935,6 +550,11 @@ export function ThreeSimulation({
           )}
           {kind === 'quality' && (
             <div className="space-y-3 text-xs text-slate-200">
+              <p className="text-xs text-slate-300">
+                Practice task: expose the cross-section and select the undercut
+                at the weld toe. Use the other defect options to compare their
+                locations.
+              </p>
               <div>
                 <p className="font-semibold text-slate-100">Inspection view</p>
                 <div
@@ -977,6 +597,7 @@ export function ThreeSimulation({
                       ['undercut', 'Undercut at the weld toe'],
                       ['porosity', 'Porosity cluster'],
                       ['lack_of_fusion', 'Lack of fusion'],
+                      ['lack_of_penetration', 'Lack of penetration'],
                     ] as const
                   ).map(([id, label]) => (
                     <button
@@ -1038,6 +659,7 @@ export function ThreeSimulation({
               <button
                 key={item.id}
                 type="button"
+                aria-pressed={selected === item.id}
                 onClick={() => setSelected(item.id)}
                 className={`rounded border px-2.5 py-1.5 text-[11px] font-semibold ${selected === item.id ? 'border-amber-300 bg-amber-100 text-amber-950' : 'border-slate-600 text-slate-200 hover:bg-slate-800'}`}
               >
