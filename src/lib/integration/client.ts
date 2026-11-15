@@ -1,7 +1,4 @@
-import type {
-  Unavailable,
-  CommandMetadata,
-} from '@/contracts/integration-v1';
+import type { Unavailable, CommandMetadata } from '@/contracts/integration-v1';
 
 export interface IntegrationReadRequests {
   'session.read': Record<string, never>;

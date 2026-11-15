@@ -40,7 +40,7 @@ export function ScenarioQuizComponent({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-bold text-slate-700 uppercase tracking-wider">
-              Shop Floor Decision Scenario
+              End-of-chapter Quiz
             </span>
             {quiz.standardReference && (
               <span className="rounded-md bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-800">

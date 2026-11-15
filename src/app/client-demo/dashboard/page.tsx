@@ -158,8 +158,8 @@ function DashboardContent() {
               Assigned Training Modules
             </h2>
             <p className="text-xs text-slate-500">
-              Complete all three interactive courses to fulfill your
-              demonstration curriculum.
+              Complete all {courses.length} assigned interactive courses to
+              fulfill your demonstration curriculum.
             </p>
           </div>
 
@@ -172,7 +172,7 @@ function DashboardContent() {
           </div>
         </div>
 
-        {/* 3 Course Cards Grid */}
+        {/* Assigned Course Cards Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredCourses.map((course) => (
             <CourseCard key={course.id} course={course} />

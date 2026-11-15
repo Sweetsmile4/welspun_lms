@@ -5,6 +5,7 @@ import React, {
   useContext,
   useEffect,
   useState,
+  useRef,
   useCallback,
   useMemo,
 } from 'react';
@@ -105,11 +106,25 @@ function getInitialDemoState(): DemoStorageState {
 const DemoContext = createContext<DemoContextValue | undefined>(undefined);
 
 export function DemoProvider({ children }: { children: React.ReactNode }) {
-  const [demoState, setDemoState] =
-    useState<DemoStorageState>(getInitialDemoState);
+  const [demoState, setDemoState] = useState<DemoStorageState>(() => ({
+    isAuthenticated: true,
+    user: DEMO_USER,
+    progress: buildInitialProgress(),
+    explanationMode: 'operator',
+  }));
+  const storageReady = useRef(false);
+  useEffect(() => {
+    // Restore browser storage after hydration so the first render matches the server.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDemoState(getInitialDemoState());
+  }, []);
 
   // Sync to localStorage
   useEffect(() => {
+    if (!storageReady.current) {
+      storageReady.current = true;
+      return;
+    }
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(demoState));
     } catch {
@@ -253,6 +268,8 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       const current = prev.progress[courseId];
       const course = DEMO_COURSES.find((c) => c.id === courseId);
       const allSceneIds = course ? course.scenes.map((s) => s.id) : [];
+      if (!course || !allSceneIds.every((id) => current?.answeredQuestions[id]))
+        return prev;
 
       return {
         ...prev,

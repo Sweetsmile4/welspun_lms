@@ -53,7 +53,12 @@ export function SceneViewer({
   const isLastScene = currentSceneIndex === totalScenes - 1;
   const savedAnswer = progress.answeredQuestions[scene.id];
 
+  const allAnswered = course.scenes.every((chapter) =>
+    Boolean(progress.answeredQuestions[chapter.id]),
+  );
+
   const handleNext = () => {
+    if (!savedAnswer || (isLastScene && !allAnswered)) return;
     markSceneCompleted(course.id, scene.id);
     if (!isLastScene) {
       setCurrentSceneIndex(course.id, currentSceneIndex + 1);
@@ -188,6 +193,17 @@ export function SceneViewer({
         </div>
       </section>
 
+      {course.sourcePdf && (
+        <a
+          href={course.sourcePdf}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex rounded-lg border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-[#203d68] hover:bg-slate-50 focus-visible:outline-2"
+        >
+          Open original training PDF (opens in a new tab)
+        </a>
+      )}
+
       <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-xs text-amber-950">
         <p className="font-bold">Illustrative learning content</p>
         <p className="mt-1 leading-relaxed">
@@ -198,21 +214,45 @@ export function SceneViewer({
         </p>
       </div>
 
+      {scene.referenceRoute && (
+        <section
+          className="rounded-2xl border border-slate-300 bg-white p-4"
+          aria-label="Interactive reference activity"
+        >
+          <h2 className="text-sm font-bold text-slate-900">
+            Interactive 3D diagrams & simulation
+          </h2>
+          <p className="my-2 text-xs text-slate-600">
+            Explore the supplied reference activity. Drag to rotate models, use
+            its controls and hotspots, then answer the chapter quiz below.
+          </p>
+          <iframe
+            key={scene.referenceRoute}
+            title={scene.title + ' — interactive reference activity'}
+            src={'/learning/welspun-reference.html#' + scene.referenceRoute}
+            sandbox="allow-scripts"
+            className="h-[680px] w-full rounded-xl border border-slate-200"
+          />
+        </section>
+      )}
+
       {/* Technical Schematic Diagram */}
-      <section
-        aria-label="Technical manufacturing schematic"
-        className="rounded-2xl border border-slate-300 bg-slate-900 p-4 shadow-xs"
-      >
-        <div className="mb-2 flex items-center justify-between text-xs text-slate-400 px-1">
-          <span className="font-semibold text-slate-300">
-            Technical Process Schematic
-          </span>
-          <span className="text-[11px] text-amber-300">
-            Illustrative Manufacturing Model
-          </span>
-        </div>
-        <SceneDiagram type={scene.diagramType} title={scene.title} />
-      </section>
+      {!scene.referenceRoute && (
+        <section
+          aria-label="Technical manufacturing schematic"
+          className="rounded-2xl border border-slate-300 bg-slate-900 p-4 shadow-xs"
+        >
+          <div className="mb-2 flex items-center justify-between text-xs text-slate-400 px-1">
+            <span className="font-semibold text-slate-300">
+              Technical Process Schematic
+            </span>
+            <span className="text-[11px] text-amber-300">
+              Illustrative Manufacturing Model
+            </span>
+          </div>
+          <SceneDiagram type={scene.diagramType} title={scene.title} />
+        </section>
+      )}
 
       {/* Interactive Educational Visualizer (for Scene 3) */}
       {scene.hasInteractiveVisualizer && <HelicalFormingVisualizer />}
@@ -450,15 +490,6 @@ export function SceneViewer({
         </div>
       </section>
 
-      {/* Decision-Based Scenario Question */}
-      <section aria-label="Scenario decision question">
-        <ScenarioQuizComponent
-          quiz={scene.quiz}
-          savedAnswerId={savedAnswer}
-          onAnswerSelected={handleAnswer}
-        />
-      </section>
-
       {/* Practical Takeaway Highlight */}
       <section
         aria-labelledby="takeaway-heading"
@@ -482,6 +513,23 @@ export function SceneViewer({
         </div>
       </section>
 
+      {/* Decision-Based Scenario Question */}
+      <section aria-label="End-of-chapter quiz">
+        <ScenarioQuizComponent
+          key={scene.id}
+          quiz={scene.quiz}
+          savedAnswerId={savedAnswer}
+          onAnswerSelected={handleAnswer}
+        />
+      </section>
+
+      <p className="text-xs text-slate-600" role="status">
+        {!savedAnswer
+          ? 'Answer this chapter quiz to continue.'
+          : isLastScene && !allAnswered
+            ? 'Answer the quiz in every chapter before completing this course. Use the chapter buttons above to return to unfinished chapters.'
+            : 'Chapter quiz answered. You can continue.'}
+      </p>
       {/* Bottom Navigation Buttons */}
       <div className="flex flex-wrap items-center justify-between gap-4 border-t border-slate-200 pt-5">
         <Button
@@ -497,6 +545,7 @@ export function SceneViewer({
         <div className="flex items-center gap-3">
           <Button
             onClick={handleNext}
+            disabled={!savedAnswer || (isLastScene && !allAnswered)}
             className={cn(
               'h-10 text-xs font-bold px-5 transition-all shadow-sm',
               isLastScene
