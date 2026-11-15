@@ -9,21 +9,25 @@
     "typecheck": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
     "@welspun/contracts": "*",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.577.0",
     "next": "^16.4.3",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1",
     "tailwind-merge": "^3.4.0",
-    "lucide-react": "^0.577.0",
-    "@radix-ui/react-slot": "^1.2.4"
+    "three": "^0.187.0"
   },
   "devDependencies": {
-    "@welspun/config": "*",
+    "@tailwindcss/postcss": "^4.1.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
-    "@tailwindcss/postcss": "^4.1.0",
+    "@types/three": "^0.187.0",
+    "@welspun/config": "*",
     "tailwindcss": "^4.1.0"
   }
 }

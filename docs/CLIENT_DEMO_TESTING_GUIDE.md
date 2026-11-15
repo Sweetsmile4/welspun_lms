@@ -14,6 +14,8 @@ npm run build
 
 The focused unit tests verify the three courses, required scene sequences, explanation and quiz completeness, fictional profile data, and helical geometry calculations. The Playwright walkthrough verifies entry, dashboard cards, explanation switching, quiz feedback, visualizer controls, course completion, reset, and an unaffected foundation route.
 
+The expanded Playwright suite also verifies actual `<canvas>` mounting for the helical, safety, and quality scenes; the helical angle slider and pause/reset controls; all three safety hotspot transitions and reset; all three quality indication transitions and reset; and both desktop and mobile projects. Direct browser screenshots were reviewed at desktop size for all three WebGL scenes and showed nonblank 3D geometry.
+
 ## Manual browser review
 
 1. Open `/client-demo` at desktop width and confirm the fictional-environment label is visible.
@@ -24,7 +26,19 @@ The focused unit tests verify the three courses, required scene sequences, expla
 6. Complete a course, return to the dashboard, refresh, and confirm local progress resumes.
 7. Use Reset Demo and confirm all courses return to Not Started.
 8. Use keyboard navigation and a reduced-motion browser preference; verify visible focus and no essential content depends on animation.
+9. In the helical scene, move the visual angle slider and confirm the strip pose and displayed angle change immediately; pause and reset it.
+10. In safety scene 2, activate each hotspot by mouse and keyboard and confirm the completion state and reset.
+11. In quality scene 2, inspect each indication by mouse and keyboard and confirm the review completion state and reset.
 
 ## Expected boundary checks
 
 The route must make no network or backend requests, must not ask for a real password, and must not expose internal development preview controls. Existing `/dashboard`, `/development/*`, and security/API tests should remain unchanged.
+
+## Actual validation record
+
+- `npm run typecheck -w @welspun/web`: passed.
+- `npm run lint`: passed after removing two unused simulation imports.
+- `npm test -- tests/client-demo.test.ts`: passed, 11 tests.
+- `npm run test:e2e -- tests/e2e/client-demo.spec.ts` with `PLAYWRIGHT_PORT=3100`: passed, 8 tests across desktop and mobile.
+- `npm run build -w @welspun/web -- --webpack`: passed.
+- Default Turbopack build: not used as the release validation path because this environment previously failed to start its CSS worker process; no source diagnostic was reported.

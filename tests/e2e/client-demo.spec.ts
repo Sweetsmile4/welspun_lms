@@ -37,8 +37,8 @@ test.describe('Client Demonstration Portal — End-to-End Walkthrough', () => {
 
     // 3. Open Course 1: From Steel Coil to Finished Pipe
     await page
-      .getByRole('link', { name: /Start Course/i })
-      .first()
+      .locator('a[href="/client-demo/course/pipe-process-101"]')
+      .filter({ hasText: 'Start Course' })
       .click();
     await expect(page).toHaveURL(/client-demo\/course\/pipe-process-101$/);
 
@@ -103,12 +103,23 @@ test.describe('Client Demonstration Portal — End-to-End Walkthrough', () => {
         'Interactive Educational Tool: Helical Forming Angle Explorer',
       ),
     ).toBeVisible();
-    await expect(page.getByText(/Kinematic relationship:/i)).toBeVisible();
+    await expect(page.locator('canvas')).toHaveCount(1);
+    await expect(page.getByText(/Reference relationship:/i)).toBeVisible();
+
+    const angleSlider = page.getByLabel('Visual forming angle (alpha)');
+    await angleSlider.fill('40');
+    await expect(page.getByText('40.0 degrees')).toBeVisible();
+    await page.getByRole('button', { name: 'Pause visual motion' }).click();
+    await expect(
+      page.getByRole('button', { name: 'Resume visual motion' }),
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Reset', exact: true }).click();
+    await expect(page.getByText('23.1 degrees', { exact: true })).toBeVisible();
 
     // Click Preset for 36" Gas Transmission
     await page.getByRole('button', { name: /36" Gas Transmission/i }).click();
     await expect(page.getByText('36" (914.4 mm)')).toBeVisible();
-    await expect(page.getByText('Forming Angle (α):')).toBeVisible();
+    await expect(page.getByText('Reference angle', { exact: true })).toBeVisible();
 
     // 8. Jump to Scene 6 (Last Scene) via jump pills
     await page.getByRole('button', { name: /Jump to Scene 6/i }).click();
@@ -140,6 +151,56 @@ test.describe('Client Demonstration Portal — End-to-End Walkthrough', () => {
     await expect(
       page.getByText('Demo state reset successfully!'),
     ).toBeVisible();
+  });
+
+  test('safety simulation identifies hazards and resets locally', async ({
+    page,
+  }) => {
+    await page.goto('/client-demo/course/safety-essentials-102');
+    await page.getByRole('button', { name: /Next Scene/i }).click();
+    await expect(
+      page.getByRole('heading', {
+        name: 'Try Simulation: Spot the Shop Floor Hazards',
+      }),
+    ).toBeVisible();
+
+    await expect(page.locator('canvas')).toHaveCount(1);
+    const hazards = page.getByRole('button', {
+      name: /Suspended coil path|Missing eye protection|Spill near cable/i,
+    });
+    await expect(hazards).toHaveCount(3);
+    for (let index = 0; index < 3; index += 1) {
+      await hazards.nth(index).click();
+    }
+    await expect(
+      page.getByText(/All sample hazards identified/i),
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Reset Simulation' }).click();
+    await expect(page.getByText('0 of 3 hazards identified')).toBeVisible();
+  });
+
+  test('quality simulation reviews indications and resets locally', async ({
+    page,
+  }) => {
+    await page.goto('/client-demo/course/quality-basics-103');
+    await page.getByRole('button', { name: /Next Scene/i }).click();
+    await expect(
+      page.getByRole('heading', {
+        name: 'Try Simulation: Inspect Sample Indications',
+      }),
+    ).toBeVisible();
+
+    await expect(page.locator('canvas')).toHaveCount(1);
+    const indications = page.getByRole('button', {
+      name: /Linear indication|Rounded mark|Clear reference area/i,
+    });
+    await expect(indications).toHaveCount(3);
+    for (let index = 0; index < 3; index += 1) {
+      await indications.nth(index).click();
+    }
+    await expect(page.getByText(/Sample review complete/i)).toBeVisible();
+    await page.getByRole('button', { name: 'Reset Simulation' }).click();
+    await expect(page.getByText('0 of 3 sample areas reviewed')).toBeVisible();
   });
 
   test('foundation routes remain unaffected and isolated from demo', async ({

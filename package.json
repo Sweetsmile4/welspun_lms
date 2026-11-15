@@ -49,5 +49,8 @@
   },
   "overrides": {
     "esbuild": "^0.28.2"
+  },
+  "dependencies": {
+    "@langchain/anthropic": "^1.6.0"
   }
 }

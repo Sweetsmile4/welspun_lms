@@ -7,6 +7,8 @@ import type { CourseData, CourseScene } from '@/lib/client-demo/types';
 import { useDemo } from './demo-context';
 import { SceneDiagram } from './scene-diagrams';
 import { HelicalFormingVisualizer } from './helical-visualizer';
+import { SafetySimulation } from './safety-simulation';
+import { QualityInspectionSimulation } from './quality-simulation';
 import { ScenarioQuizComponent } from './scenario-quiz';
 import { Button } from '@/components/ui/button';
 import {
@@ -214,8 +216,10 @@ export function SceneViewer({
         <SceneDiagram type={scene.diagramType} title={scene.title} />
       </section>
 
-      {/* Interactive Educational Visualizer (for Scene 3) */}
+      {/* Interactive educational simulations */}
       {scene.hasInteractiveVisualizer && <HelicalFormingVisualizer />}
+      {scene.diagramType === 'hazard_loads' && <SafetySimulation />}
+      {scene.diagramType === 'defect_types' && <QualityInspectionSimulation />}
 
       {/* Multi-Tier Explanation Switcher (ELI5, Operator, Engineer) */}
       <section

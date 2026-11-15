@@ -12,11 +12,19 @@ The standalone demonstration follows a progressive learning loop:
 
 | Course | Scenes | Focus |
 | --- | ---: | --- |
-| From Steel Coil to Finished Pipe | 6 | Receiving, strip preparation, helical forming, welding, inspection, release |
-| Shop Floor Safety Essentials | 4 | PPE, hazard identification, equipment isolation, reporting |
-| Quality Inspection Basics | 4 | Checkpoints, defect awareness, traceability, release decisions |
+| From Steel Coil to Finished Pipe | 6 | Receiving, strip preparation, helical forming, welding, inspection, release; helical simulation in scene 3 |
+| Shop Floor Safety Essentials | 4 | PPE, hazard identification, equipment isolation, reporting; hazard simulation in scene 2 |
+| Quality Inspection Basics | 4 | Checkpoints, defect awareness, traceability, release decisions; indication simulation in scene 2 |
 
-Course data is statically typed in `apps/web/src/lib/client-demo/course-data.ts`. Diagrams are local components; no external media or content service is required.
+Course data is statically typed in `apps/web/src/lib/client-demo/course-data.ts`. Diagrams and simulations are local components; no external media or content service is required.
+
+## Simulation learning loop
+
+- `helical-visualizer.tsx`: adjusts a visual angle slider, updates the SVG strip pose immediately, and demonstrates the existing simplified geometry reference. Pause/resume controls the illustrative seam motion; reset returns to the 48-inch/1500 mm example.
+- `safety-simulation.tsx`: presents three selectable hotspots for a suspended load path, missing eye protection, and a spill near a cable route. Each selection reveals a safer response and contributes to completion.
+- `quality-simulation.tsx`: presents three selectable fictional scan indications. Learners decide whether to escalate or continue review and receive a reasoned educational response.
+
+Simulation state is React/browser-local state. Reset actions clear only the current simulation; course completion and learning progress continue to use the existing demo context and local storage.
 
 ## Content boundary
 
