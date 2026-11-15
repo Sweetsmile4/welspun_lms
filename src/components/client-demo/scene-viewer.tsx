@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { CourseData, CourseScene } from '@/lib/client-demo/types';
 import { useDemo } from './demo-context';
-import { ThreeSimulation } from './three-simulation';
+import { SceneDiagram } from './scene-diagrams';
+import { HelicalFormingVisualizer } from './helical-visualizer';
 import { ScenarioQuizComponent } from './scenario-quiz';
 import { Button } from '@/components/ui/button';
 import {
@@ -82,20 +83,7 @@ export function SceneViewer({
 
   const handleAnswer = (optionId: string) => {
     recordQuestionAnswer(course.id, scene.id, optionId);
-    const option = scene.quiz.options.find((item) => item.id === optionId);
-    if (!isPilotScene || (simulationComplete && option?.isCorrect)) {
-      markSceneCompleted(course.id, scene.id);
-    }
-  };
-
-  const handleSimulationComplete = () => {
-    setCompletedSimulationScenes((previous) => ({
-      ...previous,
-      [scene.id]: true,
-    }));
-    if (selectedOption?.isCorrect) {
-      markSceneCompleted(course.id, scene.id);
-    }
+    markSceneCompleted(course.id, scene.id);
   };
 
   return (
