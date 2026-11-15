@@ -1,12 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import type { CourseData, CourseScene } from '@/lib/client-demo/types';
 import { useDemo } from './demo-context';
-import { SceneDiagram } from './scene-diagrams';
-import { HelicalFormingVisualizer } from './helical-visualizer';
+import { ThreeSimulation } from './three-simulation';
 import { ScenarioQuizComponent } from './scenario-quiz';
 import { Button } from '@/components/ui/button';
 import {
@@ -83,7 +82,20 @@ export function SceneViewer({
 
   const handleAnswer = (optionId: string) => {
     recordQuestionAnswer(course.id, scene.id, optionId);
-    markSceneCompleted(course.id, scene.id);
+    const option = scene.quiz.options.find((item) => item.id === optionId);
+    if (!isPilotScene || (simulationComplete && option?.isCorrect)) {
+      markSceneCompleted(course.id, scene.id);
+    }
+  };
+
+  const handleSimulationComplete = () => {
+    setCompletedSimulationScenes((previous) => ({
+      ...previous,
+      [scene.id]: true,
+    }));
+    if (selectedOption?.isCorrect) {
+      markSceneCompleted(course.id, scene.id);
+    }
   };
 
   return (
@@ -547,7 +559,7 @@ export function SceneViewer({
             onClick={handleNext}
             disabled={!savedAnswer || (isLastScene && !allAnswered)}
             className={cn(
-              'h-10 text-xs font-bold px-5 transition-all shadow-sm',
+              'h-10 px-5 text-xs font-bold shadow-sm transition-all disabled:cursor-not-allowed disabled:opacity-45',
               isLastScene
                 ? 'bg-emerald-600 text-white hover:bg-emerald-700'
                 : 'bg-[#152d50] text-white hover:bg-[#203d68]',
