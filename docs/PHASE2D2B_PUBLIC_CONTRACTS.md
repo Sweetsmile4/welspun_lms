@@ -34,7 +34,7 @@ Each course outline has at most 20 modules, 20 lessons per module and 100 total 
 
 ## Pure backend serializers
 
-apps/api/src/integration/serializers.ts exports serializeSession, serializeDraftSummary/Detail, serializeReview, serializeDecision, serializeReviewerCandidate, serializeReadiness, serializeReleaseHistory and serializeCatalogEntry/Detail, plus explicit serializeId/serializeDate scalar helpers.
+backend/src/integration/serializers.ts exports serializeSession, serializeDraftSummary/Detail, serializeReview, serializeDecision, serializeReviewerCandidate, serializeReadiness, serializeReleaseHistory and serializeCatalogEntry/Detail, plus explicit serializeId/serializeDate scalar helpers.
 
 Domain projections accept decoded backend records validated with existing strict snapshot/review/evidence/release schemas. They do not accept raw Mongoose documents or call generic toJSON/toString traversal. Scalar serializeId accepts a real Mongoose Types.ObjectId or a valid wire string; decoded domain records themselves must already have string IDs, as the existing repository supplies. Date conversion is explicit UTC. Unsupported/missing provenance or invalid bindings fail with a fixed PublicSerializationError, with no internal values or Zod diagnostics exposed.
 

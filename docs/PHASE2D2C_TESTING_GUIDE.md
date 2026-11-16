@@ -9,7 +9,7 @@ npm run check
 The focused storage checks are:
 
 ```powershell
-npx vitest run apps/api/test/integration-storage.test.ts apps/api/test/integration-foundation.test.ts
+npx vitest run backend/test/integration-storage.test.ts backend/test/integration-foundation.test.ts
 ```
 
 They cover invalid target denial, credential/remote/SRV/shared-name rejection, redacted failure behavior, inert construction, cleanup ownership, stable manifest checksums, model inventory, bootstrap disablement and existing no-outbound integration boundaries.

@@ -14,7 +14,7 @@ SessionVerifier, SessionRevoker, CsrfVerifier, WorkloadAuthenticator, RequestCon
 
 ## New ordinary tests
 
-apps/api/test/integration-foundation.test.ts covers:
+backend/test/integration-foundation.test.ts covers:
 
 1. Default disabled and complete/missing/production/test enable refusal.
 2. Fixture flags, credentials, database targets and role/actor fields denied without value disclosure.
@@ -52,7 +52,7 @@ npm run test:e2e
 node scripts/check-preview-disabled.mjs
 node scripts/check-preview-disabled.mjs --unset
 node work/phase1b1-startup.mjs
-node --require ./work/no-outbound.cjs apps/worker/dist/index.js
+node --require ./work/no-outbound.cjs backend/worker/dist/index.js
 npm audit --audit-level=high
 ```
 

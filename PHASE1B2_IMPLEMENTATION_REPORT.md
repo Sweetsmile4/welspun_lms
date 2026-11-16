@@ -80,23 +80,23 @@ Coverage includes own/other learner, exact/descendant department, sibling/parent
 
 Created:
 
-- apps/api/src/modules/identity/authorization/types.ts — actions, input schemas, internal records/ports/errors.
-- apps/api/src/modules/identity/authorization/models.ts — two strict Mongoose schemas/indexes.
-- apps/api/src/modules/identity/authorization/mongo-repository.ts — typed session-bound persistence.
-- apps/api/src/modules/identity/authorization/engine.ts — resource/scoping/global policy/query constraints.
-- apps/api/src/modules/identity/authorization/service.ts — trusted identity boundary and protected application methods.
-- apps/api/test/authorization-memory.ts — isolated transactional test double.
-- apps/api/test/authorization-scenarios.ts — shared offline/real-Mongo denial and concurrency cases.
-- apps/api/test/authorization.test.ts — offline authorization suite.
-- apps/api/test/authorization.mongo.test.ts — opt-in actual MongoDB policy, aggregation/index and race tests.
+- backend/src/modules/identity/authorization/types.ts — actions, input schemas, internal records/ports/errors.
+- backend/src/modules/identity/authorization/models.ts — two strict Mongoose schemas/indexes.
+- backend/src/modules/identity/authorization/mongo-repository.ts — typed session-bound persistence.
+- backend/src/modules/identity/authorization/engine.ts — resource/scoping/global policy/query constraints.
+- backend/src/modules/identity/authorization/service.ts — trusted identity boundary and protected application methods.
+- backend/test/authorization-memory.ts — isolated transactional test double.
+- backend/test/authorization-scenarios.ts — shared offline/real-Mongo denial and concurrency cases.
+- backend/test/authorization.test.ts — offline authorization suite.
+- backend/test/authorization.mongo.test.ts — opt-in actual MongoDB policy, aggregation/index and race tests.
 - docs/PHASE1B2_AUTHORIZATION_GUIDE.md — API usage, contracts, session protocol, limitations and examples.
 - PHASE1B2_IMPLEMENTATION_REPORT.md — this report.
 
 Modified:
 
-- apps/api/src/modules/identity/organization/mongo-repository.ts — minimal same-session composition extension.
+- backend/src/modules/identity/organization/mongo-repository.ts — minimal same-session composition extension.
 - package.json — include authorization suite in opt-in test:mongo command.
-- apps/api/src/modules/identity/README.md and README.md — document current phase and boundaries.
+- backend/src/modules/identity/README.md and README.md — document current phase and boundaries.
 
 No dependencies installed or upgraded, no lockfile change required, no environment variables/secrets added, no original prototypes changed. Existing staged/unstaged work was preserved; no commit or deployment was made.
 

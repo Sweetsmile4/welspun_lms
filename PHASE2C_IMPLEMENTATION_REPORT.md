@@ -59,17 +59,17 @@ Real backend service checks and simulated UI checks are distinct: no browser act
 
 Created:
 
-- apps/api/src/modules/catalog/discovery/service.ts and mongo-store.ts.
-- apps/api/test/catalog-scenarios.ts, catalog.test.ts and catalog.mongo.test.ts.
-- apps/web/src/components/preview/provider.tsx and catalog.tsx.
-- apps/web/src/app/development/layout.tsx, catalog/page.tsx and catalog/[courseId]/page.tsx.
+- backend/src/modules/catalog/discovery/service.ts and mongo-store.ts.
+- backend/test/catalog-scenarios.ts, catalog.test.ts and catalog.mongo.test.ts.
+- frontend/src/components/preview/provider.tsx and catalog.tsx.
+- frontend/src/app/development/layout.tsx, catalog/page.tsx and catalog/[courseId]/page.tsx.
 - scripts/preview-guard-server.mjs and tests/e2e/catalog.spec.ts.
 - This report, docs/PHASE2C_CATALOG_DESIGN.md, docs/PHASE2C_CATALOG_SERVICE_GUIDE.md and docs/PHASE2C_FRONTEND_PREVIEW_GUIDE.md.
 
 Modified:
 
 - Identity authorization action vocabulary and action/lifecycle mapping: only new catalog permission.
-- apps/api/test/course-fixture.ts: rollback-capable catalog memory projection.
+- backend/test/course-fixture.ts: rollback-capable catalog memory projection.
 - package.json: include catalog suite in explicit Mongo command.
 - Existing preview workspace: reuse shared state, keep operation status across navigation, shared reset and publish-to-catalog link.
 - Existing shell: development catalog navigation and scrollable desktop sidebar.

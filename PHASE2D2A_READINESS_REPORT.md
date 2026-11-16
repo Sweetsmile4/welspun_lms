@@ -10,8 +10,8 @@ Reviewed README, Phase 2A/2B/2B.1/2C/2D.1 reports and relevant identity, HTTP se
 
 | Area                   | Source evidence inspected                                                                                                                                                        |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Frontend               | apps/web/src/app/development layout and course/review/catalog/detail routes; components/preview provider, model, workspace, catalog, content renderer; existing Playwright specs |
-| API process            | apps/api/src/server.ts, app.ts, platform/environment.ts and errors.ts                                                                                                            |
+| Frontend               | frontend/src/app/development layout and course/review/catalog/detail routes; components/preview provider, model, workspace, catalog, content renderer; existing Playwright specs |
+| API process            | backend/src/server.ts, app.ts, platform/environment.ts and errors.ts                                                                                                             |
 | Identity               | identity/provider.ts, http-security.ts, authorization types/service/engine/repository, organization models/repository                                                            |
 | Test HTTP              | identity/management router/service/contracts/store and HTTP test composition                                                                                                     |
 | Course domain          | catalog/drafts service/contracts/models/store; publishing service/contracts/store; discovery service/Mongo projection                                                            |

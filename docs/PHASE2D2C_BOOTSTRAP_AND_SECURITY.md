@@ -1,6 +1,6 @@
 # Phase 2D.2C bootstrap and security
 
-`apps/api/src/integration/bootstrap-manifest.ts` is an explicit review artifact for a fictional organization, unit, author, reviewer and publisher. Issuer/subject values are placeholders. Grants are minimal placeholders and no administrator role exists. `fictionalBootstrapStatus.executable` is permanently false in this phase; there is no seed function, public bootstrap route or startup seeding.
+`backend/src/integration/bootstrap-manifest.ts` is an explicit review artifact for a fictional organization, unit, author, reviewer and publisher. Issuer/subject values are placeholders. Grants are minimal placeholders and no administrator role exists. `fictionalBootstrapStatus.executable` is permanently false in this phase; there is no seed function, public bootstrap route or startup seeding.
 
 Before executable bootstrap, approve the identity issuer and subject mapping, organization/unit ownership, exact role permissions, reviewer independence, publisher duties, retention and the operator trust ceremony. Do not substitute browser role selectors, employee names, email auto-linking or production identity claims. The manifest is not Welspun policy and does not establish SME qualification.
 

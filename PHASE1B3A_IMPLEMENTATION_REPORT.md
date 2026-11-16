@@ -72,23 +72,23 @@ New tests cover missing/invalid/unsupported/expired credentials, forged headers/
 
 Created:
 
-- apps/api/src/modules/identity/http-security.ts — verifier port, disabled default, credential middleware, sealed bridge, test-only audited composition and protected controller helper.
-- apps/api/src/platform/security-audit.ts — validated immutable event contract and append-only sink interfaces.
-- apps/api/test/http-security-fixture.ts — synthetic router/provider and safe DTO composition.
-- apps/api/test/http-security-scenarios.ts — shared HTTP scope/error/mutation/audit scenarios.
-- apps/api/test/http-security.test.ts — ordinary integration and isolation/audit gates.
-- apps/api/test/http-security.mongo.test.ts — explicit local real-Mongo HTTP/audit integration.
+- backend/src/modules/identity/http-security.ts — verifier port, disabled default, credential middleware, sealed bridge, test-only audited composition and protected controller helper.
+- backend/src/platform/security-audit.ts — validated immutable event contract and append-only sink interfaces.
+- backend/test/http-security-fixture.ts — synthetic router/provider and safe DTO composition.
+- backend/test/http-security-scenarios.ts — shared HTTP scope/error/mutation/audit scenarios.
+- backend/test/http-security.test.ts — ordinary integration and isolation/audit gates.
+- backend/test/http-security.mongo.test.ts — explicit local real-Mongo HTTP/audit integration.
 - docs/PHASE1B3_HTTP_SECURITY_GUIDE.md — complete usage, future API design, audit requirements and limitations.
 - PHASE1B3A_IMPLEMENTATION_REPORT.md — this report.
 
 Modified:
 
-- apps/api/src/modules/identity/authorization/service.ts — optional transactional audit extension, required-audit enforcement and mutation events; original authorization/integrity logic preserved.
-- apps/api/src/platform/errors.ts — safe mapping for authorization, validation and organization errors.
-- apps/api/src/app.ts — guarded isolated-test router hook and reuse of security error mapping.
+- backend/src/modules/identity/authorization/service.ts — optional transactional audit extension, required-audit enforcement and mutation events; original authorization/integrity logic preserved.
+- backend/src/platform/errors.ts — safe mapping for authorization, validation and organization errors.
+- backend/src/app.ts — guarded isolated-test router hook and reuse of security error mapping.
 - packages/contracts/src/index.ts — safe public ID and summary schemas only.
 - package.json — include HTTP MongoDB suite in opt-in command; no dependency change.
-- README.md and apps/api/src/modules/identity/README.md — current phase, links and disabled operational boundaries.
+- README.md and backend/src/modules/identity/README.md — current phase, links and disabled operational boundaries.
 
 Existing staged/unstaged changes and prior reports/proposals were preserved. No commit, deployment, real employee seed, original prototype edit, package installation, frontend change, Redis/BullMQ activation or new service was introduced.
 

@@ -3,7 +3,7 @@ import { createServer } from 'node:net';
 import { once } from 'node:events';
 import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
-const web = fileURLToPath(new URL('../apps/web/', import.meta.url));
+const web = fileURLToPath(new URL('../frontend/', import.meta.url));
 const reservation = createServer().listen(0, '127.0.0.1');
 await once(reservation, 'listening');
 const port = reservation.address().port;

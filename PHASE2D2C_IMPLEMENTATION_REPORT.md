@@ -48,10 +48,10 @@ New native transaction probes deliberately write synthetic raw local records to 
 
 ## Files inspected/refined
 
-- apps/api/src/integration/local-database.ts, schema-manifest.ts, schema-setup.ts.
-- apps/api/src/integration/session-models.ts, session-store.ts, bootstrap-manifest.ts.
+- backend/src/integration/local-database.ts, schema-manifest.ts, schema-setup.ts.
+- backend/src/integration/session-models.ts, session-store.ts, bootstrap-manifest.ts.
 - scripts/setup-integration-local.ts.
-- apps/api/test/integration-storage.test.ts and integration-storage.mongo.test.ts.
+- backend/test/integration-storage.test.ts and integration-storage.mongo.test.ts.
 - This report and all five docs/PHASE2D2C_* guides.
 
 Existing README/package scripts/schema exports were preserved. No packages were installed, lockfile edited, disposable adapter/runner modified or source prototype changed. Separate Phase 2D.2D.1 files were not implemented or connected by this task.

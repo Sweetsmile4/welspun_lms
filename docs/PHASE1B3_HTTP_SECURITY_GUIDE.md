@@ -124,7 +124,7 @@ Read-only role/grant administration, account disable/offboarding, broad unit met
 
 ## 7. Tests and commands
 
-Normal HTTP tests mount only synthetic routers from `apps/api/test/http-security-fixture.ts`. Shared scenarios run against both the existing rollback-capable memory repository and actual opt-in MongoDB. Tests exercise missing/invalid/unsupported/expired credentials, forged headers/IDs, disabled actors, missing/expired/revoked grants, department/plant/organization isolation, standard errors, DTO/log/audit leakage, provisioning, transfers, revisions, denied-write integrity and audit failure rollback. Additional tests check normal routes absent, unsafe mounting rejected, disabled default provider, production rejection and audit requirements/role-change event types.
+Normal HTTP tests mount only synthetic routers from `backend/test/http-security-fixture.ts`. Shared scenarios run against both the existing rollback-capable memory repository and actual opt-in MongoDB. Tests exercise missing/invalid/unsupported/expired credentials, forged headers/IDs, disabled actors, missing/expired/revoked grants, department/plant/organization isolation, standard errors, DTO/log/audit leakage, provisioning, transfers, revisions, denied-write integrity and audit failure rollback. Additional tests check normal routes absent, unsafe mounting rejected, disabled default provider, production rejection and audit requirements/role-change event types.
 
 ```powershell
 npm run check

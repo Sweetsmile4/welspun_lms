@@ -27,19 +27,19 @@
 
 ## Isolation confirmation
 
-The demo uses static typed data under `apps/web/src/lib/client-demo` and a React context backed only by `localStorage`. It makes no API, MongoDB, identity-provider, session, RBAC, publishing, or migration calls. Existing LMS routes and backend modules were not changed by the demo implementation.
+The demo uses static typed data under `frontend/src/lib/client-demo` and a React context backed only by `localStorage`. It makes no API, MongoDB, identity-provider, session, RBAC, publishing, or migration calls. Existing LMS routes and backend modules were not changed by the demo implementation.
 
 All content and figures are illustrative client-review material. The demo does not issue certificates, record compliance, or represent approved Welspun operating procedures.
 
 ## Simulation audit and entry points
 
 - Reference audit: the supplied HTML was not present in the workspace search path, so the repository's `docs/PROTOTYPE_FEATURE_AUDIT.md` was used for the available reference behavior notes: orbit/drag inspection, zoom, reset, guided stations, animated process state, and hotspot-linked panels.
-- Existing partial simulation: `apps/web/src/components/client-demo/helical-visualizer.tsx` used `apps/web/src/lib/client-demo/math-utils.ts` and rendered an SVG. It is now a Three.js/R3F scene with a separate visual angle control; the math utility remains the illustrative reference calculation.
-- Reusable viewer: `apps/web/src/components/client-demo/three-simulation-viewer.tsx` owns the R3F Canvas, perspective camera, lighting, OrbitControls, loading/error fallback, reduced-motion behavior, camera reset, and clickable 3D hotspot meshes.
+- Existing partial simulation: `frontend/src/components/client-demo/helical-visualizer.tsx` used `frontend/src/lib/client-demo/math-utils.ts` and rendered an SVG. It is now a Three.js/R3F scene with a separate visual angle control; the math utility remains the illustrative reference calculation.
+- Reusable viewer: `frontend/src/components/client-demo/three-simulation-viewer.tsx` owns the R3F Canvas, perspective camera, lighting, OrbitControls, loading/error fallback, reduced-motion behavior, camera reset, and clickable 3D hotspot meshes.
 - Helical simulation entry: course `pipe-process-101`, scene 3 (`scene-3-helical-forming`), rendered by `SceneViewer` when `hasInteractiveVisualizer` is true.
-- Safety simulation entry: course `safety-essentials-102`, scene 2 (`scene-2-hazards`), rendered by `apps/web/src/components/client-demo/safety-simulation.tsx`.
-- Quality simulation entry: course `quality-basics-103`, scene 2 (`scene-2-defects`), rendered by `apps/web/src/components/client-demo/quality-simulation.tsx`.
-- Shared integration point: `apps/web/src/components/client-demo/scene-viewer.tsx`.
+- Safety simulation entry: course `safety-essentials-102`, scene 2 (`scene-2-hazards`), rendered by `frontend/src/components/client-demo/safety-simulation.tsx`.
+- Quality simulation entry: course `quality-basics-103`, scene 2 (`scene-2-defects`), rendered by `frontend/src/components/client-demo/quality-simulation.tsx`.
+- Shared integration point: `frontend/src/components/client-demo/scene-viewer.tsx`.
 
 The helical calculation remains a simplified reference relationship. Its new angle slider changes only the visual strip pose and is explicitly not a certified machine setting. Safety hotspots and quality indications are fictional learning patterns and do not authorize a safety or release decision.
 

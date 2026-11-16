@@ -13,7 +13,7 @@ Proposed request path:
                                                     -> current scoped authorization and domain services
                                                     -> dedicated approved MongoDB development database
 
-Keep apps/web, apps/api and apps/worker in the modular monolith. A narrow Next gateway is transport only, not a second domain service: no Mongoose, grant decisions, publishing logic or privileged environment in client components. Express owns identity verification, sessions, scoped authorization, validation, transactions, receipts and audit. The worker stays inert. MongoDB is reachable only by authorized backend/setup processes, never the browser or normal Next build.
+Keep frontend, backend and backend/worker in the modular monolith. A narrow Next gateway is transport only, not a second domain service: no Mongoose, grant decisions, publishing logic or privileged environment in client components. Express owns identity verification, sessions, scoped authorization, validation, transactions, receipts and audit. The worker stays inert. MongoDB is reachable only by authorized backend/setup processes, never the browser or normal Next build.
 
 A same-origin gateway avoids credentialed browser CORS and lets one host own secure cookies. It adds a forwarding hop and requires end-to-end header/cookie/timeout tests. An edge reverse proxy routing /api directly to Express is an alternative with fewer application hops, but needs an approved ingress and separate routing proof. Select one before implementation; do not support both initially. Proposed default is the Next gateway, pending hosting support and supervisor review.
 

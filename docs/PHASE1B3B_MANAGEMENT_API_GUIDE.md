@@ -6,7 +6,7 @@
 
 Read README.md, PHASE1B1_IMPLEMENTATION_REPORT.md, PHASE1B2_IMPLEMENTATION_REPORT.md, PHASE1B3A_IMPLEMENTATION_REPORT.md, PHASE1B2_AUTHORIZATION_GUIDE.md, PHASE1B3_HTTP_SECURITY_GUIDE.md, API_CONTRACTS.md, DATABASE_SCHEMA.md and OPEN_QUESTIONS.md. Inspected the actual Express app/controllers, trusted HTTP bridge, authorization engine/services, repositories/session hooks, hierarchy/membership service, schemas, local-only adapter and offline/real-Mongo test infrastructure.
 
-Code is in `apps/api/src/modules/identity/management/`:
+Code is in `backend/src/modules/identity/management/`:
 
 - contracts.ts: strict input/output schemas and explicit projections.
 - policy.ts: authoritative scope predicates for read operations.

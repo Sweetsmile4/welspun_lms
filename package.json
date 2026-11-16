@@ -9,7 +9,9 @@
     "npm": ">=11 <13"
   },
   "workspaces": [
-    "apps/*",
+    "frontend",
+    "backend",
+    "backend/worker",
     "packages/*"
   ],
   "scripts": {
@@ -22,7 +24,7 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:mongo": "vitest run apps/api/test/organization.mongo.test.ts apps/api/test/authorization.mongo.test.ts apps/api/test/http-security.mongo.test.ts apps/api/test/management.mongo.test.ts apps/api/test/security-hardening.mongo.test.ts apps/api/test/security-performance.mongo.test.ts apps/api/test/course.mongo.test.ts apps/api/test/publishing.mongo.test.ts apps/api/test/catalog.mongo.test.ts apps/api/test/integration-storage.mongo.test.ts apps/api/test/session-transport-foundation.mongo.test.ts",
+    "test:mongo": "vitest run backend/test/organization.mongo.test.ts backend/test/authorization.mongo.test.ts backend/test/http-security.mongo.test.ts backend/test/management.mongo.test.ts backend/test/security-hardening.mongo.test.ts backend/test/security-performance.mongo.test.ts backend/test/course.mongo.test.ts backend/test/publishing.mongo.test.ts backend/test/catalog.mongo.test.ts backend/test/integration-storage.mongo.test.ts backend/test/session-transport-foundation.mongo.test.ts",
     "test:mongo:local": "node scripts/test-mongo-local.mjs",
     "setup:integration:local": "tsx scripts/setup-integration-local.ts",
     "test:e2e": "playwright test",

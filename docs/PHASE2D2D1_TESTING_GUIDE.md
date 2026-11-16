@@ -12,7 +12,7 @@ npm run test:e2e
 node scripts/check-preview-disabled.mjs
 node scripts/check-preview-disabled.mjs --unset
 node work/phase1b1-startup.mjs
-node --require ./work/no-outbound.cjs apps/worker/dist/index.js
+node --require ./work/no-outbound.cjs backend/worker/dist/index.js
 npm audit --audit-level=high
 ```
 
@@ -21,7 +21,7 @@ Build first for standalone browser/guard/startup checks. Mongo uses only the exi
 Focused ordinary command:
 
 ```powershell
-npx vitest run apps/api/test/session-transport-foundation.test.ts apps/api/test/integration-foundation.test.ts apps/api/test/integration-storage.test.ts
+npx vitest run backend/test/session-transport-foundation.test.ts backend/test/integration-foundation.test.ts backend/test/integration-storage.test.ts
 ```
 
 Ordinary policies cover hash-only internal records, random opaque tokens, explicit isolated-store gating, unknown/forged principals, fixed session/CSRF binding, idle refresh with absolute/authentication-age preservation, durable CSRF re-read after revoke, malformed/null/foreign/HTTP origins, unsafe types/methods, frozen route/query allowlists, header/cookie filtering and duplicates, arbitrary destinations, secure-cookie flags, workload signature/time/content/audience/key failures, missing workload credentials and disabled runtime authentication. Known log fields and public DTO serialization are checked for session/CSRF secret leakage.

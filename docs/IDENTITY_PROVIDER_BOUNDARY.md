@@ -1,6 +1,6 @@
 # Identity provider boundary — Phase 1A
 
-The identity interface in apps/api/src/modules/identity/provider.ts is an internal backend contract. It is not a chosen SSO implementation. Corporate provider, protocol, employee source, MFA and session requirements remain Q01 in the proposed architecture.
+The identity interface in backend/src/modules/identity/provider.ts is an internal backend contract. It is not a chosen SSO implementation. Corporate provider, protocol, employee source, MFA and session requirements remain Q01 in the proposed architecture.
 
 resolveIdentity accepts a future server-extracted opaque session token and returns a verified principal or null. A production adapter must validate provider/session credentials server-side, use stable issuer/subject identifiers, enforce expiry and revocation, and map to active internal employee records before allowing any business action. Never accept x-user-id, role, organization or scope claims from the browser. Identity is not authorization: future services must resolve current resource-scoped grants separately. No provider callback/login/session middleware or role grants are implemented here.
 

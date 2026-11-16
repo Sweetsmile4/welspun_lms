@@ -14,7 +14,7 @@ packages/contracts/src/integration-v1.ts defines strict public schemaVersion1 da
 
 Explicit representations: lowercase 24-hex IDs, UTC Z ISO dates, bounded integer revisions, lowercase 64-hex SHA-256 digest and existing-format idempotency keys. Nested unknown fields, invalid versions/content, noncontiguous order/duplicate IDs, excessive page/outline bounds and inconsistent counts are rejected. Existing envelope shapes/root exports are preserved; v1 is an additional package subpath.
 
-apps/api/src/integration/serializers.ts validates supported decoded internal snapshots/reviews/releases, projects an allowlist and validates the resulting wire schema. IDs/dates convert explicitly; no generic object serializer, raw Mongoose document serialization or raw Zod/driver error output is used. The fixed PublicSerializationError carries no input values. Returned nested values do not mutate or alias the source.
+backend/src/integration/serializers.ts validates supported decoded internal snapshots/reviews/releases, projects an allowlist and validates the resulting wire schema. IDs/dates convert explicitly; no generic object serializer, raw Mongoose document serialization or raw Zod/driver error output is used. The fixed PublicSerializationError carries no input values. Returned nested values do not mutate or alias the source.
 
 Author/reviewer data and learner catalog data are separate. Catalog contains published content/counts only: no feedback, approval identity/evidence, contributor/owner ledger or draft digest/policy. Review feedback requires separate caller authorization; reviewers/candidates expose only the narrow approved projection, not email, issuer/subject, tokens, grants or directory records. Serializers do not authorize, query data or establish trust. Current readiness-success shape is supported; negative reason codes are a future wire vocabulary only, with no fabricated failure checklist adapter.
 
@@ -26,7 +26,7 @@ Exact canonical HTTPS loopback-origin syntax and separated browser/upstream plan
 
 boundaries.ts defines nominal server-only session, CSRF, workload and trusted-request interfaces, revocation, fixed-operation upstream routing and command context. All supplied adapters return unavailable; requireTrustedRequest always throws. TypeScript brands prevent accidental structural creation, while runtime denial also refuses forged/cast browser objects. They are not claims of real authentication or protection against malicious trusted server code.
 
-The frontend client in apps/web/src/lib/integration/client.ts exposes typed read/command operations but always returns an explicit INTEGRATION_UNAVAILABLE result. It has no fetch, token, storage, configuration activation, Mongo import or fixture fallback; no UI imports it.
+The frontend client in frontend/src/lib/integration/client.ts exposes typed read/command operations but always returns an explicit INTEGRATION_UNAVAILABLE result. It has no fetch, token, storage, configuration activation, Mongo import or fixture fallback; no UI imports it.
 
 ## HTTP conventions
 
@@ -39,13 +39,13 @@ Safe error/status definitions preserve envelope structure and prevent raw intern
 Created:
 
 - packages/contracts/src/integration-v1.ts
-- apps/api/src/integration/config.ts
-- apps/api/src/integration/boundaries.ts
-- apps/api/src/integration/http-conventions.ts
-- apps/api/src/integration/serializers.ts
-- apps/web/src/lib/integration/client.ts
-- apps/api/test/integration-foundation.test.ts
-- apps/api/test/integration-no-outbound.mjs
+- backend/src/integration/config.ts
+- backend/src/integration/boundaries.ts
+- backend/src/integration/http-conventions.ts
+- backend/src/integration/serializers.ts
+- frontend/src/lib/integration/client.ts
+- backend/test/integration-foundation.test.ts
+- backend/test/integration-no-outbound.mjs
 - This report and docs/PHASE2D2B_PUBLIC_CONTRACTS.md, docs/PHASE2D2B_SECURITY_TESTING.md, docs/PHASE2D2B_NEXT_STEPS.md.
 
 Modified only packages/contracts/package.json for the new export. Existing root package.json changes predate this increment. No dependencies were installed or changed and package-lock.json is unchanged. Tests use the already-declared tsup tool for runtime bundling. An exploratory lock-only attempt to declare the existing transitive bundler directly failed on override/offline cache checks before any file changes; the final implementation uses tsup directly and requires no new package.
@@ -81,6 +81,6 @@ Final verdict: Phase 2D.2B is complete for review with no failing required check
 
 ## Subsequent approved shared-cluster configuration preparation
 
-Supervisor approved the existing shared Atlas cluster and already-existing welspun_lms_dev database. Disabled configuration now recognizes only MONGOURI and DATABASE_NAME for that future backend adapter, validates the exact database name and never returns the URI. All enable attempts still fail; no secret is loaded, adapter implemented or connection attempted. apps/api/.env.example includes a blank MONGOURI and the approved database name. The existing disposable adapter and normal startup are unchanged. Architecture/readiness/roadmap guides record remaining access, scoped credentials, host/network/TLS, explicit schema/index migration and operational prerequisites. Earlier statements rejecting every database field describe the pre-update baseline; only these exact keys are now syntactically accepted while disabled. Validation results for this update follow after execution.
+Supervisor approved the existing shared Atlas cluster and already-existing welspun_lms_dev database. Disabled configuration now recognizes only MONGOURI and DATABASE_NAME for that future backend adapter, validates the exact database name and never returns the URI. All enable attempts still fail; no secret is loaded, adapter implemented or connection attempted. backend/.env.example includes a blank MONGOURI and the approved database name. The existing disposable adapter and normal startup are unchanged. Architecture/readiness/roadmap guides record remaining access, scoped credentials, host/network/TLS, explicit schema/index migration and operational prerequisites. Earlier statements rejecting every database field describe the pre-update baseline; only these exact keys are now syntactically accepted while disabled. Validation results for this update follow after execution.
 
 Validation for the shared-cluster naming update: focused offline/security/API-absence suite passed 16 tests with zero skips; full workspace/tool type checking and lint passed; changed-source/document formatting and git diff --check passed. An initial sandbox run passed 15 tests but its local API socket was denied with EACCES; the unchanged test passed on the loopback-enabled rerun. No Atlas, migration, build, Mongo suite or browser workflow was run for this small update; current startup/domain/preview code and the disposable adapter were unchanged. The test URI uses an unresolvable example.invalid hostname and contains no credentials.

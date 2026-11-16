@@ -5,7 +5,7 @@
 ## 2D.2B: Disabled integration contracts and transport boundary
 
 - Scope: add public DTO schemas/serializers and a disabled integration configuration/session/transport port with safe default errors. No login, session issuer, enabled course route, domain-factory widening or DB activation. Specify narrow route allowlists and error/precondition/key mapping.
-- Expected files: packages/contracts/src integration schemas/tests; proposed apps/api/src/integration/config.ts and identity/session interfaces; proposed apps/web/src/lib/integration client interface; offline API/unit tests; guide updates. Filenames are proposed, not existing files.
+- Expected files: packages/contracts/src integration schemas/tests; proposed backend/src/integration/config.ts and identity/session interfaces; proposed frontend/src/lib/integration client interface; offline API/unit tests; guide updates. Filenames are proposed, not existing files.
 - Security: missing/production/mixed configuration denied; no fixture principal/role inputs; no browser secrets; exact server target/origin configuration; all enabled capability requests unavailable.
 - Dependencies: review this architecture and agree intended same-origin transport. Identity provider decision can remain open because every adapter stays disabled.
 - Tests: strict DTO unknown-field rejection, ISO/ObjectId projections, private-field omission, headers/envelopes, body budget, no-network-on-import, default disabled and production/test-fixture bypass denial.
@@ -15,7 +15,7 @@
 ## 2D.2C: Disposable-local integration storage and explicit setup
 
 - Scope: a separate owned local integration target adapter, migration/index manifest, session/login/security-outcome models and operator bootstrap plan. Reuse existing domain schemas/sessionFor mapping; do not touch Atlas or existing local-test adapter. Setup creates only fictional development data under separately authorized execution.
-- Expected files: proposed apps/api/src/integration/database.ts, schema/setup/session-store modules, explicit scripts/setup-integration-local.mjs, migration manifest, targeted disposable-Mongo tests. Keep scripts/test-mongo-local.mjs unchanged.
+- Expected files: proposed backend/src/integration/database.ts, schema/setup/session-store modules, explicit scripts/setup-integration-local.mjs, migration manifest, targeted disposable-Mongo tests. Keep scripts/test-mongo-local.mjs unchanged.
 - Security: exact owned loopback target marker and database allowlist, explicit setup intent, no automatic seed/index/write on import/start, setup credentials separated conceptually from runtime, no public bootstrap endpoint, honest audit durability labels.
 - Dependencies: reviewed B contracts; explicit authorization for local integration setup/data; approved fictional organization and scoped principal/grant manifest. Identity issuer bindings may remain placeholders in offline fixtures until approved, with no functional login.
 - Tests: target guard, concurrent connection reuse/failure cleanup, resumable additive setup, exact unique/partial indexes, duplicate/index drift refusal, same-session audit/receipt rollback, session explicit expiry and no corporate/foreign target cleanup.
@@ -25,7 +25,7 @@
 ## 2D.2D: Approved development identity, sessions and same-origin transport
 
 - Scope: implement only the supervisor-approved development identity option, session establish/read/logout/revoke and fixed Next gateway to private Express. No course CRUD yet. Use loopback HTTPS for browser session tests and separate authenticated user/workload boundaries.
-- Expected files: new identity/session verifier and callback modules, proposed apps/api/src/integration/app.ts and local-server.ts, Next integration session/gateway route handlers, session/CSRF tests and browser security spec; environment examples without credentials.
+- Expected files: new identity/session verifier and callback modules, proposed backend/src/integration/app.ts and local-server.ts, Next integration session/gateway route handlers, session/CSRF tests and browser security spec; environment examples without credentials.
 - Security: OIDC code/state/nonce/PKCE if selected, stable issuer/subject mapping, no auto-grant/linking, hashed random session tokens, Secure HttpOnly host cookie, explicit expiries, origin/CSRF, revoke ordering, gateway authentication, no browser impersonation or synthetic-test fallback.
 - Dependencies: B/C plus supervisor approval of provider/tenant/client, distinct test people/principals, callback/origin, session lifetimes/revocation behavior and workload transport. No decision means no session issuer implementation; remain disabled.
 - Tests: login/callback replay, invalid issuer/audience/signature, session fixation/rotation, CSRF/origin, forged role headers, cookie flags, expiry/logout/revocation/multi-process behavior, no secrets in bundles/logs/cache, missing workload credential, provider outage.

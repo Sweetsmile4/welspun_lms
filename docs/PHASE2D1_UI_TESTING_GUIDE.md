@@ -36,7 +36,7 @@ npm run test:e2e
 node scripts/check-preview-disabled.mjs
 node scripts/check-preview-disabled.mjs --unset
 node work/phase1b1-startup.mjs
-node --require ./work/no-outbound.cjs apps/worker/dist/index.js
+node --require ./work/no-outbound.cjs backend/worker/dist/index.js
 npm audit --audit-level=high
 ```
 

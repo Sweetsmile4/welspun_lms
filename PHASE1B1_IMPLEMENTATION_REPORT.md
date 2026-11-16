@@ -30,14 +30,14 @@ Organization/unit codes are trimmed uppercase technical identifiers; employee ID
 ## 3. Repository and service structure
 
 ```text
-apps/api/src/modules/identity/organization/
+backend/src/modules/identity/organization/
   types.ts               Internal records, metadata, errors and actor context
   models.ts              Four strict Mongoose schemas and index definitions
   repository.ts          Typed transaction/repository interfaces
   mongo-repository.ts    Connection-bound Mongo implementation
   service.ts             Cross-document integrity and hierarchy/membership rules
   index.ts               Internal backend exports
-apps/api/src/platform/
+backend/src/platform/
   database.ts            Extended explicit lifecycle adapter
   database-config.ts     Typed local target and timeout validation
 ```
@@ -116,21 +116,21 @@ No hosted CI/Linux database test job has been executed or silently provisioned. 
 
 Created:
 
-- `apps/api/src/modules/identity/organization/{types,models,repository,mongo-repository,service,index}.ts`
-- `apps/api/src/platform/database-config.ts`
-- `apps/api/test/database.test.ts`
-- `apps/api/test/organization-memory.ts`, `organization-scenarios.ts`
-- `apps/api/test/organization-models.test.ts`, `organization.test.ts`, `organization.mongo.test.ts`
+- `backend/src/modules/identity/organization/{types,models,repository,mongo-repository,service,index}.ts`
+- `backend/src/platform/database-config.ts`
+- `backend/test/database.test.ts`
+- `backend/test/organization-memory.ts`, `organization-scenarios.ts`
+- `backend/test/organization-models.test.ts`, `organization.test.ts`, `organization.mongo.test.ts`
 - `scripts/test-mongo-local.mjs`
 - `docs/PHASE1B1_DATA_FOUNDATION.md`
 - `PHASE1B1_IMPLEMENTATION_REPORT.md`
 
 Modified in this phase:
 
-- `apps/api/src/platform/database.ts`: typed, guarded lifecycle extension.
-- `apps/api/src/platform/environment.ts`: validated timeout settings.
-- `apps/api/.env.example`: local synthetic database example and timeout documentation.
-- `apps/api/src/modules/identity/README.md`: current internal data-module boundary.
+- `backend/src/platform/database.ts`: typed, guarded lifecycle extension.
+- `backend/src/platform/environment.ts`: validated timeout settings.
+- `backend/.env.example`: local synthetic database example and timeout documentation.
+- `backend/src/modules/identity/README.md`: current internal data-module boundary.
 - `package.json`: only two opt-in Mongo test commands added; dependencies unchanged.
 - `vitest.config.ts`: bounded test/hook timeouts for real transaction tests.
 - `README.md`: current phase and data/test instructions.

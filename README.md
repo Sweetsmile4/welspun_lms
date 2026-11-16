@@ -8,22 +8,24 @@ Use Node.js 24 LTS and npm 12 (tested with Node 24.18.0 / npm 12.0.1). npm works
 
 ## Structure
 
-    apps/
-      web/                 Next.js App Router, Tailwind, local shadcn/ui primitives
-      api/                 Express modular monolith, platform adapters and boundaries
-        src/modules/       identity, catalog, learning, assessment, simulation,
-                           certification, reporting
-        src/platform/      environment, database adapter, logger, errors
-        test/              Supertest integration and environment/adapter unit tests
-      worker/              Backend process entry point; no registered jobs
-    packages/
-      contracts/           Public DTOs, Zod runtime schemas, unit tests
-      config/              Shared strict TypeScript development configuration
-    tests/e2e/             Playwright desktop and mobile shell tests
-    docs/                  Ten unchanged Phase 0 proposals and identity boundary guide
-    .github/workflows/     CI checks; no deployment
+    frontend/              Next.js frontend: pages, components, utilities
+    backend/               Express API
+      src/modules/         Business feature modules
+      src/platform/        Database, environment, logging and errors
+      test/                Backend tests
+      worker/              Background process entry point
+    packages/contracts/    Shared DTOs and Zod schemas
+    packages/config/       Shared TypeScript settings
+    tests/e2e/             Playwright browser tests
+    scripts/               Local setup and testing helpers
+    docs/                  Architecture and implementation guides
+    .github/workflows/     CI checks
 
-The public contracts package exports source TypeScript privately within this monorepo. Next transpiles it; tsup bundles workspace imports into backend output. Node does not execute shared TypeScript directly in built output. No answer keys, database schemas or private environment settings belong in contracts. The worker imports only the backend platform logger; it owns no separate domain or database. apps/api remains the future authorization boundary. Identity's organization submodule now contains four Mongoose models and internal services. No business/admin HTTP endpoint exposes them; catalog now owns internal course drafts; other domain modules remain documented boundaries.
+This remains one Git repository using npm workspaces. Run `npm ci` from the
+root, then `npm run dev:web` and `npm run dev:api` in separate terminals.
+The frontend and backend also each expose their own dev/build/start scripts.
+
+The public contracts package exports source TypeScript privately within this monorepo. Next transpiles it; tsup bundles workspace imports into backend output. Node does not execute shared TypeScript directly in built output. No answer keys, database schemas or private environment settings belong in contracts. The worker imports only the backend platform logger; it owns no separate domain or database. backend remains the future authorization boundary. Identity's organization submodule now contains four Mongoose models and internal services. No business/admin HTTP endpoint exposes them; catalog now owns internal course drafts; other domain modules remain documented boundaries.
 
 ## Install and develop
 
@@ -41,7 +43,7 @@ Run web and API in separate terminals. Web: http://127.0.0.1:3000. API: http://1
 
 Optional API local configuration (PowerShell):
 
-    Copy-Item apps/api/.env.example apps/api/.env
+    Copy-Item backend/.env.example backend/.env
 
 The examples are tracked; actual .env files are ignored. The web needs no variables. Automatic database activation is rejected, including DATABASE_ENABLED=true. MONGODB_URI alone never connects. Do not enter a real/corporate URI. See [the data foundation guide](docs/PHASE1B1_DATA_FOUNDATION.md) for explicit, isolated local replica-set tests. Those tests use synthetic records and never run automatically during ordinary startup.
 

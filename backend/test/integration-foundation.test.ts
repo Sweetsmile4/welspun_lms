@@ -27,7 +27,7 @@ import {
   assertPayloadSize,
 } from '../src/integration/http-conventions.js';
 import * as serialize from '../src/integration/serializers.js';
-import { integrationClient } from '../../web/src/lib/integration/client.js';
+import { integrationClient } from '../../frontend/src/lib/integration/client.js';
 import { memoryCourseHarness } from './course-fixture.js';
 import { publishingFixture } from './publishing-fixture.js';
 
@@ -251,17 +251,17 @@ describe('disabled integration security foundation', () => {
   });
   it('imports all integration modules and invokes disabled boundaries with outbound TCP/DNS/HTTP guards', async () => {
     const script = `
-      const config=await import('./apps/api/src/integration/config.ts');
-      const boundary=await import('./apps/api/src/integration/boundaries.ts');
-      await import('./apps/api/src/integration/serializers.ts');
-      await import('./apps/api/src/integration/http-conventions.ts');
-      await import('./apps/api/src/integration/session-lifecycle.ts');
-      await import('./apps/api/src/integration/csrf-origin.ts');
-      await import('./apps/api/src/integration/gateway-policy.ts');
-      await import('./apps/api/src/integration/workload-auth.ts');
-      await import('./apps/api/src/integration/session-cookie.ts');
+      const config=await import('./backend/src/integration/config.ts');
+      const boundary=await import('./backend/src/integration/boundaries.ts');
+      await import('./backend/src/integration/serializers.ts');
+      await import('./backend/src/integration/http-conventions.ts');
+      await import('./backend/src/integration/session-lifecycle.ts');
+      await import('./backend/src/integration/csrf-origin.ts');
+      await import('./backend/src/integration/gateway-policy.ts');
+      await import('./backend/src/integration/workload-auth.ts');
+      await import('./backend/src/integration/session-cookie.ts');
       await import('@welspun/contracts/integration/v1');
-      const client=await import('./apps/web/src/lib/integration/client.ts');
+      const client=await import('./frontend/src/lib/integration/client.ts');
       const mongoose=(await import('mongoose')).default;
       if(config.parseIntegrationConfiguration().enabled)throw new Error('Enabled');
       if((await boundary.disabledBoundaries.sessions.verify({roles:['admin']})).available)throw new Error('Trusted');
@@ -274,7 +274,12 @@ describe('disabled integration security foundation', () => {
     const folder = await mkdtemp(resolve('work/integration-offline-'));
     try {
       const entry = resolve(folder, 'entry.ts');
-      await writeFile(entry, script.replaceAll("'./apps/", "'../../apps/"));
+      await writeFile(
+        entry,
+        script
+          .replaceAll("'./backend/", "'../../backend/")
+          .replaceAll("'./frontend/", "'../../frontend/"),
+      );
       await build({
         entry: { runtime: entry },
         outDir: folder,
@@ -294,7 +299,7 @@ describe('disabled integration security foundation', () => {
         process.execPath,
         [
           '--import',
-          pathToFileURL(resolve('apps/api/test/integration-no-outbound.mjs'))
+          pathToFileURL(resolve('backend/test/integration-no-outbound.mjs'))
             .href,
           file,
         ],
@@ -309,7 +314,7 @@ describe('disabled integration security foundation', () => {
         process.execPath,
         [
           '--import',
-          pathToFileURL(resolve('apps/api/test/integration-no-outbound.mjs'))
+          pathToFileURL(resolve('backend/test/integration-no-outbound.mjs'))
             .href,
           '-e',
           "try { require('node:net').connect(9,'127.0.0.1'); } catch {}",

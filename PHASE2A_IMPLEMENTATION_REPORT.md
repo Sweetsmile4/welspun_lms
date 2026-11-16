@@ -70,12 +70,12 @@ Initial implementation checks exposed schema-hook TypeScript union typing and li
 
 Created:
 
-- `apps/api/src/modules/catalog/drafts/contracts.ts`: strict internal records, commands, content and aggregate invariants.
-- `apps/api/src/modules/catalog/drafts/models.ts`: Course/ContentDraft Mongoose models and indexes.
-- `apps/api/src/modules/catalog/drafts/repository.ts`: internal transaction-bound store port.
-- `apps/api/src/modules/catalog/drafts/mongo-store.ts`: same-session scoped persistence and CAS.
-- `apps/api/src/modules/catalog/drafts/service.ts`: protected internal authoring, resolver, atomic audit/receipts.
-- `apps/api/test/course-fixture.ts`, `course-scenarios.ts`, `course.test.ts`, `course-models.test.ts`, `course.mongo.test.ts`.
+- `backend/src/modules/catalog/drafts/contracts.ts`: strict internal records, commands, content and aggregate invariants.
+- `backend/src/modules/catalog/drafts/models.ts`: Course/ContentDraft Mongoose models and indexes.
+- `backend/src/modules/catalog/drafts/repository.ts`: internal transaction-bound store port.
+- `backend/src/modules/catalog/drafts/mongo-store.ts`: same-session scoped persistence and CAS.
+- `backend/src/modules/catalog/drafts/service.ts`: protected internal authoring, resolver, atomic audit/receipts.
+- `backend/test/course-fixture.ts`, `course-scenarios.ts`, `course.test.ts`, `course-models.test.ts`, `course.mongo.test.ts`.
 - This report, `docs/PHASE2A_COURSE_DOMAIN_DESIGN.md`, `docs/PHASE2A_COURSE_SERVICE_GUIDE.md`.
 
 Modified only as needed for this phase:
@@ -87,7 +87,7 @@ Modified only as needed for this phase:
 - `package.json`: include course Mongo suite in explicit opt-in command.
 - `README.md` and `catalog/README.md`: current foundation/module status and guide links.
 
-Paths above are under `apps/api/src/modules/` unless explicitly qualified. No dependency/lockfile, frontend, worker, server route, monorepo structure, prototype or corporate configuration change was made. Existing staged/uncommitted work was preserved; nothing was committed or staged.
+Paths above are under `backend/src/modules/` unless explicitly qualified. No dependency/lockfile, frontend, worker, server route, monorepo structure, prototype or corporate configuration change was made. Existing staged/uncommitted work was preserved; nothing was committed or staged.
 
 ## Security limitations and unresolved approvals
 

@@ -1,12 +1,12 @@
 import {
   createLocalIntegrationDatabase,
   LOCAL_INTEGRATION_MARKER,
-} from '../apps/api/src/integration/local-database.js';
-import { localIntegrationSchemaManifest } from '../apps/api/src/integration/schema-manifest.js';
+} from '../backend/src/integration/local-database.js';
+import { localIntegrationSchemaManifest } from '../backend/src/integration/schema-manifest.js';
 import {
   setupLocalIntegrationSchema,
   compareLocalIntegrationSchema,
-} from '../apps/api/src/integration/schema-setup.js';
+} from '../backend/src/integration/schema-setup.js';
 
 const mode = process.argv[2];
 if (!['--dry-run', '--apply'].includes(mode ?? '') || process.argv.length !== 3)

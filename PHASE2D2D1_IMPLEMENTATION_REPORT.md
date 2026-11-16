@@ -44,10 +44,10 @@ An initial TypeScript test fixture widened a method literal and was corrected wi
 
 ## Files refined
 
-- apps/api/src/integration/session-lifecycle.ts, csrf-origin.ts, gateway-policy.ts and workload-auth.ts.
-- apps/api/src/platform/logger.ts: additional redaction and optional destination injection for deterministic tests; existing callers unchanged.
-- apps/api/test/session-transport-foundation.test.ts and session-transport-foundation.mongo.test.ts.
-- apps/api/test/integration-foundation.test.ts: extend existing no-network import coverage.
+- backend/src/integration/session-lifecycle.ts, csrf-origin.ts, gateway-policy.ts and workload-auth.ts.
+- backend/src/platform/logger.ts: additional redaction and optional destination injection for deterministic tests; existing callers unchanged.
+- backend/test/session-transport-foundation.test.ts and session-transport-foundation.mongo.test.ts.
+- backend/test/integration-foundation.test.ts: extend existing no-network import coverage.
 - This report and the four docs/PHASE2D2D1_* guides.
 
 Existing session-crypto.ts, session-cookie.ts, models, local/test database adapters, manifest/setup and bootstrap artifacts were reused. No dependency/lockfile, normal API/worker entry, Next route/provider, public contracts, publishing permission/state machine or test-only domain factory was changed by this task. No staging, commit or reset occurred.

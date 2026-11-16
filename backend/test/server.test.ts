@@ -22,7 +22,7 @@ it('reports a listener failure without logging successful startup', async () => 
   delete environment.MONGODB_URI;
   const child = spawn(
     process.execPath,
-    ['--import', 'tsx', 'apps/api/src/server.ts'],
+    ['--import', 'tsx', 'backend/src/server.ts'],
     {
       env: environment,
       windowsHide: true,

@@ -12,7 +12,7 @@ The Phase 1A `identity/provider.ts` supplies a disabled identity by default, or 
 
 ## Composition and identity trust
 
-Sources are under `apps/api/src/modules/identity/authorization/`. Construct a repository with `createMongoAuthorizationRepository(connection)` and a service with `createAuthorizationService(repository, provider, options)`. Construction alone does not connect. `initializeIndexes()` is an explicit connected-database setup operation, exercised only by opt-in tests in this phase.
+Sources are under `backend/src/modules/identity/authorization/`. Construct a repository with `createMongoAuthorizationRepository(connection)` and a service with `createAuthorizationService(repository, provider, options)`. Construction alone does not connect. `initializeIndexes()` is an explicit connected-database setup operation, exercised only by opt-in tests in this phase.
 
 `AuthorizationIdentityProvider` is a server-owned dependency, never a request body:
 

@@ -2,12 +2,12 @@ import { describe, expect, it } from 'vitest';
 import {
   DEMO_COURSES,
   DEMO_USER,
-} from '../apps/web/src/lib/client-demo/course-data.js';
+} from '../frontend/src/lib/client-demo/course-data.js';
 import {
   calculateHelicalForming,
   inchesToMm,
   mmToInches,
-} from '../apps/web/src/lib/client-demo/math-utils.js';
+} from '../frontend/src/lib/client-demo/math-utils.js';
 
 describe('Client Demonstration Course Data Integrity', () => {
   it('contains the three required assigned courses', () => {

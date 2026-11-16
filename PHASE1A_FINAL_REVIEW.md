@@ -39,13 +39,13 @@ Used source inspection, negative tests, clean installation, workspace resolution
 
 **Evidence:** a request with `application/json; charset=not-a-charset` produced 500. The new regression test failed with “expected 415, got 500.” The same handler also lacked normalization for unsupported content encoding.
 
-**Fix:** `apps/api/src/app.ts` maps the known parser errors `charset.unsupported` and `encoding.unsupported` to a sanitized 415 `UNSUPPORTED_ENCODING` envelope. Unknown failures remain generic 500 responses. No client-supplied status is trusted. The regression covers both unsupported charset and content encoding and now passes.
+**Fix:** `backend/src/app.ts` maps the known parser errors `charset.unsupported` and `encoding.unsupported` to a sanitized 415 `UNSUPPORTED_ENCODING` envelope. Unknown failures remain generic 500 responses. No client-supplied status is trusted. The regression covers both unsupported charset and content encoding and now passes.
 
 ### F02 — WARNING → PASS: failed listener logged successful startup
 
 **Evidence:** with a temporary loopback port already occupied, the real server entry point logged both “API listening on loopback” and “API listener failed,” then exited 1. Express 5 calls the listen callback on failure as well as success.
 
-**Fix:** `apps/api/src/server.ts` checks the callback error before logging success; the existing error event handler retains fatal logging and exit status. `apps/api/test/server.test.ts` launches the actual TypeScript entry point against an occupied ephemeral port, verifies exit 1 and absence of the success log, and cleans up its own processes/socket. The child has a bounded timeout. This test reproduced the defect before the fix and passes afterward.
+**Fix:** `backend/src/server.ts` checks the callback error before logging success; the existing error event handler retains fatal logging and exit status. `backend/test/server.test.ts` launches the actual TypeScript entry point against an occupied ephemeral port, verifies exit 1 and absence of the success log, and cleans up its own processes/socket. The child has a bounded timeout. This test reproduced the defect before the fix and passes afterward.
 
 ### F03 — WARNING → PASS: CI omitted the planned dependency scan
 
@@ -102,10 +102,10 @@ The database adapter intentionally contains an explicit future `connect` method.
 
 ## Files changed by this review
 
-- `apps/api/src/app.ts`: known unsupported-encoding error normalization.
-- `apps/api/src/server.ts`: truthful listener-success logging.
-- `apps/api/test/foundation.test.ts`: focused HTTP, isolation and no-network regression checks.
-- `apps/api/test/server.test.ts`: new listener-failure entry-point regression.
+- `backend/src/app.ts`: known unsupported-encoding error normalization.
+- `backend/src/server.ts`: truthful listener-success logging.
+- `backend/test/foundation.test.ts`: focused HTTP, isolation and no-network regression checks.
+- `backend/test/server.test.ts`: new listener-failure entry-point regression.
 - `tests/e2e/shell.spec.ts`: admin placeholder verification.
 - `playwright.config.ts`: owned test server and validated alternate port.
 - `.github/workflows/ci.yml`: dependency audit step.

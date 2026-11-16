@@ -8,3 +8,6 @@ test-results
 docs/*.md
 **/next-env.d.ts
 work
+
+.worktrees/
+tmp/

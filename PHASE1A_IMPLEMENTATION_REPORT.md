@@ -95,7 +95,7 @@ npm run dev:worker    # Logs disabled queues and exits
 Optional local API configuration:
 
 ```powershell
-Copy-Item apps/api/.env.example apps/api/.env
+Copy-Item backend/.env.example backend/.env
 ```
 
 Actual environment files are ignored. API defaults require no `.env`; web and worker need no configuration. No real database URI is needed. See `docs/IDENTITY_PROVIDER_BOUNDARY.md` for the isolated synthetic fixture and future SSO obligations.
@@ -148,14 +148,14 @@ The repository was initially docs-only. All application and tooling files are ne
 | CI                 | `.github/workflows/ci.yml`                                                                                                                                                                                                                              |
 | Shared config      | `packages/config/package.json`, `packages/config/tsconfig.base.json`                                                                                                                                                                                    |
 | Contracts          | `packages/contracts/package.json`, `tsconfig.json`, `src/index.ts`, `test/contracts.test.ts`                                                                                                                                                            |
-| API configuration  | `apps/api/package.json`, `tsconfig.json`, `tsup.config.ts`, `.env.example`                                                                                                                                                                              |
-| API entry/platform | `apps/api/src/app.ts`, `server.ts`, `platform/environment.ts`, `database.ts`, `logger.ts`, `errors.ts`                                                                                                                                                  |
-| API modules        | `apps/api/src/modules/index.ts`, `identity/provider.ts` and README boundaries in identity, catalog, learning, assessment, simulation, certification and reporting                                                                                       |
-| API tests          | `apps/api/test/foundation.test.ts`                                                                                                                                                                                                                      |
-| Worker             | `apps/worker/package.json`, `tsconfig.json`, `tsup.config.ts`, `.env.example`, `src/index.ts`                                                                                                                                                           |
-| Web configuration  | `apps/web/package.json`, `tsconfig.json`, `next.config.ts`, `next-env.d.ts`, `postcss.config.mjs`, `components.json`, `.env.example`                                                                                                                    |
-| Web routes/styles  | `apps/web/src/app/layout.tsx`, `page.tsx`, `globals.css` and `page.tsx` in dashboard, catalog, my-learning, simulations, certificates and admin                                                                                                         |
-| Web components     | `apps/web/src/components/shell.tsx`, `placeholder.tsx`, `ui/button.tsx`, `ui/card.tsx`, `src/lib/utils.ts`                                                                                                                                              |
+| API configuration  | `backend/package.json`, `tsconfig.json`, `tsup.config.ts`, `.env.example`                                                                                                                                                                               |
+| API entry/platform | `backend/src/app.ts`, `server.ts`, `platform/environment.ts`, `database.ts`, `logger.ts`, `errors.ts`                                                                                                                                                   |
+| API modules        | `backend/src/modules/index.ts`, `identity/provider.ts` and README boundaries in identity, catalog, learning, assessment, simulation, certification and reporting                                                                                        |
+| API tests          | `backend/test/foundation.test.ts`                                                                                                                                                                                                                       |
+| Worker             | `backend/worker/package.json`, `tsconfig.json`, `tsup.config.ts`, `.env.example`, `src/index.ts`                                                                                                                                                        |
+| Web configuration  | `frontend/package.json`, `tsconfig.json`, `next.config.ts`, `next-env.d.ts`, `postcss.config.mjs`, `components.json`, `.env.example`                                                                                                                    |
+| Web routes/styles  | `frontend/src/app/layout.tsx`, `page.tsx`, `globals.css` and `page.tsx` in dashboard, catalog, my-learning, simulations, certificates and admin                                                                                                         |
+| Web components     | `frontend/src/components/shell.tsx`, `placeholder.tsx`, `ui/button.tsx`, `ui/card.tsx`, `src/lib/utils.ts`                                                                                                                                              |
 | Browser tests      | `tests/e2e/shell.spec.ts`                                                                                                                                                                                                                               |
 | New guide          | `docs/IDENTITY_PROVIDER_BOUNDARY.md`                                                                                                                                                                                                                    |
 

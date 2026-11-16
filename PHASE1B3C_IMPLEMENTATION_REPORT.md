@@ -73,24 +73,24 @@ The runner owns a new loopback replica set, generates suite databases and stops 
 
 Created:
 
-- `apps/api/src/platform/mongo-security-audit.ts`
-- `apps/api/src/modules/identity/management/receipts.ts`
-- `apps/api/test/security-hardening-scenarios.ts`
-- `apps/api/test/security-hardening.test.ts`
-- `apps/api/test/security-hardening.mongo.test.ts`
-- `apps/api/test/security-local-fixture.ts`
-- `apps/api/test/security-performance.mongo.test.ts`
+- `backend/src/platform/mongo-security-audit.ts`
+- `backend/src/modules/identity/management/receipts.ts`
+- `backend/test/security-hardening-scenarios.ts`
+- `backend/test/security-hardening.test.ts`
+- `backend/test/security-hardening.mongo.test.ts`
+- `backend/test/security-local-fixture.ts`
+- `backend/test/security-performance.mongo.test.ts`
 - This report and `docs/PHASE1B3C_SECURITY_REVIEW.md`, `docs/PRODUCTION_READINESS_CHECKLIST.md`, `docs/PHASE2_ENTRY_CRITERIA.md`
 
 Modified:
 
-- `apps/api/src/modules/identity/authorization/service.ts`: shared grant plan/replay check and service provenance.
-- `apps/api/src/modules/identity/http-security.ts`: HTTP boundary/controller provenance.
-- `apps/api/src/modules/identity/management/service.ts`: replay authorization, validated versioned receipts and service provenance.
-- `apps/api/src/modules/identity/management/router.ts`: protected composition validation.
-- `apps/api/src/modules/identity/management/store.ts`: compatibility representation for legacy receipt reads.
-- `apps/api/src/modules/identity/management/mongo-store.ts`: explicit version/digest fields and strict new receipt writes.
-- `apps/api/test/management.mongo.test.ts`: use the reusable audit adapter instead of its ad hoc collection writer.
+- `backend/src/modules/identity/authorization/service.ts`: shared grant plan/replay check and service provenance.
+- `backend/src/modules/identity/http-security.ts`: HTTP boundary/controller provenance.
+- `backend/src/modules/identity/management/service.ts`: replay authorization, validated versioned receipts and service provenance.
+- `backend/src/modules/identity/management/router.ts`: protected composition validation.
+- `backend/src/modules/identity/management/store.ts`: compatibility representation for legacy receipt reads.
+- `backend/src/modules/identity/management/mongo-store.ts`: explicit version/digest fields and strict new receipt writes.
+- `backend/test/management.mongo.test.ts`: use the reusable audit adapter instead of its ad hoc collection writer.
 - `package.json`: include hardening and optional performance suites in explicit Mongo validation.
 - `README.md`: current phase, audit model count and review links.
 

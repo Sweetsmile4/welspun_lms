@@ -119,7 +119,9 @@ test.describe('Client Demonstration Portal — End-to-End Walkthrough', () => {
     // Click Preset for 36" Gas Transmission
     await page.getByRole('button', { name: /36" Gas Transmission/i }).click();
     await expect(page.getByText('36" (914.4 mm)')).toBeVisible();
-    await expect(page.getByText('Reference angle', { exact: true })).toBeVisible();
+    await expect(
+      page.getByText('Reference angle', { exact: true }),
+    ).toBeVisible();
 
     // 8. Jump to Scene 6 (Last Scene) via jump pills
     await page.getByRole('button', { name: /Jump to Scene 6/i }).click();

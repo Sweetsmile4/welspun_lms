@@ -14,6 +14,8 @@ const config = [
       'playwright-report/**',
       'test-results/**',
       'work/**',
+      '.worktrees/**',
+      'tmp/**',
     ],
   },
   js.configs.recommended,
@@ -29,7 +31,7 @@ const config = [
   },
   ...next,
   {
-    files: ['apps/web/**/*.{ts,tsx}'],
+    files: ['frontend/**/*.{ts,tsx}'],
     rules: {
       'no-restricted-imports': [
         'error',
@@ -37,8 +39,8 @@ const config = [
           patterns: [
             '@welspun/api',
             '@welspun/api/*',
-            '**/apps/api/**',
-            '**/apps/worker/**',
+            '**/backend/**',
+            '**/backend/worker/**',
           ],
         },
       ],
@@ -61,7 +63,7 @@ const config = [
       ],
     },
   },
-  { settings: { next: { rootDir: 'apps/web/' } } },
+  { settings: { next: { rootDir: 'frontend/' } } },
   prettier,
 ];
 

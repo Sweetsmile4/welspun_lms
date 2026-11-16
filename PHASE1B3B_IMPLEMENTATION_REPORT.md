@@ -111,26 +111,26 @@ Coverage includes credentials/forged headers, disabled employees, default-deny m
 
 Created:
 
-- apps/api/src/modules/identity/management/contracts.ts — strict input/wire schemas and explicit projections.
-- apps/api/src/modules/identity/management/policy.ts — authoritative read scope predicates.
-- apps/api/src/modules/identity/management/service.ts — protected application integration, preconditions, fingerprint/replay and duplicate handling.
-- apps/api/src/modules/identity/management/router.ts — isolated reusable controllers and HTTP protocol.
-- apps/api/src/modules/identity/management/store.ts — same-session page/receipt port.
-- apps/api/src/modules/identity/management/mongo-store.ts — real aggregation and receipt persistence/index.
-- apps/api/test/management-fixture.ts — reused synthetic HTTP identity and rollback-capable test store.
-- apps/api/test/management-scenarios.ts — shared command/security/concurrency scenarios.
-- apps/api/test/management.test.ts — ordinary scenarios, fingerprint and isolation gates.
-- apps/api/test/management.mongo.test.ts — actual scoped aggregation/receipt/index/history tests.
+- backend/src/modules/identity/management/contracts.ts — strict input/wire schemas and explicit projections.
+- backend/src/modules/identity/management/policy.ts — authoritative read scope predicates.
+- backend/src/modules/identity/management/service.ts — protected application integration, preconditions, fingerprint/replay and duplicate handling.
+- backend/src/modules/identity/management/router.ts — isolated reusable controllers and HTTP protocol.
+- backend/src/modules/identity/management/store.ts — same-session page/receipt port.
+- backend/src/modules/identity/management/mongo-store.ts — real aggregation and receipt persistence/index.
+- backend/test/management-fixture.ts — reused synthetic HTTP identity and rollback-capable test store.
+- backend/test/management-scenarios.ts — shared command/security/concurrency scenarios.
+- backend/test/management.test.ts — ordinary scenarios, fingerprint and isolation gates.
+- backend/test/management.mongo.test.ts — actual scoped aggregation/receipt/index/history tests.
 - docs/PHASE1B3B_MANAGEMENT_API_GUIDE.md — complete route, permission, DTO, transaction and operational contracts.
 - PHASE1B3B_IMPLEMENTATION_REPORT.md — this report.
 
 Modified:
 
-- apps/api/src/modules/identity/authorization/types.ts and engine.ts — explicit unit/role/grant read actions and kind allowlist.
-- apps/api/src/modules/identity/authorization/service.ts — trusted same-fence transaction composition; original methods retained.
-- apps/api/src/modules/identity/http-security.ts — optional validated page cursor propagation in existing success envelope helper.
+- backend/src/modules/identity/authorization/types.ts and engine.ts — explicit unit/role/grant read actions and kind allowlist.
+- backend/src/modules/identity/authorization/service.ts — trusted same-fence transaction composition; original methods retained.
+- backend/src/modules/identity/http-security.ts — optional validated page cursor propagation in existing success envelope helper.
 - package.json — include new opt-in MongoDB test suite; dependencies unchanged.
-- README.md and apps/api/src/modules/identity/README.md — phase and module guidance.
+- README.md and backend/src/modules/identity/README.md — phase and module guidance.
 
 Earlier staged/unstaged changes, reports and Phase 0 proposals were preserved. No commit, deployment, production identity, frontend code, original HTML prototype, worker activation or real employee/role seed was introduced.
 

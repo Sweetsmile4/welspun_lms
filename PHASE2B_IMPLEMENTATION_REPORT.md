@@ -86,26 +86,26 @@ Local tests used the existing MongoDB 8.0.4 binary on an owned temporary loopbac
 
 Created:
 
-- `apps/api/src/modules/catalog/publishing/contracts.ts`
-- `apps/api/src/modules/catalog/publishing/repository.ts`
-- `apps/api/src/modules/catalog/publishing/mongo-store.ts`
-- `apps/api/src/modules/catalog/publishing/service.ts`
-- `apps/api/test/publishing-fixture.ts`
-- `apps/api/test/publishing-scenarios.ts`
-- `apps/api/test/publishing.test.ts`
-- `apps/api/test/publishing-integrity.test.ts`
-- `apps/api/test/publishing.mongo.test.ts`
+- `backend/src/modules/catalog/publishing/contracts.ts`
+- `backend/src/modules/catalog/publishing/repository.ts`
+- `backend/src/modules/catalog/publishing/mongo-store.ts`
+- `backend/src/modules/catalog/publishing/service.ts`
+- `backend/test/publishing-fixture.ts`
+- `backend/test/publishing-scenarios.ts`
+- `backend/test/publishing.test.ts`
+- `backend/test/publishing-integrity.test.ts`
+- `backend/test/publishing.mongo.test.ts`
 - This report and `docs/PHASE2B_REVIEW_PUBLISHING_DESIGN.md`, `docs/PHASE2B_REVIEW_SERVICE_GUIDE.md`, `docs/PHASE2B_RELEASE_INTEGRITY_GUIDE.md`.
 
 Modified for this phase:
 
-- `apps/api/src/modules/catalog/drafts/contracts.ts`, `models.ts`, `mongo-store.ts`, `service.ts`: additive contributor provenance, preserving unknown legacy state.
-- `apps/api/src/modules/identity/authorization/types.ts`, `engine.ts`: six explicit actions, own-read/submit and archived historical read support.
-- `apps/api/src/modules/identity/management/receipts.ts`: new receipt namespaces, no previous version repurposed.
-- `apps/api/src/platform/security-audit.ts`, `mongo-security-audit.ts`: narrow event vocabulary and authoritative review/release target ports.
-- `apps/api/test/course-fixture.ts`: rollback-capable review/evidence/release memory state on the same test transaction.
+- `backend/src/modules/catalog/drafts/contracts.ts`, `models.ts`, `mongo-store.ts`, `service.ts`: additive contributor provenance, preserving unknown legacy state.
+- `backend/src/modules/identity/authorization/types.ts`, `engine.ts`: six explicit actions, own-read/submit and archived historical read support.
+- `backend/src/modules/identity/management/receipts.ts`: new receipt namespaces, no previous version repurposed.
+- `backend/src/platform/security-audit.ts`, `mongo-security-audit.ts`: narrow event vocabulary and authoritative review/release target ports.
+- `backend/test/course-fixture.ts`: rollback-capable review/evidence/release memory state on the same test transaction.
 - `package.json`: opt-in publishing Mongo suite.
-- `README.md`, `apps/api/src/modules/catalog/README.md`: current module status and links.
+- `README.md`, `backend/src/modules/catalog/README.md`: current module status and links.
 
 No dependencies or lockfile changed: existing Mongoose/Zod/TypeScript/Vitest tooling suffices. No monorepo restructure, frontend/server route, worker activation, prototype change, production connection or deployment. Prior staged/uncommitted work was preserved; no staging/commit performed.
 
