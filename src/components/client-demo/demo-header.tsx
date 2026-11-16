@@ -88,7 +88,14 @@ export function DemoHeader() {
         </nav>
 
         {/* Right Employee Info & Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <Link
+            href="/client-demo/hr"
+            aria-current={pathname === '/client-demo/hr' ? 'page' : undefined}
+            className="rounded-lg border border-amber-300/40 px-3 py-2 text-xs font-bold text-amber-300 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-amber-300"
+          >
+            HR Tracker
+          </Link>
           {/* Progress pill */}
           <div className="hidden lg:flex items-center gap-2 rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs">
             <span className="text-slate-300">Progress:</span>
