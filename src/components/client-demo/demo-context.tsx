@@ -20,6 +20,7 @@ import type {
 const STORAGE_KEY = 'welspun_client_demo_state_v1';
 
 interface DemoStorageState {
+  activeCourseId?: string;
   isAuthenticated: boolean;
   user: DemoUserProfile | null;
   progress: Record<string, CourseProgress>;
@@ -27,6 +28,8 @@ interface DemoStorageState {
 }
 
 interface DemoContextValue {
+  activeCourseId?: string;
+  setActiveCourse: (courseId: string) => void;
   isAuthenticated: boolean;
   user: DemoUserProfile | null;
   courses: CourseData[];
@@ -83,6 +86,7 @@ function getInitialDemoState(): DemoStorageState {
     if (saved) {
       const parsed: DemoStorageState = JSON.parse(saved);
       return {
+        activeCourseId: parsed.activeCourseId,
         isAuthenticated: Boolean(parsed.isAuthenticated),
         user: parsed.user || DEMO_USER,
         progress: {
@@ -117,6 +121,15 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     // Restore browser storage after hydration so the first render matches the server.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setDemoState(getInitialDemoState());
+  }, []);
+
+  const setActiveCourse = useCallback((courseId: string) => {
+    if (!DEMO_COURSES.some((course) => course.id === courseId)) return;
+    setDemoState((prev) =>
+      prev.activeCourseId === courseId
+        ? prev
+        : { ...prev, activeCourseId: courseId },
+    );
   }, []);
 
   // Sync to localStorage
@@ -341,6 +354,8 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo<DemoContextValue>(
     () => ({
+      activeCourseId: demoState.activeCourseId,
+      setActiveCourse,
       isAuthenticated: demoState.isAuthenticated,
       user: demoState.user,
       courses: DEMO_COURSES,
@@ -358,6 +373,8 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       overallStats,
     }),
     [
+      demoState.activeCourseId,
+      setActiveCourse,
       demoState.isAuthenticated,
       demoState.user,
       demoState.progress,

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import Link from 'next/link';
 import { useDemo } from '@/components/client-demo/demo-context';
 import { DEMO_USER } from '@/lib/client-demo/course-data';
@@ -76,7 +76,7 @@ export default function HRTrackerPage() {
   const [search, setSearch] = useState('');
   const [department, setDepartment] = useState('All departments');
   const [status, setStatus] = useState('All statuses');
-  const [selectedCode, setSelectedCode] = useState(DEMO_USER.employeeCode);
+  const [selectedCode, setSelectedCode] = useState<string | null>(null);
 
   const employees = [
     {
@@ -143,8 +143,6 @@ export default function HRTrackerPage() {
         employee.department === department) &&
       (status === 'All statuses' || employee.status === status),
   );
-  const selected =
-    filtered.find((employee) => employee.code === selectedCode) ?? filtered[0];
   const completedEmployees = employees.filter(
     (employee) => employee.status === 'Completed',
   ).length;
@@ -301,55 +299,99 @@ export default function HRTrackerPage() {
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filtered.map((employee) => (
-                <tr
-                  key={employee.code}
-                  className={
-                    selected?.code === employee.code ? 'bg-blue-50/60' : ''
-                  }
-                >
-                  <th scope="row" className="px-5 py-4 font-semibold">
-                    <span className="block whitespace-nowrap">
-                      {employee.name}
-                    </span>
-                    <span className="block text-xs font-normal text-slate-500">
-                      {employee.code}
-                      {employee.code === DEMO_USER.employeeCode
-                        ? ' · This browser'
-                        : ''}
-                    </span>
-                  </th>
-                  <td className="px-5 py-4">{employee.department}</td>
-                  <td className="px-5 py-4">
-                    {
-                      employee.assignments.filter(
-                        (course) => course.status === 'Completed',
-                      ).length
-                    }{' '}
-                    / {courses.length}
-                  </td>
-                  <td className="px-5 py-4">
-                    <ProgressBar value={employee.percent} />
-                  </td>
-                  <td className="whitespace-nowrap px-5 py-4">
-                    <span
-                      className={`rounded-full px-2 py-1 text-xs font-semibold ${employee.status === 'Completed' ? 'bg-emerald-100 text-emerald-800' : employee.status === 'In progress' ? 'bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-700'}`}
-                    >
-                      {employee.status}
-                    </span>
-                  </td>
-                  <td className="px-5 py-4">
-                    <button
-                      type="button"
-                      aria-label={`View courses for ${employee.name}`}
-                      aria-pressed={selected?.code === employee.code}
-                      aria-controls="employee-course-details"
-                      onClick={() => setSelectedCode(employee.code)}
-                      className="whitespace-nowrap rounded-lg border border-blue-200 px-3 py-2 text-xs font-bold text-blue-800 hover:bg-blue-100 focus-visible:outline-2"
-                    >
-                      View courses
-                    </button>
-                  </td>
-                </tr>
+                <Fragment key={employee.code}>
+                  <tr
+                    className={
+                      selectedCode === employee.code ? 'bg-blue-50/60' : ''
+                    }
+                  >
+                    <th scope="row" className="px-5 py-4 font-semibold">
+                      <span className="block whitespace-nowrap">
+                        {employee.name}
+                      </span>
+                      <span className="block text-xs font-normal text-slate-500">
+                        {employee.code}
+                        {employee.code === DEMO_USER.employeeCode
+                          ? ' · This browser'
+                          : ' · Sample'}
+                      </span>
+                    </th>
+                    <td className="px-5 py-4">{employee.department}</td>
+                    <td className="px-5 py-4">
+                      {
+                        employee.assignments.filter(
+                          (course) => course.status === 'Completed',
+                        ).length
+                      }{' '}
+                      / {courses.length}
+                    </td>
+                    <td className="px-5 py-4">
+                      <ProgressBar value={employee.percent} />
+                    </td>
+                    <td className="whitespace-nowrap px-5 py-4">
+                      <span
+                        className={`rounded-full px-2 py-1 text-xs font-semibold ${employee.status === 'Completed' ? 'bg-emerald-100 text-emerald-800' : employee.status === 'In progress' ? 'bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-700'}`}
+                      >
+                        {employee.status}
+                      </span>
+                    </td>
+                    <td className="px-5 py-4">
+                      <button
+                        type="button"
+                        aria-label={`${selectedCode === employee.code ? 'Hide' : 'View'} courses for ${employee.name}`}
+                        aria-expanded={selectedCode === employee.code}
+                        aria-controls={`courses-${employee.code}`}
+                        onClick={() =>
+                          setSelectedCode((current) =>
+                            current === employee.code ? null : employee.code,
+                          )
+                        }
+                        className="whitespace-nowrap rounded-lg border border-blue-200 px-3 py-2 text-xs font-bold text-blue-800 hover:bg-blue-100 focus-visible:outline-2"
+                      >
+                        {selectedCode === employee.code
+                          ? 'Hide courses -'
+                          : 'View courses +'}
+                      </button>
+                    </td>
+                  </tr>
+                  <tr
+                    id={`courses-${employee.code}`}
+                    hidden={selectedCode !== employee.code}
+                  >
+                    <td colSpan={6} className="bg-blue-50/40 px-5 py-4">
+                      <section aria-labelledby={`heading-${employee.code}`}>
+                        <h3
+                          id={`heading-${employee.code}`}
+                          className="text-sm font-bold"
+                        >
+                          {employee.name} · Course progress
+                        </h3>
+                        <p className="mt-1 text-xs text-slate-500">
+                          {employee.code === DEMO_USER.employeeCode
+                            ? 'Progress saved in this browser'
+                            : 'Sample progress for demonstration'}
+                        </p>
+                        <div className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                          {employee.assignments.map((course) => (
+                            <article
+                              key={course.id}
+                              className="rounded-xl border border-slate-200 bg-white p-4"
+                            >
+                              <h4 className="text-sm font-semibold">
+                                {course.title}
+                              </h4>
+                              <p className="my-3 text-xs text-slate-600">
+                                {course.status} · {course.completed} /{' '}
+                                {course.total} scenes completed
+                              </p>
+                              <ProgressBar value={course.percent} />
+                            </article>
+                          ))}
+                        </div>
+                      </section>
+                    </td>
+                  </tr>
+                </Fragment>
               ))}
             </tbody>
           </table>
@@ -371,35 +413,6 @@ export default function HRTrackerPage() {
           </div>
         )}
       </section>
-      {selected && (
-        <section
-          id="employee-course-details"
-          aria-labelledby="details-heading"
-          className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
-        >
-          <h2 id="details-heading" className="text-lg font-bold">
-            {selected.name} · Course progress
-          </h2>
-          <p className="mt-1 text-xs text-slate-500">
-            {selected.code} · {selected.department}
-          </p>
-          <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {selected.assignments.map((course) => (
-              <article
-                key={course.id}
-                className="rounded-xl border border-slate-200 p-4"
-              >
-                <h3 className="font-semibold">{course.title}</h3>
-                <p className="my-3 text-xs text-slate-600">
-                  {course.status} · {course.completed} / {course.total} scenes
-                  completed
-                </p>
-                <ProgressBar value={course.percent} />
-              </article>
-            ))}
-          </div>
-        </section>
-      )}
     </div>
   );
 }

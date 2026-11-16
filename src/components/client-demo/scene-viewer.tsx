@@ -87,9 +87,9 @@ export function SceneViewer({
   };
 
   return (
-    <article className="space-y-6">
+    <article className="space-y-4">
       {/* Top Breadcrumb & Return to Dashboard Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2">
         <Link
           href="/client-demo/dashboard"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#203d68] hover:text-blue-800 transition-colors"
@@ -108,13 +108,13 @@ export function SceneViewer({
       </div>
 
       {/* Course Title & Scene Progress Navigator */}
-      <div className="rounded-2xl border border-slate-300 bg-white p-5 shadow-xs">
-        <div className="flex flex-wrap items-center justify-between gap-4">
+      <div className="rounded-xl border border-slate-300 bg-white px-4 py-3 shadow-xs">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <span className="text-xs font-bold tracking-widest text-slate-500 uppercase">
+            <span className="text-xs font-medium text-slate-500">
               {course.title}
             </span>
-            <h1 className="text-xl font-extrabold text-slate-900 sm:text-2xl">
+            <h1 className="text-base font-bold leading-snug text-slate-900 sm:text-lg">
               Scene {scene.number}: {scene.title}
             </h1>
             <p className="mt-0.5 text-xs font-medium text-slate-600">
@@ -155,17 +155,20 @@ export function SceneViewer({
         </div>
 
         {/* Course Progress bar */}
-        <div className="mt-4 flex items-center gap-3">
+        <div className="mt-2 flex items-center gap-3">
           <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100">
             <div
               className="h-full bg-gradient-to-r from-blue-600 to-amber-500 transition-all duration-300"
               style={{
-                width: `${((currentSceneIndex + 1) / totalScenes) * 100}%`,
+                width: `${(progress.completedSceneIds.length / totalScenes) * 100}%`,
               }}
             />
           </div>
           <span className="text-xs font-mono font-bold text-slate-600">
-            {Math.round(((currentSceneIndex + 1) / totalScenes) * 100)}%
+            {Math.round(
+              (progress.completedSceneIds.length / totalScenes) * 100,
+            )}
+            %
           </span>
         </div>
       </div>

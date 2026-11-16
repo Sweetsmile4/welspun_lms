@@ -23,7 +23,7 @@ export default function ClientDemoLayout({
       <div className="min-h-screen bg-[#f4f6f9] text-[#172638] flex flex-col font-sans">
         <DemoDisclaimerBanner />
         <DemoHeader />
-        <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
           {children}
           <DemoFooterNotice />
         </main>
