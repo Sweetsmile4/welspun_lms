@@ -19,9 +19,18 @@ export const navigation = [
   { href: '/certificates', title: 'Certificates', icon: Medal },
   { href: '/admin', title: 'Admin dashboard', icon: ShieldCheck },
 ];
-export function Shell({ children }: { children: React.ReactNode }) {
+export function Shell({
+  children,
+  live = false,
+}: {
+  children: React.ReactNode;
+  live?: boolean;
+}) {
   const pathname = usePathname();
-  if (pathname === '/dashboard' || pathname?.startsWith('/client-demo')) {
+  if (
+    (!live && pathname === '/dashboard') ||
+    pathname?.startsWith('/client-demo')
+  ) {
     return <>{children}</>;
   }
   return (
@@ -40,7 +49,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
           <div>
             <p className="text-lg font-bold tracking-wide">WELSPUN CORP</p>
             <p className="text-xs text-slate-300">
-              Learning portal · Foundation
+              {live ? 'Learning portal' : 'Learning portal · Foundation'}
             </p>
           </div>
         </div>
@@ -68,42 +77,46 @@ export function Shell({ children }: { children: React.ReactNode }) {
             </Link>
           ))}
         </nav>
-        <nav
-          aria-label="Development preview navigation"
-          className="flex gap-1 overflow-x-auto px-3 pb-4 lg:flex-col"
-        >
-          <span className="shrink-0 px-3 py-2 text-[10px] font-bold tracking-widest text-slate-300">
-            DEVELOPMENT PREVIEW
-          </span>
-          {[
-            ['/development/courses', 'Course workspace'],
-            ['/development/reviews', 'Review workflows'],
-            ['/development/catalog', 'Development Course Catalog'],
-          ].map(([href, title]) => (
-            <Link
-              key={href}
-              href={href!}
-              aria-current={pathname === href ? 'page' : undefined}
-              className={cn(
-                'shrink-0 rounded-lg px-3 py-3 text-sm focus-visible:outline-2 focus-visible:outline-amber-300',
-                pathname === href
-                  ? 'bg-white/12 text-white font-semibold'
-                  : 'text-slate-300 hover:bg-white/5',
-              )}
-            >
-              {title}
-            </Link>
-          ))}
-        </nav>
+        {!live && (
+          <nav
+            aria-label="Development preview navigation"
+            className="flex gap-1 overflow-x-auto px-3 pb-4 lg:flex-col"
+          >
+            <span className="shrink-0 px-3 py-2 text-[10px] font-bold tracking-widest text-slate-300">
+              DEVELOPMENT PREVIEW
+            </span>
+            {[
+              ['/development/courses', 'Course workspace'],
+              ['/development/reviews', 'Review workflows'],
+              ['/development/catalog', 'Development Course Catalog'],
+            ].map(([href, title]) => (
+              <Link
+                key={href}
+                href={href!}
+                aria-current={pathname === href ? 'page' : undefined}
+                className={cn(
+                  'shrink-0 rounded-lg px-3 py-3 text-sm focus-visible:outline-2 focus-visible:outline-amber-300',
+                  pathname === href
+                    ? 'bg-white/12 text-white font-semibold'
+                    : 'text-slate-300 hover:bg-white/5',
+                )}
+              >
+                {title}
+              </Link>
+            ))}
+          </nav>
+        )}
         <div className="m-5 hidden rounded-xl border border-white/15 p-4 text-xs leading-5 text-slate-300 lg:block">
           <ShieldCheck
             className="mb-2 text-[#f4c568]"
             size={20}
             aria-hidden="true"
           />
-          Local development preview
+          {live ? 'Personal learning workspace' : 'Local development preview'}
           <br />
-          No employee accounts or learning records are connected.
+          {live
+            ? 'Account-based learning. Progress is saved after sign-in.'
+            : 'No employee accounts or learning records are connected.'}
         </div>
       </aside>
       <div className="min-w-0">
@@ -113,19 +126,31 @@ export function Shell({ children }: { children: React.ReactNode }) {
             <span aria-hidden="true" className="mx-2 text-slate-300">
               /
             </span>{' '}
-            Workspace preview
+            {live ? 'Learner workspace' : 'Workspace preview'}
           </p>
           <span className="rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-900">
-            Development foundation
+            {live ? 'Welspun LMS' : 'Development foundation'}
           </span>
         </header>
         <div
           role="note"
           className="border-b border-amber-200 bg-[#fff9ec] px-6 py-3 text-sm text-amber-950 lg:px-10"
         >
-          <strong>Preview only.</strong> Authentication is not configured. All
-          employee sections are placeholders; development workspaces use labeled
-          synthetic fixtures. No real employee data is displayed.
+          {live ? (
+            <>
+              Account-based learning.{' '}
+              <Link href="/login" className="underline">
+                Sign in or create an account
+              </Link>{' '}
+              to save your progress.
+            </>
+          ) : (
+            <>
+              <strong>Preview only.</strong> Authentication is not configured.
+              All employee sections are placeholders; development workspaces use
+              labeled synthetic fixtures. No real employee data is displayed.
+            </>
+          )}
         </div>
         <main
           id="main-content"
@@ -135,9 +160,15 @@ export function Shell({ children }: { children: React.ReactNode }) {
           {children}
         </main>
         <footer className="mx-6 flex flex-wrap justify-between gap-3 border-t border-border py-6 text-xs text-muted-foreground lg:mx-10">
-          <span>Welspun Corp · LMS foundation</span>
+          <span>
+            {live
+              ? 'Welspun Corp · Learning platform'
+              : 'Welspun Corp · LMS foundation'}
+          </span>
           <span className="flex items-center gap-1">
-            Phase 0 policies remain proposals{' '}
+            {live
+              ? 'Training and professional development'
+              : 'Phase 0 policies remain proposals'}{' '}
             <ArrowUpRight size={12} aria-hidden="true" />
           </span>
         </footer>

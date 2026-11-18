@@ -1,6 +1,8 @@
+import { SimulationLabs } from '@/components/live-lms/simulation-labs';
 import { Placeholder } from '@/components/placeholder';
 export const metadata = { title: 'Simulations' };
 export default function Page() {
+  if (process.env.LMS_LIVE_ENABLED === 'true') return <SimulationLabs />;
   return (
     <Placeholder
       title="Simulations"

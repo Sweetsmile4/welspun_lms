@@ -8,7 +8,7 @@ test('demo portal clearly reports its actual backend connection', async ({
     expect(result.status()).toBe(200);
     const body = await result.json();
     expect(body.connection).toBe('connected');
-    expect(body.data.courses).toHaveLength(3);
+    expect(body.data.courses).toHaveLength(5);
     await page.goto('/dashboard');
     await expect(page).toHaveURL(/\/dashboard$/);
     await expect(page.getByTestId('demo-connection')).toContainText(
@@ -45,7 +45,7 @@ test('dashboard aliases share their layout, assignments and browser progress', a
   await page.goto('/');
   await expect(page).toHaveURL(/\/dashboard$/);
   await expect(
-    page.getByRole('heading', { name: /Welcome back/ }),
+    page.getByRole('heading', { name: 'My learning', exact: true }),
   ).toBeVisible();
   await expect(
     page.getByRole('navigation', { name: 'Main navigation' }),
@@ -54,7 +54,7 @@ test('dashboard aliases share their layout, assignments and browser progress', a
     'Checking',
   );
   const heading = await page
-    .getByRole('heading', { name: /Welcome back/ })
+    .getByRole('heading', { name: 'My learning', exact: true })
     .textContent();
   await page.evaluate(() => {
     const key = 'welspun_client_demo_state_v1';
@@ -72,7 +72,7 @@ test('dashboard aliases share their layout, assignments and browser progress', a
   for (const path of ['/client-demo/dashboard', '/dashboard']) {
     await page.goto(path);
     await expect(
-      page.getByRole('heading', { name: /Welcome back/ }),
+      page.getByRole('heading', { name: 'My learning', exact: true }),
     ).toHaveText(heading!);
     await expect(page.getByTestId('demo-connection')).not.toContainText(
       'Checking',

@@ -4,6 +4,8 @@ export const demoCourseIds = [
   'pipe-process-101',
   'safety-essentials-102',
   'quality-basics-103',
+  'coat',
+  'vi',
 ] as const;
 export const demoAssignmentSchema = z.strictObject({
   id: z.enum(demoCourseIds),

@@ -10,13 +10,15 @@ import {
 } from '../frontend/src/lib/client-demo/math-utils.js';
 
 describe('Client Demonstration Course Data Integrity', () => {
-  it('contains the three required assigned courses', () => {
-    expect(DEMO_COURSES).toHaveLength(3);
+  it('contains all five assigned courses', () => {
+    expect(DEMO_COURSES).toHaveLength(5);
     const courseIds = DEMO_COURSES.map((c) => c.id);
     expect(courseIds).toEqual([
       'pipe-process-101',
       'safety-essentials-102',
       'quality-basics-103',
+      'coat',
+      'vi',
     ]);
   });
 
@@ -85,7 +87,7 @@ describe('Client Demonstration Course Data Integrity', () => {
           scene.explanations.operator.checkpoints.length,
         ).toBeGreaterThanOrEqual(3);
         expect(scene.explanations.operator.cues.length).toBeGreaterThanOrEqual(
-          2,
+          course.sourcePdf ? 1 : 2,
         );
         expect(scene.explanations.operator.warnings).toBeTruthy();
 

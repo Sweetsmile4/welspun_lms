@@ -38,3 +38,7 @@ contracts must be synchronized deliberately between branches.
 ## Connected AWS demo
 
 See [the AWS demo deployment guide](docs/AWS_DEMO_DEPLOYMENT.md) for Amplify frontend and Lambda/API Gateway backend setup. No real accounts or database are enabled.
+
+## Account-based learning
+
+See [the live LMS guide](docs/LIVE_LMS.md) for welspun_lms_dev, email/password accounts, persistent progress, administrator setup and AWS configuration.

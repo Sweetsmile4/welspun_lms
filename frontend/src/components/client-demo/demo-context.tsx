@@ -5,6 +5,7 @@ import React, {
   useContext,
   useEffect,
   useState,
+  useRef,
   useCallback,
   useMemo,
 } from 'react';
@@ -20,6 +21,7 @@ import type {
 const STORAGE_KEY = 'welspun_client_demo_state_v1';
 
 interface DemoStorageState {
+  activeCourseId?: string;
   isAuthenticated: boolean;
   user: DemoUserProfile | null;
   progress: Record<string, CourseProgress>;
@@ -29,6 +31,8 @@ interface DemoStorageState {
 interface DemoContextValue {
   connection: 'checking' | 'local' | 'connected' | 'unavailable';
   retryConnection: () => void;
+  activeCourseId?: string;
+  setActiveCourse: (courseId: string) => void;
   isAuthenticated: boolean;
   user: DemoUserProfile | null;
   courses: CourseData[];
@@ -85,6 +89,7 @@ function getInitialDemoState(): DemoStorageState {
     if (saved) {
       const parsed: DemoStorageState = JSON.parse(saved);
       return {
+        activeCourseId: parsed.activeCourseId,
         isAuthenticated: Boolean(parsed.isAuthenticated),
         user: parsed.user || DEMO_USER,
         progress: {
@@ -108,8 +113,26 @@ function getInitialDemoState(): DemoStorageState {
 const DemoContext = createContext<DemoContextValue | undefined>(undefined);
 
 export function DemoProvider({ children }: { children: React.ReactNode }) {
-  const [demoState, setDemoState] =
-    useState<DemoStorageState>(getInitialDemoState);
+  const [demoState, setDemoState] = useState<DemoStorageState>(() => ({
+    isAuthenticated: true,
+    user: DEMO_USER,
+    progress: buildInitialProgress(),
+    explanationMode: 'operator',
+  }));
+  const storageReady = useRef(false);
+  useEffect(() => {
+    // Restore browser storage after hydration so the first render matches the server.
+    setDemoState(getInitialDemoState());
+  }, []);
+
+  const setActiveCourse = useCallback((courseId: string) => {
+    if (!DEMO_COURSES.some((course) => course.id === courseId)) return;
+    setDemoState((prev) =>
+      prev.activeCourseId === courseId
+        ? prev
+        : { ...prev, activeCourseId: courseId },
+    );
+  }, []);
 
   const [connection, setConnection] =
     useState<DemoContextValue['connection']>('checking');
@@ -142,6 +165,10 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
 
   // Sync to localStorage
   useEffect(() => {
+    if (!storageReady.current) {
+      storageReady.current = true;
+      return;
+    }
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(demoState));
     } catch {
@@ -285,6 +312,8 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       const current = prev.progress[courseId];
       const course = DEMO_COURSES.find((c) => c.id === courseId);
       const allSceneIds = course ? course.scenes.map((s) => s.id) : [];
+      if (!course || !allSceneIds.every((id) => current?.answeredQuestions[id]))
+        return prev;
 
       return {
         ...prev,
@@ -356,6 +385,8 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
 
   const value = useMemo<DemoContextValue>(
     () => ({
+      activeCourseId: demoState.activeCourseId,
+      setActiveCourse,
       isAuthenticated: demoState.isAuthenticated,
       user: demoState.user,
       courses,
@@ -378,6 +409,8 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       courses,
       connection,
       retryConnection,
+      demoState.activeCourseId,
+      setActiveCourse,
       demoState.isAuthenticated,
       demoState.user,
       demoState.progress,

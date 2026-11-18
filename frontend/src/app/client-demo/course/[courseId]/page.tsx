@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useDemo } from '@/components/client-demo/demo-context';
@@ -11,7 +11,12 @@ import { AlertCircle, ArrowLeft } from 'lucide-react';
 export default function CourseViewerPage() {
   const params = useParams();
   const courseId = params?.courseId as string;
-  const { courses, getCourseProgress } = useDemo();
+  const { courses, getCourseProgress, setActiveCourse, activeCourseId } =
+    useDemo();
+
+  useEffect(() => {
+    if (activeCourseId !== courseId) setActiveCourse(courseId);
+  }, [courseId, activeCourseId, setActiveCourse]);
 
   const course = courses.find((c) => c.id === courseId);
 

@@ -13,7 +13,18 @@ if (
   url.password
 )
   throw new Error('LMS_BACKEND_ORIGIN must be an exact HTTPS origin');
+const live = process.env.LMS_LIVE_ENABLED === 'true';
+const frontendOrigin = process.env.LMS_FRONTEND_ORIGIN;
+if (
+  live &&
+  (!frontendOrigin ||
+    new URL(frontendOrigin).origin !== frontendOrigin ||
+    !frontendOrigin.startsWith('https://'))
+)
+  throw new Error(
+    'Live deployment requires the exact HTTPS LMS_FRONTEND_ORIGIN',
+  );
 writeFileSync(
   'frontend/.env.production',
-  `LMS_BACKEND_ORIGIN=${value}\nLMS_UI_PREVIEW=false\n`,
+  `LMS_BACKEND_ORIGIN=${value}\nLMS_UI_PREVIEW=false\n${live ? `LMS_LIVE_ENABLED=true\nLMS_FRONTEND_ORIGIN=${frontendOrigin}\n` : ''}`,
 );

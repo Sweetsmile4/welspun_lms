@@ -36,6 +36,7 @@ export interface CourseScene {
     | 'traceability_lineage'
     | 'quarantine_ncr';
   hasInteractiveVisualizer?: boolean;
+  referenceRoute?: string;
   explanations: {
     eli5: {
       title: string;
@@ -62,6 +63,7 @@ export interface CourseScene {
 
 export interface CourseData {
   id: string;
+  sourcePdf?: string;
   title: string;
   code: string;
   subtitle: string;

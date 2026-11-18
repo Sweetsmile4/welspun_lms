@@ -1,3 +1,4 @@
+import { REFERENCE_COURSES } from './reference-courses';
 import type { CourseData, DemoUserProfile } from './types';
 
 export const DEMO_USER: DemoUserProfile = {
@@ -1367,4 +1368,5 @@ export const DEMO_COURSES: CourseData[] = [
       },
     ],
   },
+  ...REFERENCE_COURSES.filter((course) => ['coat', 'vi'].includes(course.id)),
 ];

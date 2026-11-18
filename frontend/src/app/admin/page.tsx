@@ -1,6 +1,8 @@
+import { LiveAdmin } from '@/components/live-lms/admin';
 import { Placeholder } from '@/components/placeholder';
 export const metadata = { title: 'Admin dashboard' };
 export default function Page() {
+  if (process.env.LMS_LIVE_ENABLED === 'true') return <LiveAdmin />;
   return (
     <Placeholder
       title="Admin dashboard"

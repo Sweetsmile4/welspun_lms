@@ -1,13 +1,22 @@
 import type { Metadata } from 'next';
 import { Shell } from '@/components/shell';
 import './globals.css';
+export const dynamic = 'force-dynamic';
 export const metadata: Metadata = {
   title: {
-    default: 'Welspun LMS | Foundation preview',
-    template: '%s | Welspun LMS preview',
+    default:
+      process.env.LMS_LIVE_ENABLED === 'true'
+        ? 'Welspun LMS'
+        : 'Welspun LMS | Foundation preview',
+    template:
+      process.env.LMS_LIVE_ENABLED === 'true'
+        ? '%s | Welspun LMS'
+        : '%s | Welspun LMS preview',
   },
   description:
-    'Phase 1A application foundation. No real employee data or authentication.',
+    process.env.LMS_LIVE_ENABLED === 'true'
+      ? 'Your courses, learning progress and completion records.'
+      : 'Phase 1A application foundation. No real employee data or authentication.',
 };
 export default function RootLayout({
   children,
@@ -15,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Shell>{children}</Shell>
+        <Shell live={process.env.LMS_LIVE_ENABLED === 'true'}>{children}</Shell>
       </body>
     </html>
   );

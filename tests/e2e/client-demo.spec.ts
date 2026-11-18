@@ -1,3 +1,4 @@
+import { DEMO_COURSES } from '../../frontend/src/lib/client-demo/course-data';
 import { test, expect } from '@playwright/test';
 
 test.describe('Client Demonstration Portal — End-to-End Walkthrough', () => {
@@ -27,7 +28,7 @@ test.describe('Client Demonstration Portal — End-to-End Walkthrough', () => {
 
     // Verify Employee Dashboard
     await expect(
-      page.getByRole('heading', { name: /Welcome back, Rajesh Sharma/i }),
+      page.getByRole('heading', { name: 'My learning', exact: true }),
     ).toBeVisible();
     await expect(
       page.getByText('From Steel Coil to Finished Pipe'),
@@ -90,6 +91,17 @@ test.describe('Client Demonstration Portal — End-to-End Walkthrough', () => {
       page.getByRole('heading', { name: /Scene 2: Strip Preparation/i }),
     ).toBeVisible();
 
+    const processCourse = DEMO_COURSES.find(
+      (course) => course.id === 'pipe-process-101',
+    )!;
+    await page
+      .getByRole('radio', {
+        name: processCourse.scenes[1]!.quiz.options.find(
+          (option) => option.isCorrect,
+        )!.text,
+        exact: true,
+      })
+      .click();
     await page.getByRole('button', { name: /Next Scene/i }).click();
     await expect(
       page.getByRole('heading', {
@@ -116,11 +128,22 @@ test.describe('Client Demonstration Portal — End-to-End Walkthrough', () => {
       page.getByRole('heading', { name: /Scene 6: Release & Dispatch/i }),
     ).toBeVisible();
 
-    // Complete course
+    // Completion requires an answered quiz in every chapter, including skipped chapters.
     const completeButton = page.getByRole('button', {
       name: /Complete Course & Finish/i,
     });
-    await expect(completeButton).toBeVisible();
+    await expect(completeButton).toBeDisabled();
+    for (let index = 2; index < processCourse.scenes.length; index++) {
+      const scene = processCourse.scenes[index]!;
+      await page
+        .getByRole('button', {
+          name: new RegExp(`Jump to Scene ${index + 1}:`),
+        })
+        .click();
+      const answer = scene.quiz.options.find((option) => option.isCorrect)!;
+      await page.getByRole('radio', { name: answer.text, exact: true }).click();
+    }
+    await expect(completeButton).toBeEnabled();
     await completeButton.click();
 
     // 9. Returned to Dashboard with Completion Notice
