@@ -2,6 +2,7 @@ import { z } from 'zod';
 import type { Environment } from './environment.js';
 const configurationSchema = z.strictObject({
   uri: z.string().optional(),
+  databaseName: z.literal('welspun_lms_dev').optional(),
   environment: z
     .enum(['development', 'test', 'production'])
     .default('development'),
@@ -17,13 +18,24 @@ export function parseMongoConfiguration(
   if (!result.success) throw new Error('Invalid MongoDB configuration');
   return result.data;
 }
-/** This phase permits only explicit, credential-free, isolated local development/test databases. */
+/** Shared runtime is pinned to welspun_lms_dev; legacy isolated test targets remain separate. */
 export function assertLocalMongoTarget(config: MongoConfiguration) {
   if (!config.uri) throw new Error('MongoDB URI is not configured');
-  if (config.environment === 'production' || !config.isolated)
-    throw new Error('MongoDB requires isolated development/test mode');
   try {
     const uri = new URL(config.uri);
+    if (config.databaseName === 'welspun_lms_dev') {
+      if (
+        uri.protocol !== 'mongodb+srv:' ||
+        !['/', '', '/welspun_lms_dev'].includes(uri.pathname) ||
+        uri.searchParams.get('tls') === 'false' ||
+        uri.searchParams.get('ssl') === 'false' ||
+        uri.hash.length > 0
+      )
+        throw new Error('shared target');
+      return;
+    }
+    if (config.environment === 'production' || !config.isolated)
+      throw new Error('MongoDB requires isolated development/test mode');
     const prefix =
       config.environment === 'test'
         ? '/welspun_lms_test_'
@@ -56,7 +68,8 @@ export function mongoConfigurationFromEnvironment(
   environment: Environment,
 ): MongoConfiguration {
   return parseMongoConfiguration({
-    uri: environment.MONGODB_URI,
+    uri: environment.MONGOURI ?? environment.MONGODB_URI,
+    databaseName: environment.DATABASE_NAME,
     environment: environment.NODE_ENV,
     isolated: environment.ISOLATED_DEVELOPMENT === 'true',
     serverSelectionTimeoutMS: environment.MONGODB_SERVER_SELECTION_TIMEOUT_MS,

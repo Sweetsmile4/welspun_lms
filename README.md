@@ -22,7 +22,7 @@ npm ci
 npm run dev
 ```
 
-API listens on http://127.0.0.1:4000. Ordinary startup does not connect to a database. The worker currently has no registered jobs.
+API listens on http://127.0.0.1:4000. Set `DATABASE_ENABLED=true` only with the approved `MONGOURI` and `DATABASE_NAME=welspun_lms_dev` values; the API then connects to that database before listening. The worker currently has no registered jobs.
 
 ```sh
 npm run check
@@ -38,3 +38,7 @@ contracts must be synchronized deliberately between branches.
 ## Connected AWS demo
 
 See [the AWS demo deployment guide](docs/AWS_DEMO_DEPLOYMENT.md) for Amplify frontend and Lambda/API Gateway backend setup. No real accounts or database are enabled.
+
+## Account-based learning
+
+See [the live LMS guide](docs/LIVE_LMS.md) for welspun_lms_dev, email/password accounts, persistent progress, administrator setup and AWS configuration.

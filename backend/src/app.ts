@@ -1,3 +1,5 @@
+import { createLiveLmsRouter } from './modules/live-lms/router.js';
+import type { Connection } from 'mongoose';
 import { demoBootstrap } from './demo/catalog.js';
 import { randomUUID } from 'node:crypto';
 import express, { type ErrorRequestHandler } from 'express';
@@ -21,6 +23,7 @@ export function createApp(
     readiness?: () => Promise<boolean>;
     logger?: ReturnType<typeof createLogger>;
     isolatedTestRouter?: express.Router;
+    database?: Connection;
   } = {},
 ) {
   if (
@@ -76,7 +79,8 @@ export function createApp(
   );
   router.get('/ready', async (_request, response) => {
     const ready =
-      environment.NODE_ENV !== 'production' &&
+      (environment.LMS_LIVE_ENABLED === 'true' ||
+        environment.NODE_ENV !== 'production') &&
       (await (options.readiness?.() ?? Promise.resolve(true)));
     if (!ready)
       throw new HttpError(
@@ -88,9 +92,18 @@ export function createApp(
       success(
         {
           status: 'ready',
-          scope: 'foundation-only',
-          database: 'disabled',
-          authentication: identity.mode,
+          scope:
+            environment.LMS_LIVE_ENABLED === 'true'
+              ? 'live-lms'
+              : 'foundation-only',
+          database:
+            environment.LMS_LIVE_ENABLED === 'true'
+              ? 'welspun_lms_dev'
+              : 'disabled',
+          authentication:
+            environment.LMS_LIVE_ENABLED === 'true'
+              ? 'email-password'
+              : identity.mode,
           productionReady: false,
         },
         response.locals.requestId,
@@ -142,6 +155,18 @@ export function createApp(
         );
       response.json(success(demoBootstrap, response.locals.requestId));
     });
+  }
+  if (environment.LMS_LIVE_ENABLED === 'true') {
+    if (!options.database || options.database.readyState !== 1)
+      throw new Error('Live LMS requires a connected welspun_lms_dev database');
+    app.use(
+      '/api/v1',
+      createLiveLmsRouter(options.database, {
+        frontendOrigin: environment.LMS_FRONTEND_ORIGIN,
+        production: environment.NODE_ENV === 'production',
+        registrationEnabled: environment.LMS_REGISTRATION_ENABLED === 'true',
+      }),
+    );
   }
   app.use('/api/v1', router);
   if (options.isolatedTestRouter)

@@ -22,7 +22,7 @@ it('exposes only opted-in synthetic demo assignments, without account or mutatio
   const response = await request(enabled).get('/api/v1/demo/bootstrap');
   expect(response.status).toBe(200);
   const result = demoBootstrapEnvelopeSchema.parse(response.body);
-  expect(result.data.courses).toHaveLength(3);
+  expect(result.data.courses).toHaveLength(5);
   expect(result.data.persistence).toBe('browser-local');
   expect(JSON.stringify(result)).not.toMatch(
     /isCorrect|answeredQuestions|password|accessToken/,

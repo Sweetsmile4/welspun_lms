@@ -1,0 +1,1590 @@
+[
+  {
+    "slug": "pipe-process-101",
+    "title": "From Steel Coil to Finished Pipe",
+    "description": "Follow the journey of a hot-rolled steel strip as it uncoils, levels, forms helically at calculated angles, welds inside and out under submerged arc flux, undergoes non-destructive testing, and releases as a high-strength pipeline.",
+    "code": "MFG-HSAW-01",
+    "modules": [
+      {
+        "title": "From Steel Coil to Finished Pipe",
+        "description": "Follow the journey of a hot-rolled steel strip as it uncoils, levels, forms helically at calculated angles, welds inside and out under submerged arc flux, undergoes non-destructive testing, and releases as a high-strength pipeline.",
+        "position": 0,
+        "lessons": [
+          {
+            "title": "Incoming Coil Inspection & Traceability",
+            "description": "Receiving, Hard Stamping & Heat Lineage Verification",
+            "position": 0,
+            "content": {
+              "type": "text",
+              "text": "A 28-metric-ton hot-rolled steel coil arrives on the heavy transport saddle at Bay 1. Before the overhead gantry crane mounts it onto the decoiler car, the operator must verify the physical heat stamp against the mill test certificate (MTR) to prevent mixed-steel heats in high-pressure gas pipeline orders.\n\nStation 1 Receiving Checklist\n\nScan barcode tag and compare against SAP/MES production schedule.\n\nLocate the low-stress hard stamp on the strip outer wrap and confirm Heat Number, Coil ID, and Steel Grade (e.g., API 5L X70M).\n\nPerform 3-point ultrasonic thickness measurement: operator side edge, centerline, and drive side edge.\n\nInspect coil edges for physical transit damage, gouges, or telescoping exceeding 30 mm.\n\nTraceability begins before the steel is cut. When in doubt on heat lineage, stop and tag."
+            },
+            "quiz": {
+              "question": "You scan an incoming coil tag marked Heat #8410, but the permanent hard stamp pressed into the coil edge clearly reads Heat #8419. What is your correct first action?",
+              "context": "The crane operator is waiting to load the coil on the entry saddle to keep the line moving.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "Proceed with uncoiling because the numbers only differ by the last single digit.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. In certified pipeline manufacturing, a single digit difference represents an entirely different metallurgical batch. Mixing heats without authorization invalidates customer certifications."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "Immediately halt loading, affix a physical Yellow Hold tag, and notify Quality Control.",
+                  "isCorrect": true,
+                  "explanation": "Correct! Material traceability in API 5L manufacturing is absolute. Any conflict between digital paperwork and physical steel stamps mandates an immediate Hold and quality escalation before the coil enters processing."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "Take a permanent marker and rewrite the tag number over the steel stamp.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Tampering with or altering hard-stamped numbers is a severe compliance violation and constitutes falsification of quality records."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "Uncoil the first 5 meters to see if the inner stamp matches the tag.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Loading and uncoiling discrepant material risks contaminating downstream cutters and welders. Verification must occur prior to mounting."
+                }
+              ],
+              "standardReference": "API 5L Section 10.2 / Welspun QAP Traceability Clause 4.1"
+            },
+            "diagramType": "coil_receiving"
+          },
+          {
+            "title": "Strip Preparation: Leveling & Edge Milling",
+            "description": "Decoiling, 9-Roll Flattener & Double-V Edge Preparation",
+            "position": 1,
+            "content": {
+              "type": "text",
+              "text": "The steel coil unwinds through the heavy hydraulic peeler knife into the 9-roll flattener. To eliminate residual curvature from coiling, alternating hydraulic rolls level the steel strip flat. High-speed carbide milling cutters then shave both edges simultaneously into precision double-V bevels.\n\nLeveler & Milling Station Checks\n\nInspect top and bottom leveler roll surfaces for foreign metal particles or gouges.\n\nVerify hydraulic leveler pressure is within target setpoint (175 - 195 bar).\n\nCheck edge milling carbide indexable inserts every 400 meters for chipping or excessive wear.\n\nMeasure milled bevel geometry using the calibrated protractor gauge: 30° (+2°/-0°) and 1.5 mm root face.\n\nPrecise edge milling geometry guarantees sound root fusion. Monitor insert wear and root land constantly."
+            },
+            "quiz": {
+              "question": "During mid-shift inspection, your bevel gauge shows the drive-side root face has widened to 3.2 mm (target: 1.5 mm). What is the primary welding risk if this strip continues into the forming head?",
+              "context": "The milling machine vibration has slightly shifted the vertical cutter cartridge.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "The pipe will suffer Lack of Penetration (LOP) in the root seam.",
+                  "isCorrect": true,
+                  "explanation": "Correct! When the root face is twice as thick as specified (3.2 mm vs 1.5 mm), the heat from the submerged arc welding electrodes cannot completely fuse through the root thickness, leaving an unfused seam gap (Lack of Penetration)."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "The pipe will immediately become oval during hydrostatic testing.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Ovality is governed by roll forming geometry and cold expanding, not root face thickness."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "The outer pipe coating will crack during cooling.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. External 3LPE coating occurs much later downstream after pipe fabrication and testing."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "The strip will slip off the drive roller conveyor.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Edge bevel geometry does not control strip mechanical conveyor traction."
+                }
+              ],
+              "standardReference": "WPS-HSAW-01 / API 5L Appendix D Welding Procedures"
+            },
+            "diagramType": "strip_prep"
+          },
+          {
+            "title": "Helical Forming & Three-Roll Geometry",
+            "description": "Forming Angle Kinematics & Dynamic Continuous Curvature",
+            "position": 2,
+            "content": {
+              "type": "text",
+              "text": "The flat, milled strip enters the forming head at a carefully calibrated angle α. Three heavy hydraulic bending rolls curve the strip continuously into a hollow spiral cylinder. As the strip curls around, its trailing edge meets the leading edge of the previously formed spiral loop with sub-millimeter precision.\n\nForming Head Console Operation\n\nVerify forming angle setting on the digital resolver readout matches the setup sheet for the scheduled pipe diameter.\n\nObserve laser seam tracker camera monitor: ensure seam gap remains between 0.6 mm and 1.2 mm.\n\nInspect edge offset (\"high-low\") across the meeting strip edges; must not exceed 1.0 mm.\n\nCheck hydraulic roll pressure balance across the primary bending roll, exit roll, and bottom guide support.\n\nForming angle and edge gap determine weld geometry. Never let strip edges overlap before the welding torch."
+            },
+            "quiz": {
+              "question": "While observing the laser seam tracker at 48-inch pipe production, you notice the gap is pinching shut (0.0 mm) and strip edges are beginning to climb over each other. Which corrective action should the operator take?",
+              "context": "A slight strip camber in the incoming coil is pushing the strip harder against the inner guide.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "Increase welding arc amperage to melt the overlapped steel away.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Welding over overlapped edges creates gross mechanical misalignment, severe weld defects, and potential torch burnouts."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "Fine-tune the exit guide roll / adjust side guide position to restore the proper 0.6–1.2 mm seam gap.",
+                  "isCorrect": true,
+                  "explanation": "Correct! Compensating for incoming coil camber requires micro-adjustment of the side guide roll and exit roll position, relieving mechanical edge overlap and restoring the nominal seam gap before welding."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "Speed up the line feed drive to break through the pinch point.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Accelerating into edge overlap can jam the forming head, fracture roll bearings, or cause emergency line trip."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "Shut off the laser seam tracker so alarms stop sounding.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Disabling safety and tracking sensors violates operating procedures and leads to uncontrolled product defects."
+                }
+              ],
+              "standardReference": "Standard Operating Procedure SOP-FORM-03: Camber & Gap Control"
+            },
+            "diagramType": "helical_forming",
+            "hasInteractiveVisualizer": true
+          },
+          {
+            "title": "Submerged Arc Welding (SAW)",
+            "description": "Dual-Sided Tandem Wire SAW Under Granular Flux Blanket",
+            "position": 3,
+            "content": {
+              "type": "text",
+              "text": "Immediately after temporary continuous gas-metal arc tacking, the formed helical seam is welded permanently using Submerged Arc Welding (SAW). The process occurs in two passes: first on the inside of the pipe (ID pass) and then on the outside (OD pass), with high-amperage wire electrodes buried deep beneath a blanket of protective granular flux.\n\nSAW Welding Console Station\n\nVerify preheat temperature on thick-wall strip is above minimum threshold (> 80°C).\n\nCheck flux delivery hopper level and ensure vacuum suction returns unfused flux continuously.\n\nMonitor welding electrical parameters on console: Lead Wire (DC+) 850A / 34V; Trail Wire (AC) 750A / 38V.\n\nVerify flux is clean, dry, and baked per procedure (moisture content < 0.1%).\n\nDry flux and stable electrical parameters prevent porosity. Guard against moisture at all times."
+            },
+            "quiz": {
+              "question": "A flux hopper heating element fails, allowing cold, ambient humid flux to enter the welding zone. What critical weld defect is most likely to develop?",
+              "context": "Atmospheric humidity is 85% during monsoon season at the plant.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "Excessive pipe ovality.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Ovality is governed by roll forming geometry, not weld flux chemistry."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "Hydrogen-induced cold cracking and wormhole porosity in the weld bead.",
+                  "isCorrect": true,
+                  "explanation": "Correct! Moisture in SAW flux dissociates at arc temperatures into atomic hydrogen and oxygen. Hydrogen dissolves into the molten weld pool and causes porosity, as well as delayed cold cracking (Hydrogen-Induced Cracking - HIC) as the weld cools under restraint."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "Premature dulling of the edge milling cutters.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Edge milling occurs upstream before the strip enters the welding station."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "Loss of hydraulic pump pressure in the uncoiler.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Welding flux moisture has no interaction with hydraulic fluid systems."
+                }
+              ],
+              "standardReference": "WPS-HSAW-01 Section 6: Flux Storage, Baking and Handling"
+            },
+            "diagramType": "submerged_arc_welding"
+          },
+          {
+            "title": "Quality Testing: Hydrostatic & NDT",
+            "description": "100% Phased-Array Ultrasonic Testing & Proof Pressure Hydrotesting",
+            "position": 4,
+            "content": {
+              "type": "text",
+              "text": "After the continuous pipe is cut into 12-meter lengths by the automated flying plasma saw, each individual pipe joint undergoes rigorous non-destructive evaluation. First, an automated multi-probe Ultrasonic Testing (UT) gantry scans the entire spiral weld seam. Then the pipe is clamped in the hydrostatic tester and pumped with high-pressure water to stress the steel to 90% of its yield limit.\n\nHydrostatic & UT Inspection Operations\n\nVerify all air is purged through air bleed valves before pressure ramp-up.\n\nConfirm target test pressure setpoint on digital chart recorder (e.g. 145 bar / 2100 PSI).\n\nHold test pressure for mandatory duration (minimum 10.0 seconds per API 5L).\n\nWatch pressure decay curve: pressure drop must be 0.0 bar during the hold window.\n\nCheck automated UT console for green pass status on weld seam and heat-affected zone (HAZ).\n\nHydrostatic pressure testing proves integrity under real stress. Never accept a pressure drop."
+            },
+            "quiz": {
+              "question": "During the 10-second hydrostatic test hold at 145 bar, the digital chart recorder shows pressure dropping steadily from 145 bar down to 132 bar. No water is spraying from the end gaskets. What does this indicate?",
+              "context": "The pipe joint is pressurized with filtered water inside the guarded test bay.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "The test passes because pressure stayed above 130 bar.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. API 5L mandates zero pressure drop during the hold period. Any drop indicates loss of containment."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "The water was too cold, which caused normal thermal contraction.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. A 13-bar pressure drop in 10 seconds cannot be attributed to ambient thermal contraction in heavy industrial pipe bodies."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "A pressure-containing leak or micro-fissure is present; the pipe fails the test and must be quarantined.",
+                  "isCorrect": true,
+                  "explanation": "Correct! Any measurable pressure drop during the mandatory hold duration proves that pressurized water is escaping through a through-weld flaw, pinhole, or structural defect. The pipe fails proof testing and must be quarantined for NDT root-cause investigation."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "The operator should immediately repressurize to 160 bar to seal the leak.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Never over-pressurize a leaking pipe under test; doing so risks catastrophic burst and violates certified test procedures."
+                }
+              ],
+              "standardReference": "API 5L Section 10.2.6 / Mill Test Procedure TP-HYDRO-01"
+            },
+            "diagramType": "quality_testing"
+          },
+          {
+            "title": "Release & Dispatch: Coating & Traceability Stencil",
+            "description": "Precision End Beveling, 3LPE External Coating & Final Stenciling",
+            "position": 5,
+            "content": {
+              "type": "text",
+              "text": "Having passed all mechanical and non-destructive quality gates, the pipe joint enters the finishing bay. Machine tools face and bevel the pipe ends to precise angles for pipeline field welding. The outer surface receives a high-performance 3-Layer Polyethylene (3LPE) anti-corrosion coating, followed by automated computer-controlled white stencil marking of full pedigree data.\n\nFinishing & Dispatch Checklist\n\nInspect end bevel angle (30° with 1.6 mm root face) using calibrated bevel protractor.\n\nRun the high-voltage holiday detector spark brush (25 kV) over 100% of the coated pipe body; ensure zero spark alarms.\n\nVerify dry film thickness (DFT) of 3LPE coating exceeds minimum contract specification (> 2.8 mm).\n\nCheck stenciled text on pipe body and inside diameter end: verify Heat Number, Pipe Serial Number, Steel Grade, and Welspun Monogram.\n\nThe finished pipe carries the Welspun name. 100% coating integrity and clear stenciling ensure 50 years of safe service."
+            },
+            "quiz": {
+              "question": "While testing the coated pipe body with the 25 kV holiday spark detector, a loud buzzer sounds and an electric blue spark jumps from the brush to the pipe metal at the 7-meter mark. What is the required disposition?",
+              "context": "The pipe is on the final inspection roller bed prior to railcar loading.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "Wipe the area with a wet cloth to silence the alarm and approve the pipe.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Silencing alarms without investigation conceals coating defects that cause premature pipeline corrosion in field service."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "Paint over the spot with standard industrial spray paint.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Spray paint does not meet 3LPE dielectric insulation or moisture barrier requirements."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "Mark the pinhole (holiday), perform an approved heat-shrink patch repair per procedure, and re-test with the spark detector.",
+                  "isCorrect": true,
+                  "explanation": "Correct! The spark detector detects a microscopic pinhole or void through the polyethylene layer down to the bare steel. Per ISO 21809-1, the defect must be marked, abraded, repaired with an approved cross-linked polyolefin repair patch, and 100% spark re-tested before release."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "Ship the pipe as-is because the customer will apply field tape anyway.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Factory-applied coatings must meet zero-holiday acceptance prior to delivery."
+                }
+              ],
+              "standardReference": "ISO 21809-1 Clause 10.3 Holiday Testing / Coating QAP-3LPE-01"
+            },
+            "diagramType": "release_dispatch"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "safety-essentials-102",
+    "title": "Shop Floor Safety Essentials",
+    "description": "Master the critical plant safety principles required across heavy manufacturing: full personal protective equipment (PPE), heavy crane suspended load hazards, Lockout/Tagout (LOTO) energy isolation, and proactive incident reporting.",
+    "code": "SAF-IND-01",
+    "modules": [
+      {
+        "title": "Shop Floor Safety Essentials",
+        "description": "Master the critical plant safety principles required across heavy manufacturing: full personal protective equipment (PPE), heavy crane suspended load hazards, Lockout/Tagout (LOTO) energy isolation, and proactive incident reporting.",
+        "position": 0,
+        "lessons": [
+          {
+            "title": "Personal Protective Equipment & Plant Zones",
+            "description": "Head-to-Toe Protection & Pedestrian Walkway Compliance",
+            "position": 0,
+            "content": {
+              "type": "text",
+              "text": "Entering the high-bay manufacturing area requires immediate transition into full industrial PPE. Massive 30-ton steel coils, high-temperature plasma cutters, and heavy overhead cranes operate 24 hours a day. Marked yellow floor pathways protect pedestrians from automated transfer buggies and heavy machinery.\n\nTurnstile PPE Verification Checklist\n\nHard hat securely fastened with 4-point ratchet suspension (ensure no cracks or stickers hiding damage).\n\nSafety glasses with side shields certified to ANSI Z87.1 (over-glasses for prescription wearers).\n\nClass 2 High-Visibility reflective safety vest zipped shut over clothing.\n\nSteel-toe safety boots with integrated metatarsal guard (ASTM F2413 approved).\n\nHearing protection (earplugs or earmuffs) with NRR rating > 28 dB.\n\nSafety gear is non-negotiable. Stop-Work Authority empowers every employee to protect anyone at risk."
+            },
+            "quiz": {
+              "question": "You see a contractor walking through the active pipe transfer bay without safety glasses while a welder is grinding weld spatter 5 meters away. What should you do?",
+              "context": "You are walking along the designated yellow walkway toward your machine station.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "Ignore the contractor because they are not part of your immediate work crew.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Safety responsibility belongs to everyone. Flying debris does not distinguish between contractors and full-time employees."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "Exercise your Stop-Work Authority, politely stop the contractor, and guide them to the safety glasses dispenser station.",
+                  "isCorrect": true,
+                  "explanation": "Correct! Every employee at Welspun possesses absolute Stop-Work Authority. Intervening immediately prevents irreversible eye injury from flying metallic sparks and grinding dust."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "Wait until the end of your shift to submit a note to HR.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Delayed reporting does nothing to protect the worker from immediate physical danger happening right now."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "Shout at the contractor across the bay while continuing to walk.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Shouting across loud machinery can startle personnel near moving equipment. Approach safely and address the hazard constructively."
+                }
+              ],
+              "standardReference": "Welspun Plant Safety Policy: Stop-Work Authority Charter"
+            },
+            "diagramType": "ppe_safety"
+          },
+          {
+            "title": "Hazard Identification, Suspended Loads & Pinch Points",
+            "description": "Line of Fire Awareness & Stored Mechanical Energy",
+            "position": 1,
+            "content": {
+              "type": "text",
+              "text": "Heavy manufacturing environments contain significant kinetic and stored mechanical energy. High-bay overhead cranes move 30-ton coils through the air, while tightly coiled steel strips store massive spring-like tension. Operators must stay out of the \"Line of Fire\" at all times.\n\nSuspended Load & Coil Band Protocol\n\nListen for crane warning siren/strobe and immediately look up to locate the crane position.\n\nNever stand, walk, or position any body part beneath a suspended load or crane hook.\n\nMaintain a minimum clearance cone: distance equal to load height plus 3 meters.\n\nWhen cutting coil packaging bands, use pneumatic band cutters with safety hold-down arms deployed.\n\nStand to the side outside the radial recoil arc when shearing the final steel retention band.\n\nNever position yourself beneath a suspended load. Respect stored energy and stay out of the Line of Fire."
+            },
+            "quiz": {
+              "question": "An overhead crane is transporting a 25-ton coil toward the uncoiler. The crane travel buzzer is sounding, and the load path passes directly over your workbench. What is your immediate action?",
+              "context": "You are preparing an ultrasonic calibration block on your workbench.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "Stay at your workbench and keep your head down until the crane passes.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Remaining under a suspended load places you in the direct Line of Fire in the event of rigging failure or mechanical brake slip."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "Step back immediately out of the crane travel path to a designated safe zone until the load has fully passed.",
+                  "isCorrect": true,
+                  "explanation": "Correct! You must never remain under a suspended load. Immediately clear the travel corridor and wait until the load has moved past and lowered into its saddle."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "Wave at the crane operator to tell them you are working below.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Crane operators high in the cab have limited visibility angles and cannot react in time if mechanical rigging slips."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "Run quickly directly underneath the moving coil to beat it to the other side.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Running under a moving heavy load drastically increases the risk of tripping and fatal crush injury."
+                }
+              ],
+              "standardReference": "Welspun High-Bay Crane Safety Standard CS-01: Line of Fire"
+            },
+            "diagramType": "hazard_loads"
+          },
+          {
+            "title": "Safe Equipment Operation & Lockout/Tagout (LOTO)",
+            "description": "Zero-Energy State Verification & Hazardous Energy Isolation",
+            "position": 2,
+            "content": {
+              "type": "text",
+              "text": "A maintenance technician needs to clean weld spatter and replace the contact nozzle inside the automatic submerged arc welding head carriage. Even though the operator console switch is set to \"Stop\", high-voltage electrical, 200-bar hydraulic, and 8-bar pneumatic lines remain connected to the machine.\n\nThe 6-Step LOTO Procedure\n\n1. Notify affected operators that the machine is entering lockout.\n\n2. Shut down equipment using normal stopping sequence.\n\n3. Isolate all energy sources: turn main electrical breaker to OFF, close hydraulic isolating valve, close pneumatic valve.\n\n4. Apply personal red padlock and danger tag to the lockout hasp (one person, one lock, one key).\n\n5. Dissipate stored energy: bleed hydraulic accumulator pressure to 0 bar, drain air receivers, apply mechanical safety wedges.\n\n6. Verify Zero Energy State: push the machine start button to confirm it does not turn on, then return switch to OFF.\n\nOne person, one lock, one key. Never trust control switches for body protection."
+            },
+            "quiz": {
+              "question": "You need 30 seconds to wipe dust off an optical sensor located between two hydraulic forming rolls. Can you just press the Emergency Stop button on the pendant instead of performing full LOTO?",
+              "context": "The line is running on schedule and you want to be quick.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "Yes, because 30 seconds is too short to justify full lockout.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Duration does not alter the hazard. A machine can crush or sever a limb in less than 0.2 seconds."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "Yes, as long as another operator promises to stand next to the console.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Human communication and promises fail. Another person cannot physically stop a hydraulic valve from drifting or malfunctioning."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "No. An E-stop is a control device, not energy isolation. Full LOTO and zero-energy verification are mandatory before placing hands in pinch points.",
+                  "isCorrect": true,
+                  "explanation": "Correct! E-stops, light curtains, and safety doors are control circuits that can short-circuit or fail. Any body entry into machinery pinch points mandates complete physical energy isolation, padlock application, and zero-energy verification."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "Yes, provided the hydraulic motor is turned off.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Even if the pump is off, hydraulic accumulators hold high residual pressure that can cause roll movement until bled."
+                }
+              ],
+              "standardReference": "OSHA 1910.147 / Welspun Life-Saving Rule #2: Energy Isolation"
+            },
+            "diagramType": "loto_isolation"
+          },
+          {
+            "title": "Incident Reporting & Near-Miss Escalation",
+            "description": "Proactive Hazard Identification & Zero-Retaliation Reporting",
+            "position": 3,
+            "content": {
+              "type": "text",
+              "text": "While walking past the hydrostatic tester transfer conveyor, an operator notices a high-pressure hydraulic flex hose weeping fluid onto the concrete floor near an electrical conduit. Nobody has slipped or been hurt yet.\n\nNear-Miss Action Steps\n\n1. Make the area safe immediately: place a caution cone, barricade, or spill absorbent pad.\n\n2. Notify the area supervisor verbally.\n\n3. Log the near-miss on the digital safety kiosk or mobile app within the same shift.\n\n4. Confirm the maintenance work order is assigned and tracked to completion.\n\nEvery near-miss is a lesson before an injury. Report hazards immediately to protect your team."
+            },
+            "quiz": {
+              "question": "You find an oily slick on the walkway near the pipe flattener. Nobody has fallen. What is the proper procedure?",
+              "context": "You are halfway through your shift and have production targets to meet.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "Walk around it; maintenance will probably see it during their weekly sweep.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Leaving a known hazard unaddressed invites the next passing employee to slip, fall, and sustain injury."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "Throw a piece of cardboard over the oil so nobody sees it.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Cardboard absorbs oil and becomes an even more dangerous, hidden slip hazard."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "Place a hazard cone, contain the oil with absorbent pads, and file a Near-Miss report so the leak gets repaired.",
+                  "isCorrect": true,
+                  "explanation": "Correct! Immediate containment protects your coworkers, and filing the near-miss report ensures the root mechanical oil leak is repaired by maintenance before someone gets hurt."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "Only report it if someone actually falls and needs medical attention.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Waiting for an actual injury before reporting defeats the entire purpose of proactive safety culture."
+                }
+              ],
+              "standardReference": "Welspun Incident Reporting & Near-Miss Guideline SAF-04"
+            },
+            "diagramType": "near_miss"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "quality-basics-103",
+    "title": "Quality Inspection Basics",
+    "description": "Learn the foundations of certified manufacturing quality: quality gate checkpoints, weld defect classification, heat number traceability, and non-conformance quarantine decisions.",
+    "code": "QAL-INSP-01",
+    "modules": [
+      {
+        "title": "Quality Inspection Basics",
+        "description": "Learn the foundations of certified manufacturing quality: quality gate checkpoints, weld defect classification, heat number traceability, and non-conformance quarantine decisions.",
+        "position": 0,
+        "lessons": [
+          {
+            "title": "Inspection Checkpoints & Sampling Intervals",
+            "description": "Quality Gates, Gauge Calibration & Frequency Control",
+            "position": 0,
+            "content": {
+              "type": "text",
+              "text": "In API 5L linepipe production, quality is verified at predetermined inspection gates: incoming raw coil, continuous strip milling, helical welding, hydrostatic proof testing, ultrasonic testing, and final release. Every measuring tool must carry a valid calibration sticker.\n\nShift Start Quality Tool Check\n\nInspect calibration sticker on calipers, micrometers, and ultrasonic thickness gauges: verify expiration date has not passed.\n\nPerform zero-point check on micrometers against calibrated gauge blocks.\n\nVerify inspection log sheets are loaded with the correct client specification and tolerance limits.\n\nRecord physical measurements at mandated intervals: measure wall thickness at 4 quadrants on every 10th pipe.\n\nNever measure with an expired tool. Calibration validity is the foundation of certified quality."
+            },
+            "quiz": {
+              "question": "Your digital micrometer has a calibration sticker that expired yesterday, but it reads zero when closed and looks clean. Can you use it for the morning inspection run?",
+              "context": "The tool crib is at the far end of the plant building.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "Yes, as long as it reads zero when closed.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Reading zero does not verify linearity, accuracy across the measurement range, or anvil parallelism."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "No. Using an expired tool invalidates quality certifications; you must replace it immediately with a calibrated tool from the tool crib.",
+                  "isCorrect": true,
+                  "explanation": "Correct! Under API Spec Q1 and ISO 9001, any measurement taken with an instrument whose calibration interval has expired is legally invalid. If an audit reveals expired tools were used, every pipe measured with that tool can be rejected by the customer."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "Yes, but apply a manual 5% correction factor to your notes.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Operators cannot invent arbitrary correction factors. All instruments must have documented calibration traceability."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "Yes, but only for the first two pipes of the shift.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Quality standards apply to every pipe without exception."
+                }
+              ],
+              "standardReference": "API Spec Q1 Section 5.8: Control of Testing and Measuring Equipment"
+            },
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Defect Awareness & Classification",
+            "description": "Weld & Base Metal Defects: Porosity, Undercut & LOP",
+            "position": 1,
+            "content": {
+              "type": "text",
+              "text": "Quality inspectors must recognize and classify weld and metal imperfections: undercut, porosity clusters, lack of penetration (LOP), lack of fusion, slag inclusions, and base metal laminations. Critical planar defects have zero tolerance in high-pressure oil and gas pipelines.\n\nWeld Inspection & Visual Identification\n\nInspect weld bead crown for uniform width and smooth transition into base metal.\n\nCheck for undercut: grooves along the edge of the weld bead toe must not exceed 0.5 mm in depth.\n\nVerify absence of surface porosity, pinholes, or crater cracks.\n\nInspect base metal adjacent to weld for arc strikes or heavy mechanical gouges.\n\nSmooth weld transitions prevent fatigue failure. Sharp notches and cracks are strictly unacceptable."
+            },
+            "quiz": {
+              "question": "During visual inspection of the outer weld cap, you detect a sharp continuous groove (undercut) along the weld toe measuring 1.2 mm deep over a length of 150 mm. How do you classify this?",
+              "context": "API 5L specifies maximum undercut depth of 0.5 mm for continuous defects.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "Acceptable cosmetic imperfection that does not require action.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. A 1.2 mm deep undercut is more than double the maximum allowable limit of 0.5 mm."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "Minor flaw that will be concealed by the external 3LPE coating.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Concealing a structural notch under coating creates a dangerous hidden failure point when the pipe is pressurized in the field."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "Critical rejectable defect exceeding API 5L limits; mark the pipe and initiate an approved weld repair procedure.",
+                  "isCorrect": true,
+                  "explanation": "Correct! Undercut deeper than 0.5 mm creates a severe stress riser that can trigger fatigue cracking under operating pipeline pressures. It exceeds acceptance criteria and requires marking, mechanical grinding/gouging, re-welding per approved procedure, and 100% NDT re-inspection."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "Normal variation that will smooth out during hydrostatic testing.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Hydrostatic testing stresses the pipe; it does not heal or smooth out sharp geometric weld defects."
+                }
+              ],
+              "standardReference": "API Spec 5L Section 9.10 / Defect Catalogue QC-DEF-02"
+            },
+            "diagramType": "defect_types"
+          },
+          {
+            "title": "Traceability & Heat Number Lineage",
+            "description": "From Ladle Chemical Heat to Final Pipe Serial Number",
+            "position": 2,
+            "content": {
+              "type": "text",
+              "text": "Every single pipe manufactured carries an unbroken lineage tracing back to the original steel ladle heat, chemical composition, coil roll date, welding machine operator, and test charts. If a pipe in a transcontinental pipeline needs verification 30 years from now, its pedigree must be instantly retrievable.\n\nTraceability Verification Steps\n\nVerify internal pipe end low-stress hard stamp matches the physical traveler card before hydro testing.\n\nEnsure computerized pipe stenciler applies clean, legible white text on pipe outer diameter.\n\nScan pipe barcode at each transfer station to record electronic production tracking.\n\nIf stencil is smeared or unreadable, halt pipe transfer and apply permanent manual paint stencil.\n\nHard stamps and digital lineage protect traceability. Never guess a serial number."
+            },
+            "quiz": {
+              "question": "A pipe arrives at final inspection with its external stencil smeared by cooling water, and the paper barcode label is torn off. How should you verify the pipe identity?",
+              "context": "Two identical-looking pipes are sitting side-by-side on the inspection rack.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "Guess the serial number based on the previous pipe in the rack sequence (+1).",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Never guess serial numbers. If the sequence skipped a pipe due to testing delays, guessing assigns the wrong metallurgical pedigree."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "Locate the permanent low-stress hard stamp inside the pipe end, verify it against the line tracking MES system, and re-stencil.",
+                  "isCorrect": true,
+                  "explanation": "Correct! The permanent low-stress hard stamp applied inside the pipe end prior to hydrostatic testing is the authoritative physical source of truth. Verifying this hard stamp against the digital MES traveler restores verified traceability."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "Assign a brand-new number from the end of the batch to keep the conveyor moving.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Assigning arbitrary new serial numbers severs the link to the actual steel heat and hydrostatic test certificate."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "Ship the pipe without a stencil and let the customer identify it on site.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Unmarked pipes cannot be accepted by clients and will be rejected at destination ports."
+                }
+              ],
+              "standardReference": "Welspun Traceability Standard SOP-TRAC-02 / API 5L Clause 11"
+            },
+            "diagramType": "traceability_lineage"
+          },
+          {
+            "title": "Quality Release Decisions & Quarantine",
+            "description": "Non-Conformance Reports (NCR) & Material Review Board (MRB)",
+            "position": 3,
+            "content": {
+              "type": "text",
+              "text": "When an automated ultrasonic inspection flags an internal weld flaw or hydro test records an anomalous pressure drop, production must instantly stop for that pipe. The pipe is flagged, diverter arms push it into the designated physical quarantine bay, and red HOLD tags are locked in place until formal disposition.\n\nQuarantine Action Protocol\n\n1. Immediately trigger the reject diverter kicker to route pipe into the quarantine holding rack.\n\n2. Affix prominent red \"REJECTED / HOLD - DO NOT MOVE\" tags to both ends of the pipe.\n\n3. Log the pipe serial number and defect description into the electronic Non-Conformance Report (NCR) system.\n\n4. Confirm red quarantine status lights illuminate above the quarantine rack.\n\nQuality hold is absolute. Only authorized QA personnel can release quarantined material."
+            },
+            "quiz": {
+              "question": "A production shift supervisor tells you to remove a red Quarantine tag from a pipe with a minor UT flaw so it can be loaded onto an urgent transport truck to meet the shift quota. What should you do?",
+              "context": "The truck driver is waiting at the dispatch bay.",
+              "options": [
+                {
+                  "id": "opt-1",
+                  "text": "Remove the tag immediately because the shift supervisor is in charge of production operations.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Production hierarchy cannot overrule quality quarantine. Unauthorized release of quarantined goods is a severe compliance violation."
+                },
+                {
+                  "id": "opt-2",
+                  "text": "Maintain the quarantine, refuse to remove the tag, and immediately escalate the situation to the Quality Assurance Manager.",
+                  "isCorrect": true,
+                  "explanation": "Correct! Quality quarantine holds are absolute and legally protected. Under API Spec Q1, only authorized Quality Assurance personnel can approve NCR dispositions and release quarantined product. Production schedules never override quality integrity."
+                },
+                {
+                  "id": "opt-3",
+                  "text": "Take the tag off but write a private warning note to the truck driver.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Warning the driver does not fix or verify the defective pipeline weld."
+                },
+                {
+                  "id": "opt-4",
+                  "text": "Hide the pipe in the back of the yard until next week.",
+                  "isCorrect": false,
+                  "explanation": "Incorrect. Hiding quarantined material prevents formal MRB investigation and repair."
+                }
+              ],
+              "standardReference": "API Spec Q1 Section 5.8 / Welspun Quality Governance Charter"
+            },
+            "diagramType": "quarantine_ncr"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "coat",
+    "title": "coating application External & Internal",
+    "description": "One pipe, from the receiving bay to the dispatch yard. Sixteen stops, outside coating first, then the inside. At each stop you read it in short parts, look at the real equipment, and make the call an inspector makes.",
+    "code": "REF-COAT-01",
+    "sourcePdf": "/learning/coating-application-external-internal.pdf",
+    "modules": [
+      {
+        "title": "coating application External & Internal",
+        "description": "One pipe, from the receiving bay to the dispatch yard. Sixteen stops, outside coating first, then the inside. At each stop you read it in short parts, look at the real equipment, and make the call an inspector makes.",
+        "position": 0,
+        "lessons": [
+          {
+            "title": "Why a pipe needs a coat",
+            "description": "PURPOSE AND TYPES",
+            "position": 0,
+            "content": {
+              "type": "text",
+              "text": "Pipe #W-0417 is bare steel. Buried in soil and water, steel rusts. The coating has one job: keep every corrosive element away from the steel. Everything you will see on this line, from the first wash to the last stencil, exists to make that coat hold.\n\nAt your station\n\nYour station either protects the next one or damages it. A coating can only stick to steel that is clean and rough, and it only protects if it is unbroken. That is why surface preparation and testing get as much attention as the coating itself.\n\nCoating families: 3LPE/3LPP, FBE/DFBE, CWC\n\nTest of failure: soil or water touching steel\n\nBackstop: cathodic protection (CP)\n\nA coating is failed if any soil or water makes contact with the pipe steel."
+            },
+            "quiz": {
+              "question": "Over a pipeline’s life, some coating damage is found and the CP system is working fully. What does the deck say about this situation?",
+              "context": "Pipe #W-0417 is bare steel. Buried in soil and water, steel rusts. The coating has one job: keep every corrosive element away from the steel. Everything you will see on this line, from the first wash to the last stencil, exists to make that coat hold.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Unacceptable: any defect means the pipe must be replaced",
+                  "isCorrect": false,
+                  "explanation": "The deck states that some degree of coating failure is unavoidable, that CP is a cost-effective solution, and that a low level of defects with a fully effective CP system is a normal, acceptable condition. That is not a licence for defects: the plant’s job is to keep the starting condition as clean as possible."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Normal and acceptable for most operators, because some failure is unavoidable and CP covers it",
+                  "isCorrect": true,
+                  "explanation": "The deck states that some degree of coating failure is unavoidable, that CP is a cost-effective solution, and that a low level of defects with a fully effective CP system is a normal, acceptable condition. That is not a licence for defects: the plant’s job is to keep the starting condition as clean as possible."
+                },
+                {
+                  "id": "option-2",
+                  "text": "It proves the coating was badly applied at the plant",
+                  "isCorrect": false,
+                  "explanation": "The deck states that some degree of coating failure is unavoidable, that CP is a cost-effective solution, and that a low level of defects with a fully effective CP system is a normal, acceptable condition. That is not a licence for defects: the plant’s job is to keep the starting condition as clean as possible."
+                }
+              ],
+              "standardReference": "deck p.2, p.22, p.23"
+            },
+            "referenceRoute": "coat-c1",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Arrival and the hot wash",
+            "description": "RECEIVING INSPECTION AND WATER WASH",
+            "position": 1,
+            "content": {
+              "type": "text",
+              "text": "The pipe is checked at receiving inspection, then rolls into a high pressure hot water wash. The wash takes off what blasting would otherwise have to fight: loose dust, mud, soluble salts and chlorides. An air knife wipes the water off before the pipe moves on.\n\nAt your station\n\nBoth flow charts open with receiving inspection, then water wash, which is marked optional (*). Optional means the project specification decides, so check the order before you assume the step is on or off. The same chart shows the NTC re-process loop returning here.\n\nSpray pressure: up to 100 bar\n\nWater temperature: up to 70 °C (if required)\n\nRemoves: dust, mud, soluble salts, chlorides\n\nDrying: compressed-air knife\n\nOptional on the chart means “as the project specification requires”, not “skip when busy”."
+            },
+            "quiz": {
+              "question": "Looking at the two flow charts, which early station is marked optional on BOTH the 3LPE/3LPP chart and the FBE/DFBE chart?",
+              "context": "The pipe is checked at receiving inspection, then rolls into a high pressure hot water wash. The wash takes off what blasting would otherwise have to fight: loose dust, mud, soluble salts and chlorides. An air knife wipes the water off before the pipe moves on.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Receiving inspection",
+                  "isCorrect": false,
+                  "explanation": "Water wash carries the asterisk on both charts. Preheating is starred only on the 3LPE/3LPP chart; on the FBE/DFBE chart it is a standard station. The footnote on both says optional stations apply as per project specification requirements."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Water wash",
+                  "isCorrect": true,
+                  "explanation": "Water wash carries the asterisk on both charts. Preheating is starred only on the 3LPE/3LPP chart; on the FBE/DFBE chart it is a standard station. The footnote on both says optional stations apply as per project specification requirements."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Preheating",
+                  "isCorrect": false,
+                  "explanation": "Water wash carries the asterisk on both charts. Preheating is starred only on the 3LPE/3LPP chart; on the FBE/DFBE chart it is a standard station. The footnote on both says optional stations apply as per project specification requirements."
+                }
+              ],
+              "standardReference": "deck p.4, p.5, p.6"
+            },
+            "referenceRoute": "coat-c2",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Preheat: dry before you blast",
+            "description": "GAS OVEN",
+            "position": 2,
+            "content": {
+              "type": "text",
+              "text": "The pipe enters a gas oven that sits right before the blast machines. Seven radiation burners warm the steel so any wetness is gone before abrasive hits it. Pyrometers watch the temperature all the time.\n\nAt your station\n\nCheck the pyrometer display at the oven. The steel is raised up to 85 °C, using LPG or natural gas as fuel. The point is a surface free from moisture, not a hot pipe for its own sake.\n\nBurners: 7 × 500 kW\n\nThroughput: 125 MT/hr\n\nSteel temperature: up to 85 °C\n\nFuel: LPG or natural gas\n\nMonitoring: radiation pyrometers\n\nThe oven’s job is to remove wetness before blast cleaning."
+            },
+            "quiz": {
+              "question": "What is the purpose of the gas oven before the blast machines?",
+              "context": "The pipe enters a gas oven that sits right before the blast machines. Seven radiation burners warm the steel so any wetness is gone before abrasive hits it. Pyrometers watch the temperature all the time.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "To cure the epoxy",
+                  "isCorrect": false,
+                  "explanation": "The deck states the oven removes any wetness and makes the surface free from moisture before blast cleaning. The 250 °C figure belongs to the induction heater much later in the line."
+                },
+                {
+                  "id": "option-1",
+                  "text": "To remove wetness so the surface is free from moisture before blast cleaning",
+                  "isCorrect": true,
+                  "explanation": "The deck states the oven removes any wetness and makes the surface free from moisture before blast cleaning. The 250 °C figure belongs to the induction heater much later in the line."
+                },
+                {
+                  "id": "option-2",
+                  "text": "To bring the pipe to 250 °C",
+                  "isCorrect": false,
+                  "explanation": "The deck states the oven removes any wetness and makes the surface free from moisture before blast cleaning. The 250 °C figure belongs to the induction heater much later in the line."
+                }
+              ],
+              "standardReference": "deck p.6"
+            },
+            "referenceRoute": "coat-c3",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Blasting: clean and rough",
+            "description": "ABRASIVE BLASTING",
+            "position": 3,
+            "content": {
+              "type": "text",
+              "text": "Pipe #W-0417 enters the blast machines. Steel grit hurled at 80 metres a second strips away contamination and leaves the surface rough, so the coating has something to grip. It happens in two stages, with two blast wheels in each.\n\nAt your station\n\nTwo things matter at this station: how clean (Sa2½ to Sa3) and how rough (anchor pattern 50 to 110 microns). The grit is screened all the time and fine dust is pulled out by bag-house collectors, so the pipe and the abrasive stay dust-free.\n\nCleanliness: Sa2½ to Sa3 (ISO 8501-1)\n\nAnchor pattern: 50 to 110 µm\n\nStages: 2 sets, 2 wheels each\n\nThrow velocity: 80 m/s\n\nCapacity: 600 m²/hr each, over 800 combined\n\nAbrasive: steel grit GP18/25/40 or shot S280/S330\n\nCleanliness Sa2½ to Sa3 and anchor pattern 50 to 110 µm. The next station measures both."
+            },
+            "quiz": {
+              "question": "Which pair describes what external blasting must deliver, according to the deck?",
+              "context": "Pipe #W-0417 enters the blast machines. Steel grit hurled at 80 metres a second strips away contamination and leaves the surface rough, so the coating has something to grip. It happens in two stages, with two blast wheels in each.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Sa1 to Sa2 and 10 to 50 µm",
+                  "isCorrect": false,
+                  "explanation": "The deck states Sa2½ to Sa3 against ISO 8501-1 and an anchor pattern of 50 to 110 microns. The next station inspects exactly these two things."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Sa2½ to Sa3 and 50 to 110 µm",
+                  "isCorrect": true,
+                  "explanation": "The deck states Sa2½ to Sa3 against ISO 8501-1 and an anchor pattern of 50 to 110 microns. The next station inspects exactly these two things."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Sa3 only and 200 µm",
+                  "isCorrect": false,
+                  "explanation": "The deck states Sa2½ to Sa3 against ISO 8501-1 and an anchor pattern of 50 to 110 microns. The next station inspects exactly these two things."
+                }
+              ],
+              "standardReference": "deck p.7"
+            },
+            "referenceRoute": "coat-c4",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "The blast gate",
+            "description": "BLASTED SURFACE INSPECTION",
+            "position": 4,
+            "content": {
+              "type": "text",
+              "text": "This is where the pipe can be stopped. An inspector compares it with the rust-grade book, measures its roughness, checks for salt and dust, and looks for steel or surface defects. OK goes to the coating line. NOT OK takes the NTC re-process route back to receiving inspection.\n\nAt your station\n\nFive checks, all must pass: visual cleanliness (Sa2½ to Sa3 against ISO 8501-1 and SSPC-VIS 1 photographs), anchor profile with the digital roughness gauge, salt contamination with the meter, dust degree per ISO 8502-3, and other surface defects.\n\nCleanliness: Sa2½ to Sa3, visual\n\nAnchor profile: 50 to 110 µm\n\nSalt: measured with meter\n\nDust: ISO 8502-3 (1 to 5 chart)\n\nNOT OK: NTC re-process\n\nNOT OK is not scrap. It is the re-process route, and the pipe runs surface preparation again."
+            },
+            "quiz": {
+              "question": "A blasted pipe passes the visual cleanliness check and the roughness reading. Is the surface inspection finished?",
+              "context": "This is where the pipe can be stopped. An inspector compares it with the rust-grade book, measures its roughness, checks for salt and dust, and looks for steel or surface defects. OK goes to the coating line. NOT OK takes the NTC re-process route back to receiving inspection.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Yes, those two are all that matter",
+                  "isCorrect": false,
+                  "explanation": "The deck lists five parts to the inspection of surface preparation: cleanliness, anchor profile, salt contamination, degree of dust per ISO 8502-3, and other steel and surface defects. A pipe goes to the coating line only when it clears them all."
+                },
+                {
+                  "id": "option-1",
+                  "text": "No. Salt contamination, dust degree and any other steel or surface defects are also part of the inspection",
+                  "isCorrect": true,
+                  "explanation": "The deck lists five parts to the inspection of surface preparation: cleanliness, anchor profile, salt contamination, degree of dust per ISO 8502-3, and other steel and surface defects. A pipe goes to the coating line only when it clears them all."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Only for FBE pipes",
+                  "isCorrect": false,
+                  "explanation": "The deck lists five parts to the inspection of surface preparation: cleanliness, anchor profile, salt contamination, degree of dust per ISO 8502-3, and other steel and surface defects. A pipe goes to the coating line only when it clears them all."
+                }
+              ],
+              "standardReference": "deck p.8, p.4, p.5"
+            },
+            "referenceRoute": "coat-c5",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Acid wash and the rinse",
+            "description": "PHOSPHORIC ACID AND HIGH PRESSURE WATER WASH",
+            "position": 5,
+            "content": {
+              "type": "text",
+              "text": "After the blast gate and a first induction pre heat, the pipe meets a phosphoric acid wash. The acid reacts with chlorides and other soluble salts left on the surface and loosens their grip. A high pressure rinse with clean RO water then carries them away, and the pipe is dried.\n\nAt your station\n\nDwell time is set in advance. The rinse uses low conductivity RO water. The whole process is connected to an acid neutralizer and the ETP system, so the waste is treated and not drained. Drying is by compressed-air knife and a 1200 kW induction heater.\n\nSolution: Oakite 31/33\n\nRinse water: RO, up to 80 °C\n\nPressure: 150 bar\n\nFlow: 2500 litres/hour\n\nDrying: air knife + 1200 kW induction heater\n\nWaste: acid neutralizer and ETP\n\nThe acid wash targets chlorides and soluble salts; the rinse and drying finish the job."
+            },
+            "quiz": {
+              "question": "What does the phosphoric acid wash do, according to the deck?",
+              "context": "After the blast gate and a first induction pre heat, the pipe meets a phosphoric acid wash. The acid reacts with chlorides and other soluble salts left on the surface and loosens their grip. A high pressure rinse with clean RO water then carries them away, and the pipe is dried.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Reacts with chlorides and soluble salts so they lose their bond with the pipe surface",
+                  "isCorrect": true,
+                  "explanation": "The deck says phosphoric acid reacts with chlorides and other soluble salts on the pipe surface so they lose their bond with it. Roughness is the blasting stage’s job, which came earlier."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Roughens the steel to 50 to 110 µm",
+                  "isCorrect": false,
+                  "explanation": "The deck says phosphoric acid reacts with chlorides and other soluble salts on the pipe surface so they lose their bond with it. Roughness is the blasting stage’s job, which came earlier."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Cools the pipe before the epoxy",
+                  "isCorrect": false,
+                  "explanation": "The deck says phosphoric acid reacts with chlorides and other soluble salts on the pipe surface so they lose their bond with it. Roughness is the blasting stage’s job, which came earlier."
+                }
+              ],
+              "standardReference": "deck p.9, p.4"
+            },
+            "referenceRoute": "coat-c6",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Induction heating to 250 °C",
+            "description": "INDUCTION HEATER",
+            "position": 6,
+            "content": {
+              "type": "text",
+              "text": "The clean pipe now passes through two induction heaters in series. They bring it to coating temperature and hold it there. Inline displays show and record the pipe temperature, because the epoxy powder that comes next only behaves correctly on steel at the right heat.\n\nAt your station\n\nWatch the temperature display and record. The target is 250 °C, or whatever the FBE powder maker recommends. Two heaters in series are there to keep the surface temperature uniform.\n\nCapacity: 2000 kW\n\nFrequency: 600 to 1500 Hz, variable\n\nThroughput: 125 MT/hr for ΔT 225 °C\n\nPipe temperature: 250 °C, or per FBE powder\n\nMonitoring: inline display and recording\n\n250 °C is the default. The FBE powder’s own recommendation can override it."
+            },
+            "quiz": {
+              "question": "The FBE powder maker recommends a different pipe temperature than 250 °C. What does the deck say?",
+              "context": "The clean pipe now passes through two induction heaters in series. They bring it to coating temperature and hold it there. Inline displays show and record the pipe temperature, because the epoxy powder that comes next only behaves correctly on steel at the right heat.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Hold 250 °C regardless",
+                  "isCorrect": false,
+                  "explanation": "The deck says the heater helps maintain pipe temperature at 250 °C “or as per recommendation of FBE powder”. The powder data sheet governs."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Run to the powder maker’s recommendation",
+                  "isCorrect": true,
+                  "explanation": "The deck says the heater helps maintain pipe temperature at 250 °C “or as per recommendation of FBE powder”. The powder data sheet governs."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Run cooler to save energy",
+                  "isCorrect": false,
+                  "explanation": "The deck says the heater helps maintain pipe temperature at 250 °C “or as per recommendation of FBE powder”. The powder data sheet governs."
+                }
+              ],
+              "standardReference": "deck p.10"
+            },
+            "referenceRoute": "coat-c7",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "The epoxy booth",
+            "description": "FUSION BONDED EPOXY SPRAY",
+            "position": 7,
+            "content": {
+              "type": "text",
+              "text": "The hot pipe arrives in a spray booth. Up to sixty electrostatic guns coat it with epoxy powder, which melts and fuses on contact with the hot steel. On a 3LPE or 3LPP pipe this is the first of three layers, the primer. On an FBE pipe it is the whole coat, and DFBE uses a second booth for a second layer.\n\nAt your station\n\nPowder arrives straight from air-conditioned storage, is sieved and fluidized without a break, and is carried by completely dry, oil-free air. The compressed-air quality is monitored all the time with an alarm. The booth is tied to automatic fire detection and CO₂ suppression.\n\nSpray guns: up to 60 × 20 kg/hr\n\nSpray capacity: 1200 kg/hr\n\nMax thickness, single: 600 µm\n\nMax thickness, dual: 1600 µm\n\nAir dew point: −40 °C\n\nSafety: fire detection + CO₂ suppression\n\nDry, oil-free air at a −40 °C dew point carries the powder."
+            },
+            "quiz": {
+              "question": "The powder is carried by compressed air. What does the deck require of that air?",
+              "context": "The hot pipe arrives in a spray booth. Up to sixty electrostatic guns coat it with epoxy powder, which melts and fuses on contact with the hot steel. On a 3LPE or 3LPP pipe this is the first of three layers, the primer. On an FBE pipe it is the whole coat, and DFBE uses a second booth for a second layer.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Warm and humid",
+                  "isCorrect": false,
+                  "explanation": "The deck specifies complete dry and oil-free compressed air at a dew point of −40 °C, monitored continuously with an alarm. Moisture or oil in the air reaches the powder and then the coating."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Completely dry and oil-free, dew point −40 °C",
+                  "isCorrect": true,
+                  "explanation": "The deck specifies complete dry and oil-free compressed air at a dew point of −40 °C, monitored continuously with an alarm. Moisture or oil in the air reaches the powder and then the coating."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Any plant air will do",
+                  "isCorrect": false,
+                  "explanation": "The deck specifies complete dry and oil-free compressed air at a dew point of −40 °C, monitored continuously with an alarm. Moisture or oil in the air reaches the powder and then the coating."
+                }
+              ],
+              "standardReference": "deck p.11, p.12"
+            },
+            "referenceRoute": "coat-c8",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Layers two and three, and the weld seam",
+            "description": "ADHESIVE, PE / PP AND SEAM SYSTEM",
+            "position": 8,
+            "content": {
+              "type": "text",
+              "text": "Two extruders feed through flat T-dies: a small one for the adhesive and two large ones for the polyethylene or polypropylene topcoat. A press-on roller smooths the layers onto the pipe. On a spiral pipe, a laser finds the raised weld seam and a plunger pushes extra molten coating over it.\n\nAt your station\n\nDryers take moisture out of the granules before they melt. If the body reads fine but the weld seam reads thin, go to the weld seam system first: laser seam detection and the hydraulic plunger.\n\nAdhesive extruder: 250 kg/hr, 400 mm T-die\n\nPE/PP extruders: 2 × 1200 kg/hr, 1200 mm T-die\n\nSeam detection: laser sensors + PLC\n\nSeam coating: hydraulic plunger over the bead\n\nApplication: press-on roller from the top\n\nThe weld seam system exists to prevent low thickness on the seam without thickening the whole pipe."
+            },
+            "quiz": {
+              "question": "Thickness on the pipe body is fine, but readings right on top of the weld seam are low. Which system do you check first?",
+              "context": "Two extruders feed through flat T-dies: a small one for the adhesive and two large ones for the polyethylene or polypropylene topcoat. A press-on roller smooths the layers onto the pipe. On a spiral pipe, a laser finds the raised weld seam and a plunger pushes extra molten coating over it.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "The induction heater",
+                  "isCorrect": false,
+                  "explanation": "The seam system is built to prevent low coating thickness over the weld seam. The induction heater warms the whole pipe and the quench cools it; neither adds coating to the seam."
+                },
+                {
+                  "id": "option-1",
+                  "text": "The weld seam system: laser detection and the hydraulic plunger",
+                  "isCorrect": true,
+                  "explanation": "The seam system is built to prevent low coating thickness over the weld seam. The induction heater warms the whole pipe and the quench cools it; neither adds coating to the seam."
+                },
+                {
+                  "id": "option-2",
+                  "text": "The quench troughs",
+                  "isCorrect": false,
+                  "explanation": "The seam system is built to prevent low coating thickness over the weld seam. The induction heater warms the whole pipe and the quench cools it; neither adds coating to the seam."
+                }
+              ],
+              "standardReference": "deck p.13, p.14"
+            },
+            "referenceRoute": "coat-c9",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "The quench: 40 metres of water",
+            "description": "QUENCHING ZONE",
+            "position": 9,
+            "content": {
+              "type": "text",
+              "text": "The freshly coated pipe is hot and soft. It slides through a 40 metre zone of controlled water cooling, on the outside and on the inside. The water must flow calmly. A rough pour would leave marks on the new surface.\n\nAt your station\n\nChilled and cooled water are used in different areas. Special troughs keep the flow laminar so there are no water marks. High pressure nozzles cool the inside of the pipe as well.\n\nLength: 40 m\n\nWater: chilled and cooled, by area\n\nFlow: laminar, special troughs\n\nInside: high pressure nozzles\n\nLaminar flow prevents water marks."
+            },
+            "quiz": {
+              "question": "Which statement about the quench matches the deck?",
+              "context": "The freshly coated pipe is hot and soft. It slides through a 40 metre zone of controlled water cooling, on the outside and on the inside. The water must flow calmly. A rough pour would leave marks on the new surface.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Only the outside is cooled",
+                  "isCorrect": false,
+                  "explanation": "The deck says laminar flow is kept with special troughs to prevent water marks, and the inside is cooled with high pressure nozzles. Chilled and cooled water are used in different areas."
+                },
+                {
+                  "id": "option-1",
+                  "text": "The outside is cooled with laminar flow troughs and the inside with high pressure nozzles",
+                  "isCorrect": true,
+                  "explanation": "The deck says laminar flow is kept with special troughs to prevent water marks, and the inside is cooled with high pressure nozzles. Chilled and cooled water are used in different areas."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Only chilled water is used",
+                  "isCorrect": false,
+                  "explanation": "The deck says laminar flow is kept with special troughs to prevent water marks, and the inside is cooled with high pressure nozzles. Chilled and cooled water are used in different areas."
+                }
+              ],
+              "standardReference": "deck p.15"
+            },
+            "referenceRoute": "coat-c10",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Measure it and look at it",
+            "description": "THICKNESS AND VISUAL INSPECTION",
+            "position": 10,
+            "content": {
+              "type": "text",
+              "text": "After quench, the pipe gets its first look and its first measurements. A digital eddy current gauge reads the epoxy layer, the adhesive layer and the total coating thickness. A visual and dimensional inspection follows on the flow chart.\n\nAt your station\n\nCalibrate the gauge with standard foils or strips every shift before you trust any reading. Look at the surface and check the dimensions the order calls for.\n\nGauge: digital eddy current\n\nMeasures: epoxy layer, adhesive layer, total thickness\n\nCalibration check: every shift, standard foils/strips\n\nA gauge that was right yesterday is not proven right today. Verify every shift."
+            },
+            "quiz": {
+              "question": "It is the start of a new shift. The thickness gauge read perfectly yesterday. Do you use it straight away?",
+              "context": "After quench, the pipe gets its first look and its first measurements. A digital eddy current gauge reads the epoxy layer, the adhesive layer and the total coating thickness. A visual and dimensional inspection follows on the flow chart.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Yes, it was fine yesterday",
+                  "isCorrect": false,
+                  "explanation": "The deck says calibration is verified with standard calibration foils or strips every shift. A drifting gauge can give readings that look normal."
+                },
+                {
+                  "id": "option-1",
+                  "text": "No. Verify it against standard foils or strips first",
+                  "isCorrect": true,
+                  "explanation": "The deck says calibration is verified with standard calibration foils or strips every shift. A drifting gauge can give readings that look normal."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Only if readings start to look strange",
+                  "isCorrect": false,
+                  "explanation": "The deck says calibration is verified with standard calibration foils or strips every shift. A drifting gauge can give readings that look normal."
+                }
+              ],
+              "standardReference": "deck p.16, p.4, p.5"
+            },
+            "referenceRoute": "coat-c11",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "The holiday test",
+            "description": "HOLIDAY DETECTION",
+            "position": 11,
+            "content": {
+              "type": "text",
+              "text": "A holiday is a pinhole you may not see. An electrode sweeps the coating at high voltage, and wherever there is a hole, current finds the steel. The hooter sounds and the bulb lights. An in-line detector tests the pipe, and portable manual detectors confirm and locate what it finds.\n\nAt your station\n\nGround the pipe and the detector, set the voltage for the coating system, keep the electrode speed at or below the maximum, and calibrate the detector every four hours with jeep meters. Too much voltage can damage the coating.\n\n3LPE / 3LPP voltage: 25 kV, or as specified by client\n\nFBE / DFBE voltage: 5 V per µm (deck: “5 volt/Rm”)\n\nMax electrode speed: 300 mm/s\n\nDetector calibration: every 4 hours, jeep meters\n\nIndication: hooter + indicator bulb\n\nThe pass condition is: no holiday, or a holiday that meets the repair criteria and passes the retest."
+            },
+            "quiz": {
+              "question": "The in-line test flags a pipe. A manual holiday test confirms one pinhole, and it meets the repair criteria. What next?",
+              "context": "A holiday is a pinhole you may not see. An electrode sweeps the coating at high voltage, and wherever there is a hole, current finds the steel. The hooter sounds and the bulb lights. An in-line detector tests the pipe, and portable manual detectors confirm and locate what it finds.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Reject the pipe",
+                  "isCorrect": false,
+                  "explanation": "The flow chart sends a holiday that meets the repair criteria to coating repair, then a second manual holiday test. Only OK goes to final inspection. A holiday that does not meet the repair criteria is rejected."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Repair it, then test again by manual holiday test. If it passes, it goes to final inspection",
+                  "isCorrect": true,
+                  "explanation": "The flow chart sends a holiday that meets the repair criteria to coating repair, then a second manual holiday test. Only OK goes to final inspection. A holiday that does not meet the repair criteria is rejected."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Repair it and send it straight to final inspection",
+                  "isCorrect": false,
+                  "explanation": "The flow chart sends a holiday that meets the repair criteria to coating repair, then a second manual holiday test. Only OK goes to final inspection. A holiday that does not meet the repair criteria is rejected."
+                }
+              ],
+              "standardReference": "deck p.17, p.18, p.19"
+            },
+            "referenceRoute": "coat-c12",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "The peel test",
+            "description": "BOND STRENGTH, OFFLINE",
+            "position": 12,
+            "content": {
+              "type": "text",
+              "text": "Some answers cannot be read on a moving line. A strip of coating is pulled straight off the pipe in the lab and the force is measured. It tells you whether the layers are bonded to each other.\n\nAt your station\n\nThe tester peels at 10 mm per minute, perpendicular to the pipe surface. Results are given as minimum, maximum and average. If a semi-automated machine gives a strange value, suspect the machine before the coating.\n\nPeel rate: 10 mm/min\n\nDirection: perpendicular to the pipe surface\n\nRange: 0 to 2.5 kN\n\nResults: minimum, maximum, average\n\nThe peel test measures the bond between top and bottom layers."
+            },
+            "quiz": {
+              "question": "A semi-automated peel tester gives one surprisingly low value. Before blaming the coating, what does the deck say to suspect?",
+              "context": "Some answers cannot be read on a moving line. A strip of coating is pulled straight off the pipe in the lab and the force is measured. It tells you whether the layers are bonded to each other.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "The pipe end is always weaker",
+                  "isCorrect": false,
+                  "explanation": "The deck states the semi-automated machine may produce false results because of its inability to adjust to peel angle and speed. That is why the automated tester controls the stripping angle itself."
+                },
+                {
+                  "id": "option-1",
+                  "text": "The machine: it cannot adjust peel angle and speed, so it may give false results",
+                  "isCorrect": true,
+                  "explanation": "The deck states the semi-automated machine may produce false results because of its inability to adjust to peel angle and speed. That is why the automated tester controls the stripping angle itself."
+                },
+                {
+                  "id": "option-2",
+                  "text": "The pipe was tested too soon after quench",
+                  "isCorrect": false,
+                  "explanation": "The deck states the semi-automated machine may produce false results because of its inability to adjust to peel angle and speed. That is why the automated tester controls the stripping angle itself."
+                }
+              ],
+              "standardReference": "deck p.20"
+            },
+            "referenceRoute": "coat-c13",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Final inspection, marking and dispatch",
+            "description": "RELEASE",
+            "position": 13,
+            "content": {
+              "type": "text",
+              "text": "After the holiday test the pipe’s ends are cleaned back (cut back cleaning), and it faces final inspection. The inspector checks the coating for defects, measures the cut back and the bevel, and verifies the paperwork. Then the pipe is marked, barcoded, varnished against rust and stacked for dispatch.\n\nAt your station\n\nCheck as per the ITP: holidays and pinholes, disbonding or delamination, fish eyes and craters, blistering, sagging and drips (3LPE/3LPP), coating damage, surface irregularities, cut back cleaning and length, pipe bevel cleaning, and coating bevel shape.\n\nDefects checked: holidays, disbonding, fish eyes, blistering, sagging\n\nAlso checked: coating damage, surface irregularities\n\nEnds: cut back cleaning, length, bevel cleaning, coating bevel shape\n\nRelease: marking, barcode, varnish, documents\n\nA pipe leaves only when the coating, the dimensions and the documents all agree."
+            },
+            "quiz": {
+              "question": "A pipe passes every physical check, but its documents do not match the coated pipe data. What do you do?",
+              "context": "After the holiday test the pipe’s ends are cleaned back (cut back cleaning), and it faces final inspection. The inspector checks the coating for defects, measures the cut back and the bevel, and verifies the paperwork. Then the pipe is marked, barcoded, varnished against rust and stacked for dispatch.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Release it, the pipe is fine",
+                  "isCorrect": false,
+                  "explanation": "The deck lists verification of documents with respect to coated pipe data as part of final inspection. A pipe is not cleared until the record and the pipe agree."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Hold it. Verification of documents against pipe data is part of final inspection",
+                  "isCorrect": true,
+                  "explanation": "The deck lists verification of documents with respect to coated pipe data as part of final inspection. A pipe is not cleared until the record and the pipe agree."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Release it and fix the paperwork later",
+                  "isCorrect": false,
+                  "explanation": "The deck lists verification of documents with respect to coated pipe data as part of final inspection. A pipe is not cleared until the record and the pipe agree."
+                }
+              ],
+              "standardReference": "deck p.21, p.24, p.4"
+            },
+            "referenceRoute": "coat-c14",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Inside the pipe: prepare",
+            "description": "INTERNAL COATING, PART 1",
+            "position": 14,
+            "content": {
+              "type": "text",
+              "text": "The inside has its own line. Pipes are checked on receipt, preheated in two stations to a dew point condition, blasted in two stations, blown out, and inspected. Failures take the NTC re-process route. The same ideas as outside, with one big difference: moisture control is tied to the dew point of the day.\n\nAt your station\n\nPreheating raises the surface temperature to 3 °C above the atmospheric dew point, using whirling hot air inside the pipe. Blasting reaches up to Sa3. The inspection looks at cleanliness, anchor profile, salt or chloride, degree of dust and other defects.\n\nPreheat: 2 parallel stations, hot air\n\nSurface temperature: 3 °C above dew point\n\nBlast sets: 2 parallel, 400 m²/hr each\n\nCleanliness: up to Sa3\n\nAnchor pattern: 50 to 100 µm\n\nDust collectors: 2 × 85,000 + 2 × 11,000 CMH\n\nInside, the surface must be 3 °C above the atmospheric dew point."
+            },
+            "quiz": {
+              "question": "Today is humid and the atmospheric dew point is higher than yesterday. What happens to the internal preheat target?",
+              "context": "The inside has its own line. Pipes are checked on receipt, preheated in two stations to a dew point condition, blasted in two stations, blown out, and inspected. Failures take the NTC re-process route. The same ideas as outside, with one big difference: moisture control is tied to the dew point of the day.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Nothing, it is a fixed number",
+                  "isCorrect": false,
+                  "explanation": "The deck defines the target as a temperature 3 °C above the atmospheric dew point. When the dew point rises, the target rises with it."
+                },
+                {
+                  "id": "option-1",
+                  "text": "It moves up with the dew point: the surface must be 3 °C above it",
+                  "isCorrect": true,
+                  "explanation": "The deck defines the target as a temperature 3 °C above the atmospheric dew point. When the dew point rises, the target rises with it."
+                },
+                {
+                  "id": "option-2",
+                  "text": "The pipe does not need preheating on humid days",
+                  "isCorrect": false,
+                  "explanation": "The deck defines the target as a temperature 3 °C above the atmospheric dew point. When the dew point rises, the target rises with it."
+                }
+              ],
+              "standardReference": "deck p.26, p.27, p.28, p.29"
+            },
+            "referenceRoute": "coat-c15",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Inside the pipe: line it",
+            "description": "INTERNAL COATING, PART 2",
+            "position": 15,
+            "content": {
+              "type": "text",
+              "text": "Tape protects the cut back ends, then a long unsupported lance spins into the pipe as it turns at high speed. A two-part paint is mixed at the lance and sprayed in one smooth, even pass. After the lining, the tape comes off, the pipe is inspected, stencilled, and left to cure in the yard.\n\nAt your station\n\nThe paint mix ratio is watched by the PLC all the time and held within tolerance. Paint is heated to keep it fluid. The ratio can be set from 1:1 to 10:1 in steps of 0.1, with a ratio check system.\n\nMixing ratio: 1:1 to 10:1, 0.1 steps\n\nTolerance: down to ±1%\n\nThickness range: 50 to 2000 µm\n\nSystem: plural feed, hot airless\n\nAfter lining: tape removal, visual inspection, stencilling, curing in yard\n\nThe mix ratio is controlled digitally and monitored all the time."
+            },
+            "quiz": {
+              "question": "In what order do the cut back tape and the lining go on, according to the internal flow chart?",
+              "context": "Tape protects the cut back ends, then a long unsupported lance spins into the pipe as it turns at high speed. A two-part paint is mixed at the lance and sprayed in one smooth, even pass. After the lining, the tape comes off, the pipe is inspected, stencilled, and left to cure in the yard.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Tape on, lining applied, tape removed",
+                  "isCorrect": true,
+                  "explanation": "The chart shows cut back preparation (tape application), internal coating application, then tape removal, then visual inspection, then stencilling and paint curing at the yard."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Lining first, then tape",
+                  "isCorrect": false,
+                  "explanation": "The chart shows cut back preparation (tape application), internal coating application, then tape removal, then visual inspection, then stencilling and paint curing at the yard."
+                },
+                {
+                  "id": "option-2",
+                  "text": "No tape is used",
+                  "isCorrect": false,
+                  "explanation": "The chart shows cut back preparation (tape application), internal coating application, then tape removal, then visual inspection, then stencilling and paint curing at the yard."
+                }
+              ],
+              "standardReference": "deck p.30, p.26"
+            },
+            "referenceRoute": "coat-c16",
+            "diagramType": "inspection_gates"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "vi",
+    "title": "visual inspection",
+    "description": "Before any machine tests a pipe, a trained eye looks first. In ten stops you learn why, how to set up a proper look, which tools help, and what the common defects look like and why they happen.",
+    "code": "REF-VT-02",
+    "sourcePdf": "/learning/visual-inspection.pdf",
+    "modules": [
+      {
+        "title": "visual inspection",
+        "description": "Before any machine tests a pipe, a trained eye looks first. In ten stops you learn why, how to set up a proper look, which tools help, and what the common defects look like and why they happen.",
+        "position": 0,
+        "lessons": [
+          {
+            "title": "Why we test without breaking",
+            "description": "NON-DESTRUCTIVE TESTING",
+            "position": 0,
+            "content": {
+              "type": "text",
+              "text": "A pipe that has been cut open to be checked cannot be sold. Non-destructive testing (NDT) examines materials, components or assemblies for discontinuities or differences in characteristics without destroying their usefulness. It is used while a product is made, while it is built into something, and while it is in service.\n\nAt your station\n\nNDT is used at almost any stage: to screen incoming material, to monitor and control a process, to verify heat treating or assembly, and to inspect for damage in service. Pick the method that finds the defect or makes the measurement with the best sensitivity and reliability, and weigh the cost.\n\nAlso called: NDE, NDI\n\nUsed when: incoming material, process control, heat treating, assembly, in-service damage\n\nMain benefit: safer product, less scrap, better reputation\n\nNDT gives an excellent balance between quality control and cost, because the part is still usable afterwards."
+            },
+            "quiz": {
+              "question": "Which of these is NOT a benefit of NDT in manufacturing listed in the deck?",
+              "context": "A pipe that has been cut open to be checked cannot be sold. Non-destructive testing (NDT) examines materials, components or assemblies for discontinuities or differences in characteristics without destroying their usefulness. It is used while a product is made, while it is built into something, and while it is in service.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "It increases the safety and reliability of the product",
+                  "isCorrect": false,
+                  "explanation": "NDT works without destroying the part. The deck’s benefits are safer and more reliable products, lower cost through less scrap, a better reputation for quality, and the ability to design new products."
+                },
+                {
+                  "id": "option-1",
+                  "text": "It decreases cost by reducing scrap and conserving materials, labour and energy",
+                  "isCorrect": false,
+                  "explanation": "NDT works without destroying the part. The deck’s benefits are safer and more reliable products, lower cost through less scrap, a better reputation for quality, and the ability to design new products."
+                },
+                {
+                  "id": "option-2",
+                  "text": "It proves quality by destroying a sample from every product",
+                  "isCorrect": true,
+                  "explanation": "NDT works without destroying the part. The deck’s benefits are safer and more reliable products, lower cost through less scrap, a better reputation for quality, and the ability to design new products."
+                }
+              ],
+              "standardReference": "deck p.5 to p.9"
+            },
+            "referenceRoute": "vi-v1",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "The oldest test: your eyes",
+            "description": "VISUAL TESTING",
+            "position": 1,
+            "content": {
+              "type": "text",
+              "text": "Visual testing (VT) is the oldest and most common non-destructive technique, and the first step in examining a casting, forging, machined component or weld. It means examining a material, component or product for non-conformance using light and eyes, alone or with aids.\n\nAt your station\n\nVT finds surface flaws: corrosion, contamination, surface finish problems and discontinuities on joints such as welds, seals, solder connections and adhesive bonds. It is easy to use throughout a job, so simple errors are caught before they spread. A trained inspector also shakes, listens, feels and sometimes smells.\n\nFinds: cracks, corrosion, contamination, finish, surface discontinuities\n\nStrength: cheapest and widest-used, first step\n\nNeeds: a trained eye, light, access\n\nVT needs no equipment except the naked eye of a trained inspector, but it still needs a trained inspector."
+            },
+            "quiz": {
+              "question": "Why do inspectors still do visual testing even when another NDT method is also used?",
+              "context": "Visual testing (VT) is the oldest and most common non-destructive technique, and the first step in examining a casting, forging, machined component or weld. It means examining a material, component or product for non-conformance using light and eyes, alone or with aids.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "It is never needed once another method is used",
+                  "isCorrect": false,
+                  "explanation": "The deck calls VT the first step in the examination process, and says that even when other techniques detect surface cracks, visual inspection often gives a useful supplement. It does not find internal flaws."
+                },
+                {
+                  "id": "option-1",
+                  "text": "It is the first step and often supplements other methods in finding surface cracks",
+                  "isCorrect": true,
+                  "explanation": "The deck calls VT the first step in the examination process, and says that even when other techniques detect surface cracks, visual inspection often gives a useful supplement. It does not find internal flaws."
+                },
+                {
+                  "id": "option-2",
+                  "text": "It is the only method that finds internal flaws",
+                  "isCorrect": false,
+                  "explanation": "The deck calls VT the first step in the examination process, and says that even when other techniques detect surface cracks, visual inspection often gives a useful supplement. It does not find internal flaws."
+                }
+              ],
+              "standardReference": "deck p.10, p.11, p.17, p.30"
+            },
+            "referenceRoute": "vi-v2",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Set up the look",
+            "description": "CONDITIONS FOR VISUAL INSPECTION",
+            "position": 2,
+            "content": {
+              "type": "text",
+              "text": "A clean, comfortable, well-lit place with reasonable access. A test piece free of coatings, oil and grease. Calibrated equipment the inspector understands. And the eye at the right distance and angle, under enough light to resolve a very fine line.\n\nAt your station\n\nClean the surface. Check the light. Keep your eye within 600 mm of the surface at an angle of at least 30° (ASME Sec V, Art. 9). Use a magnifier if required. The test is judged adequate if you can resolve a 0.8 mm wide black line on an artificial flaw on the surface.\n\nEye distance: within 600 mm\n\nViewing angle: 30° or more\n\nLight (ASME V Art. 9): 350 lux min, over 500 recommended\n\nLight (API 5L, 45th ed.): 300 lux min\n\nLight (ASME V / API 5LD): 1000 lux min\n\nResolve: a 0.8 mm black line\n\nNear vision: Jaeger No. 2 at ≥12 in, annual\n\nColour vision: every 5 years\n\nDifferent standards ask for different light. Your contract decides which number applies."
+            },
+            "quiz": {
+              "question": "Your contract calls up API 5L, 45th edition. What is the minimum illumination on the surface according to the deck?",
+              "context": "A clean, comfortable, well-lit place with reasonable access. A test piece free of coatings, oil and grease. Calibrated equipment the inspector understands. And the eye at the right distance and angle, under enough light to resolve a very fine line.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "At least 300 lux",
+                  "isCorrect": true,
+                  "explanation": "The deck gives at least 300 lux for API 5L 45th edition. It gives 1000 lux for ASME Sec V and API 5LD, and 350 lux (500 recommended) for ASME Sec V Art. 9. Always check which standard your contract names."
+                },
+                {
+                  "id": "option-1",
+                  "text": "At least 350 lux",
+                  "isCorrect": false,
+                  "explanation": "The deck gives at least 300 lux for API 5L 45th edition. It gives 1000 lux for ASME Sec V and API 5LD, and 350 lux (500 recommended) for ASME Sec V Art. 9. Always check which standard your contract names."
+                },
+                {
+                  "id": "option-2",
+                  "text": "At least 1000 lux",
+                  "isCorrect": false,
+                  "explanation": "The deck gives at least 300 lux for API 5L 45th edition. It gives 1000 lux for ASME Sec V and API 5LD, and 350 lux (500 recommended) for ASME Sec V Art. 9. Always check which standard your contract names."
+                }
+              ],
+              "standardReference": "deck p.12 to p.16"
+            },
+            "referenceRoute": "vi-v3",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "The method and three ways to look",
+            "description": "PROCEDURE AND TYPES",
+            "position": 3,
+            "content": {
+              "type": "text",
+              "text": "A visual inspection has three steps: clean the surface, light it properly, examine it. And there are three ways to look: with the eye alone, with the eye plus an aid, or through a camera.\n\nAt your station\n\nClean off oil, grease, scale and sand, because contaminants can mislead you. Light the specimen well: the human eye is most sensitive to yellow-green light (wavelength 5560 Å). Then examine with the eyes, or with light-sensitive devices such as photocells.\n\nStep 1: clean the inspection surface\n\nStep 2: light it adequately\n\nStep 3: examine with eyes or light-sensitive devices\n\nBest eye sensitivity: yellow-green, 5560 Å\n\nDirect aided keeps the image the same, only bigger or filtered. Remote turns it into an electronic image."
+            },
+            "quiz": {
+              "question": "An inspector looks into a bore using a mirror on a handle. Which type of visual testing is this?",
+              "context": "A visual inspection has three steps: clean the surface, light it properly, examine it. And there are three ways to look: with the eye alone, with the eye plus an aid, or through a camera.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Direct unaided",
+                  "isCorrect": false,
+                  "explanation": "A mirror magnifies or redirects the view without changing the nature of the image, so it is direct aided. Remote testing converts the optical image into an electronic image, for example with a camera."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Direct aided",
+                  "isCorrect": true,
+                  "explanation": "A mirror magnifies or redirects the view without changing the nature of the image, so it is direct aided. Remote testing converts the optical image into an electronic image, for example with a camera."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Remote",
+                  "isCorrect": false,
+                  "explanation": "A mirror magnifies or redirects the view without changing the nature of the image, so it is direct aided. Remote testing converts the optical image into an electronic image, for example with a camera."
+                }
+              ],
+              "standardReference": "deck p.18 to p.22"
+            },
+            "referenceRoute": "vi-v4",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Light, surfaces and the inspector’s aids",
+            "description": "OPTICAL AND MECHANICAL AIDS",
+            "position": 4,
+            "content": {
+              "type": "text",
+              "text": "Lighting is of extreme importance. How a surface reflects light, what shape it has, and what colour it is all decide how well you can see a defect. The inspector’s kit then adds mirrors, magnifiers, borescopes, video probes, robots and gauges.\n\nAt your station\n\nPick the lighting to suit the surface. Specular surfaces are mirror-like. Diffuse surfaces scatter light and look dull. Directional surfaces carry fine grooves. Use coloured or selective filters to improve contrast between a defect and its background.\n\nMirrors: look inside pipes, threaded holes, hard-to-see places\n\nMagnifiers: surface finish, profile, microstructure\n\nBorescopes: rigid or flexible, closed or inaccessible areas\n\nVideo probes and robots: tanks, ducts, pipelines, hazardous spaces\n\nWeld gauges: fillet, height, undercut depth, misalignment\n\nChoose the light for the surface. The same defect can be invisible under one light and obvious under another."
+            },
+            "quiz": {
+              "question": "You need small surface bumps such as burrs to show up clearly. Which lighting technique does the deck suggest?",
+              "context": "Lighting is of extreme importance. How a surface reflects light, what shape it has, and what colour it is all decide how well you can see a defect. The inspector’s kit then adds mirrors, magnifiers, borescopes, video probes, robots and gauges.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Diffuse back illumination",
+                  "isCorrect": false,
+                  "explanation": "The deck says oblique illumination, with the light source nearly perpendicular to the camera or observer, is used to find surface irregularities such as burrs. Coaxial lighting does the opposite: it evens out the surface and reduces shadows."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Oblique illumination: light nearly perpendicular to the viewer’s line of sight",
+                  "isCorrect": true,
+                  "explanation": "The deck says oblique illumination, with the light source nearly perpendicular to the camera or observer, is used to find surface irregularities such as burrs. Coaxial lighting does the opposite: it evens out the surface and reduces shadows."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Coaxial illumination",
+                  "isCorrect": false,
+                  "explanation": "The deck says oblique illumination, with the light source nearly perpendicular to the camera or observer, is used to find surface irregularities such as burrs. Coaxial lighting does the opposite: it evens out the surface and reduces shadows."
+                }
+              ],
+              "standardReference": "deck p.23 to p.35"
+            },
+            "referenceRoute": "vi-v5",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Measure it",
+            "description": "MEASURING INSTRUMENTS",
+            "position": 5,
+            "content": {
+              "type": "text",
+              "text": "Seeing is not enough. Defects have sizes, and sizes have limits. The inspector’s toolbox runs from thin steel rules to clock gauges that read to a thousandth of a millimetre.\n\nAt your station\n\nUse thin steel rules to reduce parallax error and keep stability. Use tapes for longer distances, checked at a specified temperature and tension. Use vernier calipers, micrometers and clock gauges when you need finer readings.\n\nSteel rule: 0.5 mm or 1/64 in\n\nTape rule: 1 mm, 1 m to 100 m\n\nVernier caliper: 0.01 mm or 0.005 in\n\nMicrometer: 0.001 mm or 0.0005 in\n\nClock gauge: 0.001 mm or 0.00005 in\n\nPick the instrument whose smallest reading is finer than the tolerance you are checking."
+            },
+            "quiz": {
+              "question": "You must read a dimension to 0.01 mm. Which of these instruments from the deck fits?",
+              "context": "Seeing is not enough. Defects have sizes, and sizes have limits. The inspector’s toolbox runs from thin steel rules to clock gauges that read to a thousandth of a millimetre.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Steel rule (0.5 mm)",
+                  "isCorrect": false,
+                  "explanation": "A vernier caliper reads to 0.01 mm. A steel rule reads to 0.5 mm and a tape rule to 1 mm. A micrometer would also work, with finer reading still (0.001 mm)."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Tape rule (1 mm)",
+                  "isCorrect": false,
+                  "explanation": "A vernier caliper reads to 0.01 mm. A steel rule reads to 0.5 mm and a tape rule to 1 mm. A micrometer would also work, with finer reading still (0.001 mm)."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Vernier caliper (0.01 mm)",
+                  "isCorrect": true,
+                  "explanation": "A vernier caliper reads to 0.01 mm. A steel rule reads to 0.5 mm and a tape rule to 1 mm. A micrometer would also work, with finer reading still (0.001 mm)."
+                }
+              ],
+              "standardReference": "deck p.36 to p.41"
+            },
+            "referenceRoute": "vi-v6",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Steel defects atlas",
+            "description": "VISUAL DEFECTS IN STEEL",
+            "position": 6,
+            "content": {
+              "type": "text",
+              "text": "Before a pipe is a pipe, it is steel plate from a mill. The deck lists eleven defects found on steel: sliver, scab, rolled-in scale, roll mark, tong mark, dents or indentation marks, pitting, seam line, lap, lamination and hair line cracks. Plus shell, roll-in bolt and roll-in wire.\n\nAt your station\n\nMatch the look to the description. Slivers come from tearing of corners during rolling. Scabs are irregular patches of metal. Rolled-in scale is old scale pressed into the surface. Seam lines are long, shallow grooves. Hair line cracks are internal and need etching or magnetic crack detection to see.\n\nSliver: tearing of corners during rolling\n\nScab: irregular patch from mould cavities or loose layers\n\nRolled-in scale: old scale pressed in during rolling\n\nSeam line: long shallow grooves\n\nShell: thin film imperfectly attached\n\nHair cracks: internal, seen by etching or magnetic crack detection\n\nLearn each defect with its origin. The picture and the cause confirm each other."
+            },
+            "quiz": {
+              "question": "A plate shows irregular patches of metal on its surface, arising from cavities in the mould walls or loosely adhering layers of metal. What is this?",
+              "context": "Before a pipe is a pipe, it is steel plate from a mill. The deck lists eleven defects found on steel: sliver, scab, rolled-in scale, roll mark, tong mark, dents or indentation marks, pitting, seam line, lap, lamination and hair line cracks. Plus shell, roll-in bolt and roll-in wire.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Sliver",
+                  "isCorrect": false,
+                  "explanation": "The deck defines a scab as irregular shaped patches of metal on the ingot surface arising from cavities in mould walls or loosely adhering layers of metal. A sliver is tearing of corners in rolling, and a shell is a thin film imperfectly attached."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Scab",
+                  "isCorrect": true,
+                  "explanation": "The deck defines a scab as irregular shaped patches of metal on the ingot surface arising from cavities in mould walls or loosely adhering layers of metal. A sliver is tearing of corners in rolling, and a shell is a thin film imperfectly attached."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Shell",
+                  "isCorrect": false,
+                  "explanation": "The deck defines a scab as irregular shaped patches of metal on the ingot surface arising from cavities in mould walls or loosely adhering layers of metal. A sliver is tearing of corners in rolling, and a shell is a thin film imperfectly attached."
+                }
+              ],
+              "standardReference": "deck p.48 to p.59"
+            },
+            "referenceRoute": "vi-v7",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Pipe-body defects",
+            "description": "VISUAL DEFECTS IN PIPE BODY",
+            "position": 7,
+            "content": {
+              "type": "text",
+              "text": "A good plate can still become a poor pipe. The deck lists six defects found on the body of a finished pipe: improper grinding, deep grinding, roller mark, chip mark, scratches and mechanical damage, including chisel marks.\n\nAt your station\n\nUse the photos to build your eye. The deck shows each defect as a labelled photograph. Note the position, the length and the shape, because the limits you apply will depend on them.\n\nDefects listed: improper grinding, deep grinding, roller mark, chip mark, scratches, mechanical damage\n\nShown in deck: photographs with scales\n\nNot in deck: causes and acceptance limits\n\nThese defects are usually made by handling or finishing, so they can often be prevented."
+            },
+            "quiz": {
+              "question": "The deck photograph of a pipe body shows chisel marks. Which of the six pipe-body defect labels does the deck use for it?",
+              "context": "A good plate can still become a poor pipe. The deck lists six defects found on the body of a finished pipe: improper grinding, deep grinding, roller mark, chip mark, scratches and mechanical damage, including chisel marks.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Roller mark",
+                  "isCorrect": false,
+                  "explanation": "The deck labels the chisel-mark photograph “Mechanical damage”. Chip marks and roller marks are separate labels with their own photographs."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Chip mark",
+                  "isCorrect": false,
+                  "explanation": "The deck labels the chisel-mark photograph “Mechanical damage”. Chip marks and roller marks are separate labels with their own photographs."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Mechanical damage",
+                  "isCorrect": true,
+                  "explanation": "The deck labels the chisel-mark photograph “Mechanical damage”. Chip marks and roller marks are separate labels with their own photographs."
+                }
+              ],
+              "standardReference": "deck p.60 to p.64"
+            },
+            "referenceRoute": "vi-v8",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Weld defects: cause and defect",
+            "description": "WELDING DEFECTS",
+            "position": 8,
+            "content": {
+              "type": "text",
+              "text": "The deck lists twenty weld defects, from poor toe blend to distortion. For each, it shows the look and the causes. The good inspector reads the defect backwards to its cause, because that is how a welder fixes it.\n\nAt your station\n\nStart with the features of a good butt weld: cap width, excess weld metal height, root penetration and root bead width, plus profile, toe blend and weld width. Then learn the common defects: root defects, undercut, lack of fusion, porosity, slag, burn-through, spatter, arc strikes, cracks and distortion.\n\nTotal defects listed: 20\n\nRoot family: incomplete penetration, incomplete fusion, concavity, excess penetration, undercut\n\nFusion family: lack of fusion, lack of side wall and inter-run fusion\n\nInclusions: slag, tungsten\n\nOthers: burn through, spatter, arc strikes, cracks, distortion\n\nThe defect tells you what happened. The cause list tells you what to change."
+            },
+            "quiz": {
+              "question": "Which of these is a listed cause of incomplete root penetration in the deck?",
+              "context": "The deck lists twenty weld defects, from poor toe blend to distortion. For each, it shows the look and the causes. The good inspector reads the defect backwards to its cause, because that is how a welder fixes it.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Too fast a speed of travel for the current",
+                  "isCorrect": true,
+                  "explanation": "Too fast a travel speed for the current is on the incomplete root penetration list. Excessive back purge belongs to root concavity, and damp electrodes to spatter."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Excessive back purge (TIG)",
+                  "isCorrect": false,
+                  "explanation": "Too fast a travel speed for the current is on the incomplete root penetration list. Excessive back purge belongs to root concavity, and damp electrodes to spatter."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Damp electrodes",
+                  "isCorrect": false,
+                  "explanation": "Too fast a travel speed for the current is on the incomplete root penetration list. Excessive back purge belongs to root concavity, and damp electrodes to spatter."
+                }
+              ],
+              "standardReference": "deck p.65 to p.90"
+            },
+            "referenceRoute": "vi-v9",
+            "diagramType": "inspection_gates"
+          },
+          {
+            "title": "Where the eye matters on the coating line",
+            "description": "LINKING THE TWO COURSES",
+            "position": 9,
+            "content": {
+              "type": "text",
+              "text": "You now know how to look. On the coating line, trained eyes are used at the blast gate, after the quench and at final inspection. The same discipline applies: clean, light, look, measure.\n\nAt your station\n\nAt the blast gate: visual cleanliness against ISO 8501-1 and SSPC-VIS 1, with a roughness gauge and a salt meter. After quench: visual and dimensional inspection, with a thickness gauge verified every shift. At final inspection: coating defects, cut back and bevel checks and document verification.\n\nBlast gate: visual grade, roughness, salt, dust\n\nAfter quench: visual, dimensional, thickness\n\nFinal inspection: coating defects, cut back, bevel, documents\n\nGood inspection habits travel. Light, angle, distance, tools, method."
+            },
+            "quiz": {
+              "question": "At final inspection of a coated pipe, which set includes defects the coating deck lists?",
+              "context": "You now know how to look. On the coating line, trained eyes are used at the blast gate, after the quench and at final inspection. The same discipline applies: clean, light, look, measure.",
+              "options": [
+                {
+                  "id": "option-0",
+                  "text": "Holidays, disbonding, fish eyes, blistering, sagging",
+                  "isCorrect": true,
+                  "explanation": "The first set is the coating deck’s final inspection list. The second is from steel defects and the third from weld defects in this course. Match the defect list to the product you are inspecting."
+                },
+                {
+                  "id": "option-1",
+                  "text": "Slivers, scabs, lamination, hair cracks",
+                  "isCorrect": false,
+                  "explanation": "The first set is the coating deck’s final inspection list. The second is from steel defects and the third from weld defects in this course. Match the defect list to the product you are inspecting."
+                },
+                {
+                  "id": "option-2",
+                  "text": "Slag, tungsten inclusion, burn through, arc strikes",
+                  "isCorrect": false,
+                  "explanation": "The first set is the coating deck’s final inspection list. The second is from steel defects and the third from weld defects in this course. Match the defect list to the product you are inspecting."
+                }
+              ],
+              "standardReference": "deck (this course) + Coating deck p.8, p.16, p.21, p.24"
+            },
+            "referenceRoute": "vi-v10",
+            "diagramType": "inspection_gates"
+          }
+        ]
+      }
+    ]
+  }
+]

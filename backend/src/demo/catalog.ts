@@ -24,5 +24,19 @@ export const demoBootstrap = demoBootstrapSchema.parse({
       category: 'Quality & Compliance',
       estimatedMinutes: 15,
     },
+    {
+      id: 'coat',
+      title: 'coating application External & Internal',
+      code: 'REF-COAT-01',
+      category: 'Manufacturing Process',
+      estimatedMinutes: 150,
+    },
+    {
+      id: 'vi',
+      title: 'visual inspection',
+      code: 'REF-VT-02',
+      category: 'Quality & Compliance',
+      estimatedMinutes: 110,
+    },
   ],
 });

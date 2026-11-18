@@ -54,6 +54,24 @@ describe('explicit local database lifecycle', () => {
     expect(configuration.isolated).toBe(false);
     expect(configuration.environment).toBe('development');
   });
+  it('accepts only the approved shared development database target', () => {
+    const environment = parseEnvironment({
+      DATABASE_ENABLED: 'true',
+      MONGOURI: 'mongodb+srv://user:secret@cluster.example/welspun_lms_dev',
+      DATABASE_NAME: 'welspun_lms_dev',
+    });
+    const configuration = mongoConfigurationFromEnvironment(environment);
+    expect(configuration.databaseName).toBe('welspun_lms_dev');
+    expect(() => assertLocalMongoTarget(configuration)).not.toThrow();
+    expect(() =>
+      assertLocalMongoTarget(
+        parseMongoConfiguration({
+          uri: 'mongodb+srv://cluster.example/another_database',
+          databaseName: 'welspun_lms_dev',
+        }),
+      ),
+    ).toThrow();
+  });
   it('sanitizes connection failures and can disconnect afterward', async () => {
     const adapter = createMongoAdapter({
       environment: 'test',

@@ -7,6 +7,9 @@
   "include": [
     "vitest.config.ts",
     "backend/test/**/*.ts",
-    "packages/contracts/test/**/*.ts"
+    "packages/contracts/test/**/*.ts",
+    "scripts/setup-live-lms.ts",
+    "scripts/sync-live-simulations.ts",
+    "tests/fixtures/live-server.ts"
   ]
 }

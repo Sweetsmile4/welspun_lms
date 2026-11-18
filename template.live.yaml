@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Welspun LMS account-based API; MongoDB restricted to welspun_lms_dev
+Parameters:
+  FrontendOrigin:
+    Type: String
+    AllowedPattern: 'https://[^/]+$'
+    Description: Exact Amplify HTTPS origin without a trailing slash
+  MongoSecretArn:
+    Type: String
+    Description: ARN of an existing Secrets Manager JSON secret with key MONGOURI
+  RegistrationEnabled:
+    Type: String
+    Default: 'false'
+    AllowedValues: ['true', 'false']
+Resources:
+  LiveHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: $default
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 20
+        ThrottlingRateLimit: 10
+  LiveFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/lambda-dist/
+      Handler: index.handler
+      Runtime: nodejs24.x
+      Architectures: [arm64]
+      MemorySize: 512
+      Timeout: 20
+      Environment:
+        Variables:
+          NODE_ENV: production
+          DEPLOYMENT_MODE: hosted
+          DATABASE_ENABLED: 'true'
+          DATABASE_NAME: welspun_lms_dev
+          MONGOURI: !Sub '{{resolve:secretsmanager:${MongoSecretArn}:SecretString:MONGOURI}}'
+          LMS_LIVE_ENABLED: 'true'
+          LMS_REGISTRATION_ENABLED: !Ref RegistrationEnabled
+          LMS_FRONTEND_ORIGIN: !Ref FrontendOrigin
+          IDENTITY_MODE: disabled
+          LOG_LEVEL: info
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref LiveHttpApi
+            Path: /api/v1/{proxy+}
+            Method: ANY
+Outputs:
+  BackendOrigin:
+    Value: !Sub https://${LiveHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}

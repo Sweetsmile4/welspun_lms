@@ -28,5 +28,5 @@ assert.equal(result.statusCode, 200);
 const { data } = JSON.parse(result.body);
 assert.equal(data.mode, 'demo');
 assert.equal(data.persistence, 'browser-local');
-assert.equal(data.courses.length, 3);
+assert.equal(data.courses.length, 5);
 console.log('Built Lambda demo smoke check passed');

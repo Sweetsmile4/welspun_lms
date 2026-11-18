@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
+import { runtimeMongoUri } from './windows-mongo-dns.js';
 import {
   assertLocalMongoTarget,
   parseMongoConfiguration,
   type MongoConfiguration,
 } from './database-config.js';
-/** No connection on import/construction. API/worker startup still never calls connect. */
+/** No connection on import/construction. Runtime connection requires explicit configuration. */
 export function createMongoAdapter(
   input?: string | Partial<MongoConfiguration>,
 ) {
@@ -30,7 +31,10 @@ export function createMongoAdapter(
       if (opening) return opening;
       opening = (async () => {
         try {
-          await connection.openUri(configuration.uri!, {
+          await connection.openUri(await runtimeMongoUri(configuration.uri!), {
+            ...(configuration.databaseName
+              ? { dbName: configuration.databaseName }
+              : {}),
             autoIndex: false,
             autoCreate: false,
             bufferCommands: false,

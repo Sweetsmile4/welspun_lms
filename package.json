@@ -30,7 +30,10 @@
     "smoke:worker": "npm run start -w @welspun/worker",
     "dev": "npm run dev:api",
     "start": "npm run start -w @welspun/api",
-    "build:lambda": "npm run build:lambda -w @welspun/api && node scripts/smoke-lambda.mjs"
+    "build:lambda": "npm run build:lambda -w @welspun/api && node scripts/smoke-lambda.mjs",
+    "setup:lms": "tsx scripts/setup-live-lms.ts",
+    "admin:grant": "tsx scripts/setup-live-lms.ts grant-admin",
+    "sync:lms:simulations": "tsx scripts/sync-live-simulations.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
