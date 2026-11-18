@@ -4,7 +4,7 @@ Phase 0 proposal · 28 October 2026
 
 ## Deployment and module boundaries
 
-Use one repository with `apps/web` (Next.js/TypeScript), `apps/api` (Express/TypeScript), and a worker entry point owned by the backend. Shared packages contain validated public DTOs, schema definitions and simulation input contracts; they must not expose answer keys, database models or secrets to the web build. Tailwind and shadcn/ui support the application shell; Three.js/React Three Fiber/Drei serve selected client-only simulations; Motion/SVG handle simpler interactions.
+Use one repository with `frontend` (Next.js/TypeScript), `apps/api` (Express/TypeScript), and a worker entry point owned by the backend. Shared packages contain validated public DTOs, schema definitions and simulation input contracts; they must not expose answer keys, database models or secrets to the web build. Tailwind and shadcn/ui support the application shell; Three.js/React Three Fiber/Drei serve selected client-only simulations; Motion/SVG handle simpler interactions.
 
 ```mermaid
 flowchart LR

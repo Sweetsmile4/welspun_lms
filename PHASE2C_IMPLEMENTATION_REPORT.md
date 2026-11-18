@@ -61,8 +61,8 @@ Created:
 
 - apps/api/src/modules/catalog/discovery/service.ts and mongo-store.ts.
 - apps/api/test/catalog-scenarios.ts, catalog.test.ts and catalog.mongo.test.ts.
-- apps/web/src/components/preview/provider.tsx and catalog.tsx.
-- apps/web/src/app/development/layout.tsx, catalog/page.tsx and catalog/[courseId]/page.tsx.
+- frontend/src/components/preview/provider.tsx and catalog.tsx.
+- frontend/src/app/development/layout.tsx, catalog/page.tsx and catalog/[courseId]/page.tsx.
 - scripts/preview-guard-server.mjs and tests/e2e/catalog.spec.ts.
 - This report, docs/PHASE2C_CATALOG_DESIGN.md, docs/PHASE2C_CATALOG_SERVICE_GUIDE.md and docs/PHASE2C_FRONTEND_PREVIEW_GUIDE.md.
 

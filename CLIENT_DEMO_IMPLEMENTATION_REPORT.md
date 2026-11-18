@@ -23,7 +23,7 @@
 
 ## Isolation confirmation
 
-The demo uses static typed data under `apps/web/src/lib/client-demo` and a React context backed only by `localStorage`. It makes no API, MongoDB, identity-provider, session, RBAC, publishing, or migration calls. Existing LMS routes and backend modules were not changed by the demo implementation.
+The demo uses static typed data under `frontend/src/lib/client-demo` and a React context backed only by `localStorage`. It makes no API, MongoDB, identity-provider, session, RBAC, publishing, or migration calls. Existing LMS routes and backend modules were not changed by the demo implementation.
 
 All content and figures are illustrative client-review material. The demo does not issue certificates, record compliance, or represent approved Welspun operating procedures.
 

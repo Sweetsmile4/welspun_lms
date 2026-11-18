@@ -1,4 +1,4 @@
-name: Foundation validation
+name: Frontend validation
 on: [push, pull_request]
 permissions:
   contents: read
@@ -8,8 +8,6 @@ jobs:
     timeout-minutes: 20
     env:
       NEXT_TELEMETRY_DISABLED: '1'
-      IDENTITY_MODE: disabled
-      DATABASE_ENABLED: 'false'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,7 +19,7 @@ jobs:
       - run: npm audit --audit-level=high
       - run: npm run check
       - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
+      - run: npm run test:e2e -- --workers=1
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

@@ -26,7 +26,7 @@ Exact canonical HTTPS loopback-origin syntax and separated browser/upstream plan
 
 boundaries.ts defines nominal server-only session, CSRF, workload and trusted-request interfaces, revocation, fixed-operation upstream routing and command context. All supplied adapters return unavailable; requireTrustedRequest always throws. TypeScript brands prevent accidental structural creation, while runtime denial also refuses forged/cast browser objects. They are not claims of real authentication or protection against malicious trusted server code.
 
-The frontend client in apps/web/src/lib/integration/client.ts exposes typed read/command operations but always returns an explicit INTEGRATION_UNAVAILABLE result. It has no fetch, token, storage, configuration activation, Mongo import or fixture fallback; no UI imports it.
+The frontend client in frontend/src/lib/integration/client.ts exposes typed read/command operations but always returns an explicit INTEGRATION_UNAVAILABLE result. It has no fetch, token, storage, configuration activation, Mongo import or fixture fallback; no UI imports it.
 
 ## HTTP conventions
 
@@ -43,7 +43,7 @@ Created:
 - apps/api/src/integration/boundaries.ts
 - apps/api/src/integration/http-conventions.ts
 - apps/api/src/integration/serializers.ts
-- apps/web/src/lib/integration/client.ts
+- frontend/src/lib/integration/client.ts
 - apps/api/test/integration-foundation.test.ts
 - apps/api/test/integration-no-outbound.mjs
 - This report and docs/PHASE2D2B_PUBLIC_CONTRACTS.md, docs/PHASE2D2B_SECURITY_TESTING.md, docs/PHASE2D2B_NEXT_STEPS.md.

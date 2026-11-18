@@ -8,7 +8,6 @@
     "vitest.config.ts",
     "playwright.config.ts",
     "tests/**/*.ts",
-    "apps/api/test/**/*.ts",
     "packages/contracts/test/**/*.ts"
   ]
 }

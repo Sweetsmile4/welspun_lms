@@ -4,7 +4,7 @@
 
 ## Actual repository versions and artifacts
 
-Root engines require Node >=24 <25 and npm >=11 <13; packageManager pins npm@12.0.1. Local node is 24.18.0. apps/web declares next ^16.4.3, React ^19.3.1; lockfile resolves Next 16.4.3 and React 19.3.1. API resolves Express 5.3.0/Mongoose 9.11.4; TypeScript resolves 5.9.3. These values were read from package manifests/lockfile, not assumed from reports. A successful local build is not hosting certification.
+Root engines require Node >=24 <25 and npm >=11 <13; packageManager pins npm@12.0.1. Local node is 24.18.0. frontend declares next ^16.4.3, React ^19.3.1; lockfile resolves Next 16.4.3 and React 19.3.1. API resolves Express 5.3.0/Mongoose 9.11.4; TypeScript resolves 5.9.3. These values were read from package manifests/lockfile, not assumed from reports. A successful local build is not hosting certification.
 
 npm workspaces use a root lockfile; contracts exports private source TypeScript. Next transpilePackages handles @welspun/contracts; API tsup bundles workspace imports but external production dependencies still need packaging. tsup currently targets node24 and builds server.ts only. next.config.ts has no standalone/static export or deployment adapter. Both existing web scripts bind loopback; API has a listen/signal entry, not a Lambda event handler. No amplify.yml, buildspec, Jenkinsfile, Lambda adapter or infrastructure template currently exists in the audited application setup.
 
@@ -14,7 +14,7 @@ AWS's Amplify Hosting compute page currently lists Next support through 15; the 
 
 Node 24 is separately listed as a supported Amplify SSR runtime; this does not resolve the Next major-version mismatch. [Amplify SSR runtime support](https://docs.aws.amazon.com/amplify/latest/userguide/ssr-supported-features.html)
 
-AWS documents npm-workspace monorepos, appRoot/AMPLIFY_MONOREPO_APP_ROOT agreement and root build paths. A future configuration would install from the repository root with npm ci, build @welspun/web, and identify apps/web/.next as the appropriate managed Next artifact under the selected build path. Verify these paths in a nondeploying packaging test before any hosting trial. [Amplify monorepos](https://docs.aws.amazon.com/amplify/latest/userguide/monorepo-configuration.html)
+AWS documents npm-workspace monorepos, appRoot/AMPLIFY_MONOREPO_APP_ROOT agreement and root build paths. A future configuration would install from the repository root with npm ci, build @welspun/web, and identify frontend/.next as the appropriate managed Next artifact under the selected build path. Verify these paths in a nondeploying packaging test before any hosting trial. [Amplify monorepos](https://docs.aws.amazon.com/amplify/latest/userguide/monorepo-configuration.html)
 
 The future Next gateway requires runtime route support, forwarded secure cookies, no-store/private responses, exact callback host, request-size/deadline behavior and private/authenticated Express reachability. Preview branches must have no shared identity/database secrets. LMS_UI_PREVIEW is off by default in a hosted environment; an enabled fixture must remain visibly separate from any integration workflow. Do not place DB secrets in Next build/runtime merely because hosting accepts environment variables. No reliance on static export: the development routes are dynamic and future sessions need server execution.
 

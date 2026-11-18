@@ -2,9 +2,9 @@
 import { createRequire } from 'node:module';
 import { createServer } from 'node:http';
 import { fileURLToPath } from 'node:url';
-const web = fileURLToPath(new URL('../apps/web/', import.meta.url));
+const web = fileURLToPath(new URL('../frontend/', import.meta.url));
 const require = createRequire(
-  new URL('../apps/web/package.json', import.meta.url),
+  new URL('../frontend/package.json', import.meta.url),
 );
 const next = require('next');
 const port = Number(process.argv[2]);

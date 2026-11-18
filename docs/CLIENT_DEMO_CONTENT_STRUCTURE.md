@@ -16,7 +16,7 @@ The standalone demonstration follows a progressive learning loop:
 | Shop Floor Safety Essentials | 4 | PPE, hazard identification, equipment isolation, reporting |
 | Quality Inspection Basics | 4 | Checkpoints, defect awareness, traceability, release decisions |
 
-Course data is statically typed in `apps/web/src/lib/client-demo/course-data.ts`. Diagrams are local components; no external media or content service is required.
+Course data is statically typed in `frontend/src/lib/client-demo/course-data.ts`. Diagrams are local components; no external media or content service is required.
 
 ## Content boundary
 

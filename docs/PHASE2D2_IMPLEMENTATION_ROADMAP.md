@@ -5,7 +5,7 @@
 ## 2D.2B: Disabled integration contracts and transport boundary
 
 - Scope: add public DTO schemas/serializers and a disabled integration configuration/session/transport port with safe default errors. No login, session issuer, enabled course route, domain-factory widening or DB activation. Specify narrow route allowlists and error/precondition/key mapping.
-- Expected files: packages/contracts/src integration schemas/tests; proposed apps/api/src/integration/config.ts and identity/session interfaces; proposed apps/web/src/lib/integration client interface; offline API/unit tests; guide updates. Filenames are proposed, not existing files.
+- Expected files: packages/contracts/src integration schemas/tests; proposed apps/api/src/integration/config.ts and identity/session interfaces; proposed frontend/src/lib/integration client interface; offline API/unit tests; guide updates. Filenames are proposed, not existing files.
 - Security: missing/production/mixed configuration denied; no fixture principal/role inputs; no browser secrets; exact server target/origin configuration; all enabled capability requests unavailable.
 - Dependencies: review this architecture and agree intended same-origin transport. Identity provider decision can remain open because every adapter stays disabled.
 - Tests: strict DTO unknown-field rejection, ISO/ObjectId projections, private-field omission, headers/envelopes, body budget, no-network-on-import, default disabled and production/test-fixture bypass denial.

@@ -22,7 +22,7 @@ The existing frontend already implemented the complete create/edit/review/approv
 
 ## Components, routes and state
 
-Changed apps/web/src/components/preview/workspace.tsx, catalog.tsx and apps/web/src/app/globals.css. Added apps/web/src/components/preview/content-view.tsx. Updated tests/e2e/preview.spec.ts and catalog.spec.ts for confirmations and added tests/e2e/refinement.spec.ts. Added this report and the two Phase 2D.1 guides; README links the increment.
+Changed frontend/src/components/preview/workspace.tsx, catalog.tsx and frontend/src/app/globals.css. Added frontend/src/components/preview/content-view.tsx. Updated tests/e2e/preview.spec.ts and catalog.spec.ts for confirmations and added tests/e2e/refinement.spec.ts. Added this report and the two Phase 2D.1 guides; README links the increment.
 
 No route, provider, model, public contract, backend, package or lockfile changes were needed for this phase. Existing course/review/catalog/detail routes retain the exact LMS_UI_PREVIEW guard. Employee /catalog remains the placeholder. Shared React state and in-app navigation behavior are unchanged; search/filter inputs remain local presentation state. No persistence, API calls, credentials, server actions or state library were added.
 
