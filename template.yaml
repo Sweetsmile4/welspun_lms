@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Read-only Welspun demo API; no employee accounts or database
+Resources:
+  DemoHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: $default
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 20
+        ThrottlingRateLimit: 10
+  DemoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: backend/lambda-dist/
+      Handler: index.handler
+      Runtime: nodejs24.x
+      Architectures: [arm64]
+      MemorySize: 256
+      Timeout: 10
+      Environment:
+        Variables:
+          NODE_ENV: production
+          DEPLOYMENT_MODE: hosted
+          DEMO_API_ENABLED: 'true'
+          DATABASE_ENABLED: 'false'
+          IDENTITY_MODE: disabled
+          LOG_LEVEL: info
+      Events:
+        Health:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref DemoHttpApi
+            Path: /api/v1/health
+            Method: GET
+        DemoBootstrap:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref DemoHttpApi
+            Path: /api/v1/demo/bootstrap
+            Method: GET
+Outputs:
+  BackendOrigin:
+    Description: Set this as LMS_BACKEND_ORIGIN on the Amplify frontend
+    Value: !Sub https://${DemoHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}

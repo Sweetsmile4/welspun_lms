@@ -4,7 +4,9 @@ const schema = z
     NODE_ENV: z
       .enum(['development', 'test', 'production'])
       .default('development'),
-    HOST: z.literal('127.0.0.1').default('127.0.0.1'),
+    HOST: z.enum(['127.0.0.1', '0.0.0.0']).default('127.0.0.1'),
+    DEPLOYMENT_MODE: z.enum(['local', 'hosted']).default('local'),
+    DEMO_API_ENABLED: z.enum(['true', 'false']).default('false'),
     PORT: z.coerce.number().int().min(1).max(65535).default(4000),
     LOG_LEVEL: z
       .enum(['silent', 'fatal', 'error', 'warn', 'info', 'debug', 'trace'])
@@ -30,6 +32,22 @@ const schema = z
       .optional(),
   })
   .superRefine((value, context) => {
+    if (value.HOST === '0.0.0.0' && value.DEPLOYMENT_MODE !== 'hosted')
+      context.addIssue({
+        code: 'custom',
+        path: ['HOST'],
+        message: 'Network binding requires hosted deployment mode',
+      });
+    if (
+      value.DEPLOYMENT_MODE === 'hosted' &&
+      (value.IDENTITY_MODE !== 'disabled' ||
+        value.ISOLATED_DEVELOPMENT !== 'false')
+    )
+      context.addIssue({
+        code: 'custom',
+        path: ['DEPLOYMENT_MODE'],
+        message: 'Hosted demo cannot use isolated identities',
+      });
     if (
       value.IDENTITY_MODE === 'synthetic' &&
       (value.NODE_ENV === 'production' || value.ISOLATED_DEVELOPMENT !== 'true')

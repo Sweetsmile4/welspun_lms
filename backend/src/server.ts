@@ -11,7 +11,9 @@ const server = createApp(environment, { logger }).listen(
     if (error) return;
     logger.info(
       { port: environment.PORT, phase: '1A', database: 'disabled' },
-      'API listening on loopback',
+      environment.HOST === '127.0.0.1'
+        ? 'API listening on loopback'
+        : 'API listening on configured interface',
     );
   },
 );

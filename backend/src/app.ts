@@ -1,3 +1,4 @@
+import { demoBootstrap } from './demo/catalog.js';
 import { randomUUID } from 'node:crypto';
 import express, { type ErrorRequestHandler } from 'express';
 import helmet from 'helmet';
@@ -131,6 +132,17 @@ export function createApp(
       );
     response.json(success(principal, response.locals.requestId));
   });
+  if (environment.DEMO_API_ENABLED === 'true') {
+    router.get('/demo/bootstrap', (request, response) => {
+      if (Object.keys(request.query).length)
+        throw new HttpError(
+          422,
+          'VALIDATION_ERROR',
+          'Demo bootstrap accepts no query parameters',
+        );
+      response.json(success(demoBootstrap, response.locals.requestId));
+    });
+  }
   app.use('/api/v1', router);
   if (options.isolatedTestRouter)
     app.use('/api/v1/__test', options.isolatedTestRouter);

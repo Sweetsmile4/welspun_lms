@@ -8,6 +8,8 @@ const config = [
       '**/node_modules/**',
       '**/.next/**',
       '**/dist/**',
+      '**/lambda-dist/**',
+      '.aws-sam/**',
       '**/next-env.d.ts',
       '**/coverage/**',
       'playwright-report/**',

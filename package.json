@@ -29,7 +29,8 @@
     "check": "npm run typecheck && npm run lint && npm run format:check && npm test && npm run build && npm run smoke:worker",
     "smoke:worker": "npm run start -w @welspun/worker",
     "dev": "npm run dev:api",
-    "start": "npm run start -w @welspun/api"
+    "start": "npm run start -w @welspun/api",
+    "build:lambda": "npm run build:lambda -w @welspun/api && node scripts/smoke-lambda.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

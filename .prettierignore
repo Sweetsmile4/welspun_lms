@@ -11,3 +11,6 @@ work
 
 .worktrees/
 tmp/
+
+**/lambda-dist/
+.aws-sam/
