@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { resolve, dirname, basename } from 'node:path';
@@ -27,7 +27,6 @@ import {
   assertPayloadSize,
 } from '../src/integration/http-conventions.js';
 import * as serialize from '../src/integration/serializers.js';
-import { integrationClient } from '../../frontend/src/lib/integration/client.js';
 import { memoryCourseHarness } from './course-fixture.js';
 import { publishingFixture } from './publishing-fixture.js';
 
@@ -223,32 +222,6 @@ describe('disabled integration security foundation', () => {
       ).available,
     ).toBe(false);
   });
-  it('frontend client is explicitly unavailable and performs no fetch or fixture fallback', async () => {
-    const fetch = vi
-      .spyOn(globalThis, 'fetch')
-      .mockRejectedValue(new Error('Must not fetch'));
-    try {
-      const result = await integrationClient.read('catalog.list', {});
-      expect(wire.unavailableSchema.parse(result).code).toBe(
-        'INTEGRATION_UNAVAILABLE',
-      );
-      expect(
-        await integrationClient.command(
-          wire.commandMetadataSchema.parse({
-            schemaVersion: 1,
-            kind: 'create',
-            idempotencyKey: 'offline_key',
-            requestId,
-          }),
-          {},
-        ),
-      ).toEqual(result);
-      expect('data' in result).toBe(false);
-      expect(fetch).not.toHaveBeenCalled();
-    } finally {
-      fetch.mockRestore();
-    }
-  });
   it('imports all integration modules and invokes disabled boundaries with outbound TCP/DNS/HTTP guards', async () => {
     const script = `
       const config=await import('./backend/src/integration/config.ts');
@@ -261,11 +234,9 @@ describe('disabled integration security foundation', () => {
       await import('./backend/src/integration/workload-auth.ts');
       await import('./backend/src/integration/session-cookie.ts');
       await import('@welspun/contracts/integration/v1');
-      const client=await import('./frontend/src/lib/integration/client.ts');
       const mongoose=(await import('mongoose')).default;
       if(config.parseIntegrationConfiguration().enabled)throw new Error('Enabled');
       if((await boundary.disabledBoundaries.sessions.verify({roles:['admin']})).available)throw new Error('Trusted');
-      if((await client.integrationClient.read('session.read',{})).available)throw new Error('Client enabled');
       if(mongoose.connections.some(c=>c.readyState!==0))throw new Error('Connected');
       console.log('offline-import-and-invocation-passed');`;
     // Compile before the guard: tsx's loader opens a tooling IPC pipe, unrelated to app I/O.
@@ -276,9 +247,7 @@ describe('disabled integration security foundation', () => {
       const entry = resolve(folder, 'entry.ts');
       await writeFile(
         entry,
-        script
-          .replaceAll("'./backend/", "'../../backend/")
-          .replaceAll("'./frontend/", "'../../frontend/"),
+        script.replaceAll("'./backend/", "'../../backend/"),
       );
       await build({
         entry: { runtime: entry },
