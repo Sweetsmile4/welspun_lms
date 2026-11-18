@@ -8,6 +8,7 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
+import { readDemoConnection } from '@/lib/integration/demo-client';
 import { DEMO_COURSES, DEMO_USER } from '@/lib/client-demo/course-data';
 import type {
   CourseData,
@@ -26,6 +27,8 @@ interface DemoStorageState {
 }
 
 interface DemoContextValue {
+  connection: 'checking' | 'local' | 'connected' | 'unavailable';
+  retryConnection: () => void;
   isAuthenticated: boolean;
   user: DemoUserProfile | null;
   courses: CourseData[];
@@ -107,6 +110,35 @@ const DemoContext = createContext<DemoContextValue | undefined>(undefined);
 export function DemoProvider({ children }: { children: React.ReactNode }) {
   const [demoState, setDemoState] =
     useState<DemoStorageState>(getInitialDemoState);
+
+  const [connection, setConnection] =
+    useState<DemoContextValue['connection']>('checking');
+  const [courses, setCourses] = useState<CourseData[]>(DEMO_COURSES);
+  const [connectionAttempt, setConnectionAttempt] = useState(0);
+  const retryConnection = useCallback(
+    () => setConnectionAttempt((value) => value + 1),
+    [],
+  );
+  useEffect(() => {
+    const controller = new AbortController();
+    let active = true;
+    void readDemoConnection(controller.signal).then((result) => {
+      if (!active) return;
+      setConnection(result.connection);
+      if (result.connection === 'connected') {
+        setCourses(
+          DEMO_COURSES.map((course) => ({
+            ...course,
+            ...result.data.courses.find((item) => item.id === course.id)!,
+          })),
+        );
+      } else setCourses(DEMO_COURSES);
+    });
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [connectionAttempt]);
 
   // Sync to localStorage
   useEffect(() => {
@@ -326,7 +358,9 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
     () => ({
       isAuthenticated: demoState.isAuthenticated,
       user: demoState.user,
-      courses: DEMO_COURSES,
+      courses,
+      connection,
+      retryConnection,
       progress: demoState.progress,
       explanationMode: demoState.explanationMode,
       setExplanationMode,
@@ -341,6 +375,9 @@ export function DemoProvider({ children }: { children: React.ReactNode }) {
       overallStats,
     }),
     [
+      courses,
+      connection,
+      retryConnection,
       demoState.isAuthenticated,
       demoState.user,
       demoState.progress,

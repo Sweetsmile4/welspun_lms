@@ -34,3 +34,7 @@ Browser tests: `npx playwright install chromium`, then `npm run test:e2e -- --wo
 Both branches install and build independently using local npm workspaces. No sibling
 checkout or external private package registry is required. Changes to public
 contracts must be synchronized deliberately between branches.
+
+## Connected AWS demo
+
+See [the AWS demo deployment guide](docs/AWS_DEMO_DEPLOYMENT.md) for Amplify frontend and Lambda/API Gateway backend setup. No real accounts or database are enabled.

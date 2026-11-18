@@ -1,7 +1,9 @@
 import js from '@eslint/js';
+import { resolve } from 'node:path';
 import tseslint from 'typescript-eslint';
 import globals from 'globals';
-import next from 'eslint-config-next/core-web-vitals';
+import { FlatCompat } from '@eslint/eslintrc';
+const compat = new FlatCompat({ baseDirectory: import.meta.dirname });
 import prettier from 'eslint-config-prettier/flat';
 const config = [
   {
@@ -29,7 +31,7 @@ const config = [
       ],
     },
   },
-  ...next,
+  ...compat.extends('next/core-web-vitals'),
   {
     files: ['frontend/**/*.{ts,tsx}'],
     rules: {
@@ -63,7 +65,7 @@ const config = [
       ],
     },
   },
-  { settings: { next: { rootDir: 'frontend/' } } },
+  { settings: { next: { rootDir: resolve(import.meta.dirname, 'frontend') } } },
   prettier,
 ];
 

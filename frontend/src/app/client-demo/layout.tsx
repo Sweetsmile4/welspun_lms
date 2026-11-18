@@ -5,6 +5,7 @@ import {
   DemoDisclaimerBanner,
   DemoFooterNotice,
 } from '@/components/client-demo/demo-disclaimer';
+import { DemoConnectionNotice } from '@/components/client-demo/demo-connection';
 import { DemoHeader } from '@/components/client-demo/demo-header';
 
 export const metadata: Metadata = {
@@ -23,6 +24,7 @@ export default function ClientDemoLayout({
       <div className="min-h-screen bg-[#f4f6f9] text-[#172638] flex flex-col font-sans">
         <DemoDisclaimerBanner />
         <DemoHeader />
+        <DemoConnectionNotice />
         <main className="flex-1 mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           {children}
           <DemoFooterNotice />
