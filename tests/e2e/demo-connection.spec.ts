@@ -9,7 +9,8 @@ test('demo portal clearly reports its actual backend connection', async ({
     const body = await result.json();
     expect(body.connection).toBe('connected');
     expect(body.data.courses).toHaveLength(3);
-    await page.goto('/client-demo/dashboard');
+    await page.goto('/dashboard');
+    await expect(page).toHaveURL(/\/dashboard$/);
     await expect(page.getByTestId('demo-connection')).toContainText(
       'Demo API connected',
     );
@@ -36,4 +37,52 @@ test('demo portal clearly reports its actual backend connection', async ({
       await request.post('/api/backend/demo', { data: { roles: ['admin'] } })
     ).status(),
   ).toBe(405);
+});
+
+test('dashboard aliases share their layout, assignments and browser progress', async ({
+  page,
+}) => {
+  await page.goto('/');
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await expect(
+    page.getByRole('heading', { name: /Welcome back/ }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('navigation', { name: 'Main navigation' }),
+  ).toHaveCount(0);
+  await expect(page.getByTestId('demo-connection')).not.toContainText(
+    'Checking',
+  );
+  const heading = await page
+    .getByRole('heading', { name: /Welcome back/ })
+    .textContent();
+  await page.evaluate(() => {
+    const key = 'welspun_client_demo_state_v1';
+    const state = JSON.parse(localStorage.getItem(key)!);
+    state.progress['pipe-process-101'] = {
+      courseId: 'pipe-process-101',
+      status: 'completed',
+      currentSceneIndex: 5,
+      completedSceneIds: [],
+      answeredQuestions: {},
+      completedAt: '2026-11-18T00:00:00.000Z',
+    };
+    localStorage.setItem(key, JSON.stringify(state));
+  });
+  for (const path of ['/client-demo/dashboard', '/dashboard']) {
+    await page.goto(path);
+    await expect(
+      page.getByRole('heading', { name: /Welcome back/ }),
+    ).toHaveText(heading!);
+    await expect(page.getByTestId('demo-connection')).not.toContainText(
+      'Checking',
+    );
+    expect(
+      await page.evaluate(
+        () =>
+          JSON.parse(localStorage.getItem('welspun_client_demo_state_v1')!)
+            .progress['pipe-process-101'].status,
+      ),
+    ).toBe('completed');
+  }
 });

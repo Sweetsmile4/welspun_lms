@@ -65,7 +65,7 @@ export function DemoHeader() {
             href="/client-demo/dashboard"
             className={cn(
               'flex items-center gap-2 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors',
-              pathname === '/client-demo/dashboard'
+              pathname === '/dashboard' || pathname === '/client-demo/dashboard'
                 ? 'bg-white/15 text-white'
                 : 'text-slate-300 hover:bg-white/10 hover:text-white',
             )}

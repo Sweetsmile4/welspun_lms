@@ -145,10 +145,10 @@ test.describe('Client Demonstration Portal — End-to-End Walkthrough', () => {
   test('foundation routes remain unaffected and isolated from demo', async ({
     page,
   }) => {
-    // Check normal foundation dashboard
-    await page.goto('/dashboard');
+    // The catalog remains a foundation placeholder.
+    await page.goto('/catalog');
     await expect(
-      page.getByRole('heading', { name: 'Employee dashboard' }),
+      page.getByRole('heading', { name: 'Course catalog', exact: true }),
     ).toBeVisible();
     await expect(page.getByRole('note')).toContainText(
       'Authentication is not configured',

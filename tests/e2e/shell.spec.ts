@@ -1,15 +1,13 @@
 import { test, expect } from '@playwright/test';
-test('all six placeholder routes are reachable and disclose foundation status', async ({
+test('remaining placeholder routes are reachable and disclose foundation status', async ({
   page,
 }) => {
-  await page.goto('/');
-  await expect(page).toHaveURL(/dashboard$/);
+  await page.goto('/catalog');
   await page.screenshot({
     path: test.info().outputPath('shell.png'),
     fullPage: true,
   });
   const routes = [
-    'Employee dashboard',
     'Course catalog',
     'My learning',
     'Simulations',

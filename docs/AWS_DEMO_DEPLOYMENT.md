@@ -39,7 +39,8 @@ budgets and API monitoring remain operational settings.
 4. Use the committed amplify.yml; it installs from the repository root, builds the
    frontend workspace, and publishes frontend/.next. Build-time environment values
    are written through an explicit allowlist into the server runtime environment.
-5. Redeploy after changing LMS_BACKEND_ORIGIN. Open /client-demo/dashboard and verify
+5. Redeploy after changing LMS_BACKEND_ORIGIN. Open /dashboard (also available at
+   /client-demo/dashboard) and verify
    “Demo API connected”. Do not add an SPA catch-all rewrite to this SSR app.
 
 The browser calls its own /api/backend/demo route. Next.js contacts the one fixed

@@ -21,7 +21,7 @@ export const navigation = [
 ];
 export function Shell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  if (pathname?.startsWith('/client-demo')) {
+  if (pathname === '/dashboard' || pathname?.startsWith('/client-demo')) {
     return <>{children}</>;
   }
   return (
