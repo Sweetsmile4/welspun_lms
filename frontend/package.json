@@ -24,12 +24,10 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.0",
-    "@types/node": "26.6.6",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@types/three": "^0.187.0",
     "@welspun/config": "*",
-    "tailwindcss": "^4.1.0",
-    "typescript": "7.0.2"
+    "tailwindcss": "^4.1.0"
   }
 }
